@@ -23,8 +23,19 @@ Here's a list of shortcut links to the platforms you might want to see instructi
 * [Windows](#windows)
 
 ## GNU/Linux
+<Callout type="warning">
+The installation script requires you have the following installed:
 
-Run the following command:
+* [cURL](https://curl.se)
+* Either [jq](https://jqlang.org) or [Python 3.8+](https://python.org)
+* A POSIX-compatible shell
+
+Follow this link then copy and paste it inside of your terminal then hit enter (You must be root): [Install Helper](https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Deps.sh).
+
+Or just install using your chosen package manager.
+</Callout>
+
+Run the following command to install provider for linux as well as urnet-tools:
 
 ```bash
 curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Linux.sh | sh
@@ -32,17 +43,6 @@ curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/s
 
 This command will install the latest URnetwork provider binary, and a small
 helper tool called **urnet-tools**.
-
-The installation script requires you have the following installed:
-
-```bash
-curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Deps.sh | sh
-```
-
-
-* [cURL](https://curl.se)
-* Either [jq](https://jqlang.org) or [Python 3.8+](https://python.org)
-* A POSIX-compatible shell
 
 Most modern GNU/Linux systems already have these installed, so you usually
 won't have to worry about them.  But if yours does not have these, or if you
