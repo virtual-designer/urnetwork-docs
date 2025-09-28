@@ -9,7 +9,7 @@ import TableOfContents from "./TableOfContents";
 
 const MobileTableOfContentsWrapper: FC = () => {
 	const [isExpanded, setIsExpanded] = useState(false);
-    const [isTocHidden, setIsTocHidden] = useLocalStorage<boolean>(LocalStorageKey.ShowTableOfContentsOnMobile, true);
+    const [isTocHidden, setIsTocHidden] = useLocalStorage<boolean>(LocalStorageKey.ShowTableOfContentsOnMobile, false);
 
 	const toggleIsExpanded = useCallback(() => {
 		setIsExpanded(s => !s);

@@ -6,7 +6,7 @@ import { LocalStorageKey, useLocalStorage } from "@/hooks/useLocalStorage";
 const ShowTableOfContentsToggle = () => {
 	const [isTocHidden, setIsTocHidden] = useLocalStorage<boolean>(
 		LocalStorageKey.ShowTableOfContentsOnMobile,
-		true,
+		false,
 	);
 	const isLargeScreen = useIsLargeScreen();
 
