@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
 };
 
 const rehypePrettyCodeOptions: RehypePrettyCodeOptions = {
-    theme: "material-theme-ocean",
+    theme: "aurora-x",
+    keepBackground: false
 };
 
 const withMDX = createMDX({

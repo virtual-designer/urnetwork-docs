@@ -2,12 +2,12 @@ import "@/styles/globals.css";
 
 import Navbar from "@/components/Navbar/Navbar";
 import Progress from "@/components/Navigation/Progress";
-import type { Metadata, Viewport } from "next";
-import { PropsWithChildren } from "react";
-import { Inter } from "next/font/google";
-import Providers from "./providers";
-import { BASE_URL } from "@/config/links";
 import { SITE_DEFAULT_TITLE, SITE_TITLE_FORMAT } from "@/config/config";
+import { BASE_URL } from "@/config/links";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import { PropsWithChildren } from "react";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
