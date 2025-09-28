@@ -72,7 +72,7 @@ export default function Callout({
                     <Icon size={25} />
                 </div>
             )}
-            <div className="*:m-0 *:p-0">{children}</div>
+            <div className="*:last:mb-0 *:last:pb-0 pb-1">{children}</div>
         </div>
     );
 }
