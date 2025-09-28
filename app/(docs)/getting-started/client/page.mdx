@@ -1,0 +1,212 @@
+---
+title: Providing to URnetwork
+short_name: Providing to URnetwork
+description: A simple guide on how to provide your internet to URnetwork.
+---
+
+import Callout from "@/components/Alerts/Callout";
+
+# Providing to URnetwork
+
+To provide your internet to URnetwork, you run a small provider application
+on your system, which shares your internet with the network.  This application
+is often referred to as the "provider binary" or "provider executable".
+
+We maintain URnetwork provider binaries for many platforms and architectures,
+including GNU/Linux, macOS and Windows.  We'll give you a short guide on how
+set them up on your system.
+
+Here's a list of shortcut links to the platforms you might want to see instructions for:
+
+* [GNU/Linux](#gnulinux)
+* [macOS](#macos)
+* [Windows](#windows)
+
+## GNU/Linux
+
+Run the following command:
+
+```bash
+curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Linux.sh | sh
+```
+
+This command will install the latest URnetwork provider binary, and a small
+helper tool called **urnet-tools**.
+
+The installation script requires you have the following installed:
+
+* [cURL](https://curl.se)
+* Either [jq](https://jqlang.org) or [Python 3.8+](https://python.org)
+* A POSIX-compatible shell
+
+Most modern GNU/Linux systems already have these installed, so you usually
+won't have to worry about them.  But if yours does not have these, or if you
+use a very minimal system, you will have to consult your Distro's packaging
+system to figure out how to install them.
+
+After you run this script, you should follow the steps in the [post install instructions section](#post-install-instructions).
+
+### Integration with [systemd](https://systemd.io)
+
+On GNU/Linux systems, systemd is the preferred way to run URnetwork as a service.
+URnetwork does not require superuser permissions to install, as a result,
+we only install user-level services, which most other init systems do not support.
+If you use some other init system than systemd, we expect that you have the ability
+to create a service for the provider by yourself.
+
+The installation script installs three units: `urnetwork.service`, `urnetwork-updater.service` and
+`urnetwork-updater.timer`.  The `urnetwork.service` is the provider service unit.  You can manage
+it just like any other systemd service.
+
+```bash
+systemctl --user start urnetwork           # Starts the provider
+systemctl --user stop urnetwork            # Stops the provider
+systemctl --user enable urnetwork          # Auto-starts the provider on login
+systemctl --user disable urnetwork         # Disables auto-start on login
+systemctl --user status urnetwork          # Shows the service status
+```
+
+The `urnetwork-updater` units are auto-update helpers, so that you don't have to manually update URnetwork. 
+If you don't like auto-updates, running the following will disable it:
+
+```bash
+systemctl --user disable urnetwork-update.timer
+```
+
+<Callout type="warning">
+    On many systems, logging in as root does not start the systemd user instance, which
+    these commands require to operate.  As a result, these commands may fail when running as root.
+    Therefore, we do not recommend running these services as root.
+</Callout>
+
+### Post-install instructions
+
+The first thing to do after installation is to re-source your `~/.bashrc`. To do so, run:
+
+```bash
+source ~/.bashrc
+```
+
+This will ensure urnetwork commands work from now on.
+
+<Callout type="info">
+    If you do not use bash as your default shell, the installer will create a `~/.bashrc` file,
+    which you should open up and copy paste its contents into your shell's profile or `*rc` file accordingly.
+</Callout>
+
+To further verify that your installation was successful, run:
+
+```bash
+urnetwork --help
+urnet-tools --help
+```
+
+Both of these commands should print out help instructions.
+
+### Authentication
+
+Next, you have to log into URnetwork. To do so, run:
+
+```bash
+urnetwork auth
+```
+
+Then:
+
+1. It will ask for an auth code. You can obtain an auth code at https://ur.io.
+2. If you aren't logged in there, you should log in first.  
+3. Then at the top right corner of the site, you should see the name of your network.
+4. Click on it, and it should open up a modal.  
+5. In the modal, there should be a button to copy an auth code.  
+6. Click on it, then paste the auth code in your terminal. Then hit enter.  
+
+If your auth code was correctly copied, you should be logged into URnetwork now.  The command above saves your account
+JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
+
+### Starting the provider
+
+Finally, you can start the provider:
+
+```bash
+systemctl --user start urnetwork
+```
+
+If everything was set up correctly, this will not produce any output. To see the status of
+the service, run:
+
+```bash
+systemctl --user status urnetwork
+```
+
+This should show that the service is active and running. Congratulations, you are now a part of
+URnetwork!
+
+### Uninstalling
+
+In case if you want to uninstall URnetwork, you can use `urnet-tools` for that:
+
+```bash
+urnet-tools uninstall
+```
+
+## macOS
+
+To install the provider on a macOS device, you have two options,
+either build the provider from source, or use a prebuilt binary.
+
+As of now, there isn't an installer script for macOS users.  You will
+have to download the provider release tarball manually and install the
+provider from there.
+
+Go to the releases page of [urnetwork/connect](https://github.com/urnetwork/connect/releases),
+and download the tarball from there.  Then extract it.  The tarball should
+contain a directory named `darwin`, which has the provider binaries for macOS.
+
+Inside that, if you have an Intel Mac, you'll have to go into the `amd64` directory. Otherwise,
+if you have an Apple Sillicon Chip, then you'll go inside the `arm64` directory.
+
+You should see a file named `provider`, which is the provider executable.  You can copy it
+to somewhere else, and run it like a CLI application in your terminal.
+
+Next, to log into URnetwork, the instructions are similar to GNU/Linux.
+
+```bash
+<path_to_provider>/provider auth         # Be sure to replace <path_to_provider> with the actual path where the provider is!
+```
+
+Then:
+
+1. It will ask for an auth code. You can obtain an auth code at https://ur.io.
+2. If you aren't logged in there, you should log in first.  
+3. Then at the top right corner of the site, you should see the name of your network.
+4. Click on it, and it should open up a modal.  
+5. In the modal, there should be a button to copy an auth code.  
+6. Click on it, then paste the auth code in your terminal. Then hit enter.  
+
+If your auth code was correctly copied, you should be logged into URnetwork now.  The command above saves your account
+JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
+
+Once that is done, you can start the provider by using the command:
+
+```bash
+<path_to_provider>/provider provide       # Be sure to replace <path_to_provider> with the actual path where the provider is!
+```
+
+## Windows
+
+Todo.
+
+## Building from source
+
+If you want to build URnetwork from source, the first thing you need to do is Install Go. Head over to
+https://go.dev/ and download a Go toolchain. Then, run the following commands (assuming GNU/Linux, macOS, BSD or similar UNIX-like systems):
+
+```bash
+mkdir urnetwork
+cd urnetwork
+git clone https://github.com/urnetwork/connect
+git clone https://github.com/urnetwork/protocol
+cd connect/provider
+go build
+# After this, the provider binary should be at ./provider
+```
