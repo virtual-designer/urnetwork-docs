@@ -1,0 +1,14 @@
+## Building from source
+
+If you want to build URnetwork from source, the first thing you need to do is Install Go. Head over to
+https://go.dev/ and download a Go toolchain. Then, run the following commands (assuming GNU/Linux, macOS, BSD or similar UNIX-like systems):
+
+```bash
+mkdir urnetwork
+cd urnetwork
+git clone https://github.com/urnetwork/connect
+git clone https://github.com/urnetwork/protocol
+cd connect/provider
+go build
+# After this, the provider binary should be at ./provider
+```

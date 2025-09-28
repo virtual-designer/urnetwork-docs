@@ -1,0 +1,123 @@
+---
+title: Providing to URnetwork
+short_name: Providing to URnetwork
+description: A simple guide on how to provide your internet to URnetwork.
+---
+
+import Callout from "@/components/Alerts/Callout";
+
+# Providing to URnetwork
+
+To provide your internet to URnetwork, you run a small provider application
+on your system, which shares your internet with the network.  This application
+is often referred to as the "provider binary" or "provider executable".
+
+We maintain URnetwork provider binaries for many platforms and architectures,
+including GNU/Linux, macOS and Windows.  We'll give you a short guide on how
+set them up on your system.
+
+Here's a list of shortcut links to the platforms you might want to see instructions for:
+
+* [GNU/Linux](#gnulinux)
+* [macOS](#macos)
+* [Windows](#windows)
+
+## GNU/Linux
+
+Run the following command:
+
+```bash
+curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Linux.sh | sh
+```
+
+This command will install the latest URnetwork provider binary, and a small
+helper tool called **urnet-tools**.
+
+The installation script requires you have the following installed:
+
+```bash
+curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Deps.sh | sh
+```
+
+
+* [cURL](https://curl.se)
+* Either [jq](https://jqlang.org) or [Python 3.8+](https://python.org)
+* A POSIX-compatible shell
+
+Most modern GNU/Linux systems already have these installed, so you usually
+won't have to worry about them.  But if yours does not have these, or if you
+use a very minimal system, you will have to consult your Distro's packaging
+system to figure out how to install them.
+
+After you run this script, you should follow the steps in the [post install instructions section](#post-install-instructions).
+
+
+### Post-install instructions
+
+The first thing to do after installation is to re-source your `~/.bashrc`. To do so, run:
+
+```bash
+source ~/.bashrc
+```
+
+This will ensure urnetwork commands work from now on.
+
+<Callout type="info">
+    If you do not use bash as your default shell, the installer will create a `~/.bashrc` file,
+    which you should open up and copy paste its contents into your shell's profile or `*rc` file accordingly.
+</Callout>
+
+To further verify that your installation was successful, run:
+
+```bash
+urnetwork --help
+urnet-tools --help
+```
+
+Both of these commands should print out help instructions.
+
+### Authentication
+
+Next, you have to log into URnetwork. To do so, run:
+
+```bash
+urnetwork auth
+```
+
+Then:
+
+1. It will ask for an auth code. You can obtain an auth code at https://ur.io.
+2. If you aren't logged in there, you should log in first.  
+3. Then at the top right corner of the site, you should see the name of your network.
+4. Click on it, and it should open up a modal.  
+5. In the modal, there should be a button to copy an auth code.  
+6. Click on it, then paste the auth code in your terminal. Then hit enter.  
+
+If your auth code was correctly copied, you should be logged into URnetwork now.  The command above saves your account
+JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
+
+### Starting the provider
+
+Finally, you can start the provider:
+
+```bash
+systemctl --user start urnetwork
+```
+
+If everything was set up correctly, this will not produce any output. To see the status of
+the service, run:
+
+```bash
+systemctl --user status urnetwork
+```
+
+This should show that the service is active and running. Congratulations, you are now a part of
+URnetwork!
+
+### Uninstalling
+
+In case if you want to uninstall URnetwork, you can use `urnet-tools` for that:
+
+```bash
+urnet-tools uninstall
+```

@@ -1,0 +1,42 @@
+## macOS
+
+To install the provider on a macOS device, you have two options,
+either build the provider from source, or use a prebuilt binary.
+
+As of now, there isn't an installer script for macOS users.  You will
+have to download the provider release tarball manually and install the
+provider from there.
+
+Go to the releases page of [urnetwork/connect](https://github.com/urnetwork/connect/releases),
+and download the tarball from there.  Then extract it.  The tarball should
+contain a directory named `darwin`, which has the provider binaries for macOS.
+
+Inside that, if you have an Intel Mac, you'll have to go into the `amd64` directory. Otherwise,
+if you have an Apple Sillicon Chip, then you'll go inside the `arm64` directory.
+
+You should see a file named `provider`, which is the provider executable.  You can copy it
+to somewhere else, and run it like a CLI application in your terminal.
+
+Next, to log into URnetwork, the instructions are similar to GNU/Linux.
+
+```bash
+<path_to_provider>/provider auth         # Be sure to replace <path_to_provider> with the actual path where the provider is!
+```
+
+Then:
+
+1. It will ask for an auth code. You can obtain an auth code at https://ur.io.
+2. If you aren't logged in there, you should log in first.  
+3. Then at the top right corner of the site, you should see the name of your network.
+4. Click on it, and it should open up a modal.  
+5. In the modal, there should be a button to copy an auth code.  
+6. Click on it, then paste the auth code in your terminal. Then hit enter.  
+
+If your auth code was correctly copied, you should be logged into URnetwork now.  The command above saves your account
+JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
+
+Once that is done, you can start the provider by using the command:
+
+```bash
+<path_to_provider>/provider provide       # Be sure to replace <path_to_provider> with the actual path where the provider is!
+```

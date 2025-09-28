@@ -1,0 +1,32 @@
+### Integration with [systemd](https://systemd.io)
+
+On GNU/Linux systems, systemd is the preferred way to run URnetwork as a service.
+URnetwork does not require superuser permissions to install, as a result,
+we only install user-level services, which most other init systems do not support.
+If you use some other init system than systemd, we expect that you have the ability
+to create a service for the provider by yourself.
+
+The installation script installs three units: `urnetwork.service`, `urnetwork-updater.service` and
+`urnetwork-updater.timer`.  The `urnetwork.service` is the provider service unit.  You can manage
+it just like any other systemd service.
+
+```bash
+systemctl --user start urnetwork           # Starts the provider
+systemctl --user stop urnetwork            # Stops the provider
+systemctl --user enable urnetwork          # Auto-starts the provider on login
+systemctl --user disable urnetwork         # Disables auto-start on login
+systemctl --user status urnetwork          # Shows the service status
+```
+
+The `urnetwork-updater` units are auto-update helpers, so that you don't have to manually update URnetwork. 
+If you don't like auto-updates, running the following will disable it:
+
+```bash
+systemctl --user disable urnetwork-update.timer
+```
+
+<Callout type="warning">
+    On many systems, logging in as root does not start the systemd user instance, which
+    these commands require to operate.  As a result, these commands may fail when running as root.
+    Therefore, we do not recommend running these services as root.
+</Callout>
