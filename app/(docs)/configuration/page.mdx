@@ -1,0 +1,22 @@
+---
+title: Configuration
+short_name: Configuration
+description: Configuration guide for Sudoc.
+---
+
+# Configuration
+
+There are a few configuration files in the `config/` directory of the project that you should be aware of. These configuration files make it easy for you
+to customize the app without having to change a lot of source files directly.
+
+At the moment, there are two major configuration files:
+
+* [`config.ts`](/configuration/config) - General app level configuration parameters
+* [`links.ts`](/configuration/links) - Links visible in the app and configuration related to that
+
+Every time you edit the configuration files, you should also run the initialization script so that specific files are copied/moved to the correct locations according to your
+configuration.
+
+```bash
+node scripts/init.ts
+```

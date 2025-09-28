@@ -1,0 +1,18 @@
+{
+    "tabWidth": 4,
+    "endOfLine": "lf",
+    "jsxSingleQuote": false,
+    "semi": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid",
+    "useTabs": true,
+    "overrides": [
+        {
+            "files": ["*.yml", "*.yaml"],
+            "options": {
+                "tabWidth": 2,
+                "useTabs": false
+            }
+        }
+    ]
+}

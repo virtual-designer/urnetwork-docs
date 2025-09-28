@@ -1,0 +1,50 @@
+name: Automatic Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  release:
+    if: github.repository_owner == 'onesoft-sudo' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Prepare Git
+        run: |
+          echo "${{ secrets.COMMIT_GPG_KEY }}" > private.key
+          gpg --import private.key
+          rm -f private.key
+          git config --global user.signingkey "6AE7B08C68169452"
+          git config --global commit.gpgsign true
+
+      - name: Conventional Release Action
+        id: auto_release
+        uses: onesoft-sudo/conventional-release-action@main
+        with:
+          version-json-file: "./package.json"
+          git-user-name: "Conventional Release Action"
+          git-user-email: rakinar2@onesoftnet.eu.org
+          commit-message-format: "release: v%s [skip ci]"
+          git-sign-off: true
+          changelog-file: CHANGELOG.md
+          changelog-format: markdown
+          allowed-commit-types: feat,fix,refactor,perf,ci,build,test,revert,chore,release,deps
+
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        if: ${{ steps.auto_release.outputs.tag != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ steps.auto_release.outputs.tag }}
+          name: ${{ steps.auto_release.outputs.tag }}
+          body: ${{ steps.auto_release.outputs.release_notes }}
