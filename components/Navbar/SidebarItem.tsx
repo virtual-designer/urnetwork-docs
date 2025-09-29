@@ -133,7 +133,7 @@ export default function SidebarItem({
 
 				{!!item.children?.length && (
 					<div
-						className="ml-[13px] mt-2"
+						className={`ml-[13px] ${expanded ? "mt-2" : ""}`}
 						style={{
 							maxHeight: expanded ? `${maxHeight}px` : 0,
 							transition: "0.2s",
