@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type Serializable =
 	| number
@@ -36,7 +36,7 @@ export function useLocalStorage<T extends Serializable>(
 	deserialize: (data: string) => T = jsonDeserialize,
 ): [T | null, (data: T | ((current: T) => T)) => void] {
 	const [state, setState] = useState<T | null>(defaultValue);
-	const reload = () => {
+	const reload = useCallback(() => {
 		const item = localStorage.getItem(key);
 		const tranformed =
 			typeof item === "string"
@@ -45,12 +45,12 @@ export function useLocalStorage<T extends Serializable>(
 					: item
 				: defaultValue;
 		setState(tranformed as T);
-	};
+	}, [key, defaultValue, setState, deserialize]);
 	const changeRef = useRef(false);
 
 	useEffect(() => {
 		reload();
-	}, []); // eslint-disable-line react-hooks/no-exhaustive-deps
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(() => {
 		window.addEventListener("localStorage:updated", reload);

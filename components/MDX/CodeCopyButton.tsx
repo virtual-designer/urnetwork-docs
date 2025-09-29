@@ -21,7 +21,7 @@ const CodeCopyButton: ForwardRefRenderFunction<
 
         figure?.addEventListener('pointerleave', onPointerLeave);
         return () => figure?.removeEventListener('pointerleave', onPointerLeave)
-    }, [])
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     
 	if (typeof ref === "function") {
 		throw new Error("ref cannot be a function");
