@@ -15,6 +15,7 @@
 
 .rootNested {
 	border-left: 1px solid #444;
+	margin-left: 0.45rem;
 }
 
 .rootWithChildren .children {
