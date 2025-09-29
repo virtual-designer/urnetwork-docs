@@ -16,6 +16,21 @@ pr_err ()
 	printf "$me: error: $format\n" >&2
 }
 
+usage ()
+{
+	cat <<EOF
+Fetch and apply patches from upstream automatically.
+
+Usage:
+  $me [OPTION]...
+
+Options:
+  -h, --help        Show this help and exit.
+
+Bug reports can be sent to <rakinar2@osndevs.org>.
+EOF
+}
+
 if ! command -v curl > /dev/null 2>&1; then
 	pr_err "curl is required to use this script!"
 	exit 1
@@ -23,6 +38,11 @@ fi
 
 while test $# -gt 0; do
 	case "$1" in
+		-h|--help)
+			usage
+			exit 0
+			;;
+
 		-*)
 			pr_err "Invalid option '%s'" "$1"
 			exit 1
