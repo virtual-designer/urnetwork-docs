@@ -1,1 +1,87 @@
 #!/bin/sh
+
+me=`basename "$0"`
+
+pr_info ()
+{
+	format="$1"
+	shift
+	printf "$me: $format\n"
+}
+
+pr_err ()
+{
+	format="$1"
+	shift
+	printf "$me: error: $format\n" >&2
+}
+
+if ! command -v curl > /dev/null 2>&1; then
+	pr_err "curl is required to use this script!"
+	exit 1
+fi
+
+while test $# -gt 0; do
+	case "$1" in
+		-*)
+			pr_err "Invalid option '%s'" "$1"
+			exit 1
+			;;
+
+		*)
+			pr_err "Invalid argument '%s'" "$1"
+			exit 1
+			;;
+	esac
+done
+
+owner="onesoft-sudo"
+repo="sudoc"
+
+topdir=`git rev-parse --show-toplevel`
+branch=`git branch --show-current`
+
+if test -f "${topdir}/.lastpatch"; then
+	base=`cat "${topdir}/.lastpatch"`
+fi
+
+if test -z "$base"; then
+	base=`git rev-parse "$branch"`
+	pr_info "No .lastpatch file was found in the repository root. Assuming this is the first run."
+	pr_info "A .lastpatch file will be created. No patches will be applied on this run."
+	printf "%s\n" "$base" > "${topdir}/.lastpatch"
+	exit 0
+fi
+
+endpoint="https://api.github.com/repos/$owner/$repo/compare/$base...main"
+
+pr_info "Last patch commit: $base"
+pr_info "Fetching new patches from upstream ${owner}/${repo}..."
+
+patch_tmp=`mktemp`
+
+curl -fSsL -X GET \
+	-H "X-GitHub-Api-Version: 2022-11-28" \
+	-H "Accept: application/vnd.github.v3.patch" \
+	"$endpoint" > "$patch_tmp"
+
+pr_info "Patches fetched. Applying now..."
+
+filter_opts=''
+
+if test -f "${topdir}/.patchignore"; then
+	for ign in $(cat "${topdir}/.patchignore"); do
+		filter_opts="${filter_opts} --exclude='${ign}'"
+	done
+fi
+
+trap 'rm -f $patch_tmp' EXIT INT TERM
+
+if ! git am -3 $filter_opts "$patch_tmp"; then
+	pr_info "Patches did not apply (possible conflict). Bailing out, you're on your own. Fix the conflicts manually."
+	git am --abort
+	exit 1
+fi
+
+printf "%s\n" "$(git rev-parse "$branch")" > "${topdir}/.lastpatch"
+pr_info "Successfully applied the patches."

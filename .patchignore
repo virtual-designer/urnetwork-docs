@@ -1,0 +1,10 @@
+package.json
+.github/cra-metadata.json
+CHANGELOG.md
+app/(docs)/*
+app/page.tsx
+app/page.mdx
+app/page.jsx
+app/page.md
+app/directory.ts
+app/(blog)/*

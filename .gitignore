@@ -45,3 +45,4 @@ tree.json
 local_types.d.ts
 
 *.bak
+.lastpatch
