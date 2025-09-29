@@ -20,12 +20,6 @@ We maintain URnetwork provider binaries for many platforms and architectures,
 including GNU/Linux, macOS and Windows.  We'll give you a short guide on how
 set them up on your system.
 
-Here's a list of shortcut links to the platforms you might want to see instructions for:
-
-* [GNU/Linux](#gnulinux)
-* [macOS](#macos)
-* [Windows](#windows)
-
 ## GNU/Linux
 <Callout type="warning">
 The installation script requires you have the following installed:
@@ -92,12 +86,13 @@ urnetwork auth
 
 Then:
 
-1. It will ask for an auth code. You can obtain an auth code at https://ur.io.
-2. If you aren't logged in there, you should log in first.  
-3. Then at the top right corner of the site, you should see the name of your network.
-4. Click on it, and it should open up a modal.  
-5. In the modal, there should be a button to copy an auth code.  
-6. Click on it, then paste the auth code in your terminal. Then hit enter.  
+It will ask for an auth code. You can obtain an auth code at https://ur.io, https://app.ur.network or inside the mobile app.
+The auth code button should be located in the settings section of their respective app.
+
+![Urio Auth](https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/app/heads/(content)/urio_auth.png)
+![Web App Auth](https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/app/heads/(content)/web_app_auth.png)
+![Mobile Auth](https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/app/heads/(content)/mobile_auth.png)
+
 
 If your auth code was correctly copied, you should be logged into URnetwork now.  The command above saves your account
 JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
@@ -107,7 +102,7 @@ JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
 Finally, you can start the provider:
 
 ```bash
-systemctl --user start urnetwork
+urnet-tools start
 ```
 
 If everything was set up correctly, this will not produce any output. To see the status of
