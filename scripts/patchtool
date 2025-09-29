@@ -65,6 +65,11 @@ curl -fSsL -X GET \
 	-H "Accept: application/vnd.github.v3.patch" \
 	"$endpoint" > "$patch_tmp"
 
+if test -z "$(cat "$patch_tmp")"; then
+	pr_info "No patch is available right now."
+	exit 0
+fi
+
 pr_info "Patches fetched. Applying now..."
 
 filter_opts=''
