@@ -6,8 +6,8 @@ import path from "path";
 import YAML from "yaml";
 import { BASE_URL } from "../config/links.ts";
 import {
-    DirectoryMetadataSchema,
-    type DirectoryMetadataType,
+	DirectoryMetadataSchema,
+	type DirectoryMetadataType,
 } from "../schemas/IndexSchema.ts";
 import type { IndexEntry } from "../types/IndexEntry.ts";
 import type { Page } from "../types/Tree.ts";
@@ -112,7 +112,10 @@ async function scanDirectory(
 			results.push(mainResult);
 		}
 
-		if (!directoryMetadataParsed?.hideThisDirectoryInSearches) {
+		if (
+			!directoryMetadataParsed?.hideThisDirectoryInSearches &&
+			mainResult.type === "page"
+		) {
 			indexArray.push({
 				contents: contents ?? "",
 				href: mainResult.href,
@@ -186,7 +189,7 @@ async function scanDirectory(
 				children: [],
 				name: pageEntry.name ?? path.basename(href),
 				data: entryFrontmatter || undefined,
-				type: "page",
+				type: pageEntry.type || "page",
 			};
 
 			if (pageEntry.sameLevelAsParent) {
@@ -195,7 +198,7 @@ async function scanDirectory(
 				mainResult.children.push(page);
 			}
 
-			if (!pageEntry.hideInSearches) {
+			if (!pageEntry.hideInSearches && page.type === "page") {
 				indexArray.push({
 					contents: entryContents || "",
 					href,
@@ -248,7 +251,6 @@ async function scanDirectory(
 	}
 
 	if (directoryMetadataParsed?.sortOrder) {
-		console.log(directory);
 		console.dir(
 			sortPages(mainResult.children, directoryMetadataParsed.sortOrder),
 			{

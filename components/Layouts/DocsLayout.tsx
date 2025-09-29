@@ -5,9 +5,9 @@ import MobileTableOfContentsWrapper from "../MDX/MobileTableOfContentsWrapper";
 import PageInfo from "../MDX/PageInfo";
 import ShowTableOfContentsToggle from "../MDX/ShowTableOfContentsToggle";
 import TableOfContents from "../MDX/TableOfContents";
-import TreeBreadcrumbNavigation from "../MDX/TreeBreadcrumbNavigation";
 import Sidebar from "../Navbar/Sidebar";
 import Navigator from "../Navigation/Navigator";
+import TreeBreadcrumbNavigation from "../Navigation/TreeBreadcrumbNavigation";
 import DocsLayoutGrid from "./DocsLayoutGrid";
 
 export default function DocsLayout({ children }: PropsWithChildren) {

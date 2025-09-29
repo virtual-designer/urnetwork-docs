@@ -5,7 +5,7 @@ import { getSubTree } from "@/utils/pages";
 import clsx from "clsx";
 import { FC, useMemo } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi2";
-import Link from "../Navigation/Link";
+import Link from "./Link";
 
 const TreeBreadcrumbNavigation: FC = () => {
 	const pathname = useActualPathname();
@@ -33,30 +33,33 @@ const TreeBreadcrumbNavigation: FC = () => {
 
 	return (
 		<ol className="flex items-center flex-wrap gap-1">
-			{treePath.map((pathEntry, index) => (
-				<li
-					key={pathEntry.href}
-					className="text-sm flex items-center gap-1"
-				>
-					{index > 0 && (
-						<span>
-							<HiOutlineChevronRight className="-mb-0.5" />
-						</span>
-					)}
-					<Link
-						href={pathEntry.href}
-						title={pathEntry.title || pathEntry.name}
-						className={clsx(
-							"hover:text-neutral-300",
-							index === treePath.length - 1
-								? "font-semibold underline"
-								: "",
-						)}
+			{treePath.map((pathEntry, index) => {
+				const Component = pathEntry.type === "page" ? Link : "span";
+
+				return (
+					<li
+						key={pathEntry.href}
+						className="text-sm flex items-center gap-1"
 					>
-						{pathEntry.title || pathEntry.name}
-					</Link>
-				</li>
-			))}
+						{index > 0 && (
+							<span>
+								<HiOutlineChevronRight className="-mb-0.5" />
+							</span>
+						)}
+						<Component
+							href={pathEntry.href}
+							title={pathEntry.title || pathEntry.name}
+							className={clsx("hover:text-neutral-300", {
+								"font-semibold underline":
+									index === treePath.length - 1,
+								"cursor-default": pathEntry.type === "page",
+							})}
+						>
+							{pathEntry.title || pathEntry.name}
+						</Component>
+					</li>
+				);
+			})}
 		</ol>
 	);
 };

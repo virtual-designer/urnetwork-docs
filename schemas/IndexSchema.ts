@@ -8,6 +8,7 @@ export const PageEntrySchema = z.object({
     file: z.string().nonempty().optional(),
     sameLevelAsParent: z.boolean().optional(),
     hideInSearches: z.boolean().optional(),
+    type: z.enum(['page', 'directory']).optional()
 });
 
 export const DirectoryMetadataSchema = z.object({
