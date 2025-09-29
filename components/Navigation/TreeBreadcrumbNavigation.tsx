@@ -52,7 +52,8 @@ const TreeBreadcrumbNavigation: FC = () => {
 							className={clsx("hover:text-neutral-300", {
 								"font-semibold underline":
 									index === treePath.length - 1,
-								"cursor-default": pathEntry.type === "page",
+								"cursor-pointer": pathEntry.type === "page",
+								"cursor-default": pathEntry.type !== "page",
 							})}
 						>
 							{pathEntry.title || pathEntry.name}
