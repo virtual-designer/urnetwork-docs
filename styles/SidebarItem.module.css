@@ -18,10 +18,6 @@
 	margin-left: 0.45rem;
 }
 
-.root > .innerDiv > div > .children > .rootNested {
-	margin-left: 0.1rem;
-}
-
 .rootWithChildren .children {
 	position: relative;
 }
