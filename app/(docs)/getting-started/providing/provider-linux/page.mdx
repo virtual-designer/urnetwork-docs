@@ -20,12 +20,6 @@ We maintain URnetwork provider binaries for many platforms and architectures,
 including GNU/Linux, macOS and Windows.  We'll give you a short guide on how
 set them up on your system.
 
-Here's a list of shortcut links to the platforms you might want to see instructions for:
-
-* [GNU/Linux](#gnulinux)
-* [macOS](#macos)
-* [Windows](#windows)
-
 ## GNU/Linux
 <Callout type="warning">
 The installation script requires you have the following installed:
@@ -92,12 +86,13 @@ urnetwork auth
 
 Then:
 
-1. It will ask for an auth code. You can obtain an auth code at https://ur.io.
-2. If you aren't logged in there, you should log in first.  
-3. Then at the top right corner of the site, you should see the name of your network.
-4. Click on it, and it should open up a modal.  
-5. In the modal, there should be a button to copy an auth code.  
-6. Click on it, then paste the auth code in your terminal. Then hit enter.  
+It will ask for an auth code. You can obtain an auth code at https://ur.io, https://app.ur.network or inside the mobile app.
+The auth code button should be located in the settings section of their respective app.
+
+<img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/urio_auth.png" height="335px" width="576px" />
+<img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/web_app_auth.png" height="1199px" width="2348px" />
+<img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/mobile_auth.png" height="907px" width="1179px" />
+
 
 If your auth code was correctly copied, you should be logged into URnetwork now.  The command above saves your account
 JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
@@ -107,18 +102,54 @@ JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
 Finally, you can start the provider:
 
 ```bash
-systemctl --user start urnetwork
+urnet-tools start
 ```
+
+Or if you want to run it in the foreground for your own purposes
+
+```bash
+urnetwork provide
+```
+
+Keep in mind if you close the foreground process it will die, so it's recommeneded to use urnet-tools to create a service automatically.
+
+Next, it's also recommended to allow to service to startup when you restart your system so you won't have to worry about manually starting it.
+
+Use the following to enable system startup:
+
+```bash
+urnet-tools auto-start on
+```
+
+This will enable the service, use `off` to turn startup off.
 
 If everything was set up correctly, this will not produce any output. To see the status of
 the service, run:
 
 ```bash
-systemctl --user status urnetwork
+urnet-tools status
 ```
 
 This should show that the service is active and running. Congratulations, you are now a part of
 URnetwork!
+
+### Updating
+
+If you'd like to manually update you can easily run:
+
+```bash
+urnet-tools update
+```
+
+This command also allows you to choose a build version, you can find the build tag [here](https://github.com/urnetwork/connect/releases).
+
+If you prefer to not worry about it, you can set it to automatically update to the latest stable using:
+
+```bash
+urnet-tools auto-update on
+```
+
+This will check for updates daily, use `off` to turn auto updates off.
 
 ### Uninstalling
 
