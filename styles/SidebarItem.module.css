@@ -1,17 +1,47 @@
 .root {
-    margin: 5px 0;
+    --sidebar-root-padding: 0.2rem;
+    --sidebar-root-height: 2.125rem;
+	--sidebar-selected-index: 0;
+	padding: var(--sidebar-root-padding) 0;
+}
+
+.root:first-child {
+	padding-top: 0;
+}
+
+.root:last-child {
+	padding-bottom: 0;
+}
+
+.rootNested {
+	border-left: 1px solid #444;
+}
+
+.rootWithChildren .children {
+	position: relative;
+}
+
+.rootWithChildren .children::before {
+	content: "";
+	height: var(--sidebar-root-height);
+	width: 1px;
+	background-color: #fff;
+	display: block;
+	position: absolute;
+	top: calc(var(--sidebar-selected-index) * (var(--sidebar-root-height) + (2 * var(--sidebar-root-padding))));
+	transition: 0.2s ease;
 }
 
 .anchor {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 5px;
+	padding: 5px 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 5px;
 }
 
-.root.active > .anchor,
+.root.active > .innerDiv > .anchor,
 .anchor.active,
 .anchor:hover {
-    background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.1);
 }
