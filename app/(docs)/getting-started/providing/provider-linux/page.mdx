@@ -105,15 +105,51 @@ Finally, you can start the provider:
 urnet-tools start
 ```
 
+Or if you want to run it in the foreground for your own purposes
+
+```bash
+urnetwork provide
+```
+
+Keep in mind if you close the foreground process it will die, so it's recommeneded to use urnet-tools to create a service automatically.
+
+Next, it's also recommended to allow to service to startup when you restart your system so you won't have to worry about manually starting it.
+
+Use the following to enable enable on system startup:
+
+```bash
+urnet-tools auto-start on
+```
+
+This will enable the service, use `off` to turn startup off.
+
 If everything was set up correctly, this will not produce any output. To see the status of
 the service, run:
 
 ```bash
-systemctl --user status urnetwork
+urnet-tools status
 ```
 
 This should show that the service is active and running. Congratulations, you are now a part of
 URnetwork!
+
+### Updating
+
+If you'd like to manually update you can easily run:
+
+```bash
+urnet-tools update
+```
+
+This command also allows you to choose a build version, you can find the build tag [here](https://github.com/urnetwork/connect/releases).
+
+If you prefer to not worry about it, you can set it to automatically update to the latest stable using:
+
+```bash
+urnet-tools auto-update on
+```
+
+This will check for updates daily, use `off` to turn auto updates off.
 
 ### Uninstalling
 
