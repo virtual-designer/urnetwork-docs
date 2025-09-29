@@ -9,6 +9,7 @@ const normalizedTree: Tree = {
 	hrefRelative: "",
 	name: "[root]",
 	title: "Root",
+	type: "page",
 	children: [
 		...(LIST_ROOT_PAGE_IN_SIDEBAR
 			? [
