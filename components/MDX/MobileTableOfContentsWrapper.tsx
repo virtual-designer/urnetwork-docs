@@ -45,7 +45,7 @@ const MobileTableOfContentsWrapper: FC = () => {
 						"max-h-0 overflow-y-hidden": !isExpanded,
 						"max-h-[40vh] overflow-y-scroll": isExpanded,
 					})}
-					onPointerDown={e => e.stopPropagation()}
+					onPointerUp={e => e.stopPropagation()}
 				>
 					<TableOfContents mobileMode as={Fragment} />
 				</div>
