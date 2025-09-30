@@ -52,7 +52,7 @@ export default function Search() {
 			window.removeEventListener("keydown", callback);
 			wrapper?.removeEventListener("keydown", wrapperRefCallback);
 		};
-	}, [platform]);
+	}, [platform, setHideResults]);
 
 	return (
 		<>

@@ -5,7 +5,7 @@ import { useAppStore } from "@/store/AppStore";
 import { FC, useEffect, useRef } from "react";
 import SearchResults from "./SearchResults";
 
-type SearchResultsDesktopWrapperProps = {};
+type SearchResultsDesktopWrapperProps = Record<never, never>;
 
 const SearchResultsDesktopWrapper: FC<
 	SearchResultsDesktopWrapperProps
