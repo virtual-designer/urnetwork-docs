@@ -1,15 +1,18 @@
 .nav {
     background: #000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
     top: 0;
     left: 0;
+}
+
+.nav, .navGrid {
+    position: sticky;
     width: 100vw;
     z-index: 10000;
+    padding: 10px;
 }
 
 .logoWrapper img {
@@ -52,9 +55,17 @@
     color: #fff;
 }
 
+.navGrid {
+    display: none;
+}
+
 @media (min-width: 1350px) {
-    .nav {
+    .nav, .navGrid {
         padding: 10px;
+    }
+
+    .searchResultsWrapper {
+        margin-right: 10px;
     }
 }
 
@@ -71,13 +82,20 @@
     .nav {
         background: rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(20px);
+    }
+
+    .nav, .navGrid {
         display: grid;
         grid-template-columns: 10fr 20fr 10fr;
     }
 }
 
 @media (min-width: 971px) and (max-width: 1350px) {
-    .nav {
+    .nav, .navGrid {
         padding: 10px 15px;
+    }
+
+    .searchResultsWrapper {
+        margin-right: 15px;
     }
 }
