@@ -2,20 +2,14 @@
 
 import useActualPathname from "@/hooks/useActualPathname";
 import { useIsLargeScreen } from "@/hooks/useIsLargeScreen";
-import {
-	FC,
-	JSX,
-	useEffect,
-	useRef,
-	useState
-} from "react";
+import { FC, JSX, useEffect, useRef, useState } from "react";
 
 const selector = ":is(h1, h2, h3, h4, h5, h6)[id]";
 
 export type TableOfContentsProps = {
 	as?: keyof JSX.IntrinsicElements | FC;
 	mobileMode?: boolean;
-}
+};
 
 export default function TableOfContents({
 	as,
@@ -32,7 +26,8 @@ export default function TableOfContents({
 	const Root = as ?? "div";
 	const pathname = useActualPathname();
 	const isLargeScreen = useIsLargeScreen();
-	const isHidden = ((!mobileMode && !isLargeScreen) || (mobileMode && isLargeScreen));
+	const isHidden =
+		(!mobileMode && !isLargeScreen) || (mobileMode && isLargeScreen);
 
 	useEffect(() => {
 		if (isHidden) {
@@ -56,7 +51,7 @@ export default function TableOfContents({
 		}));
 
 		setHeadings(headings);
-		setActiveId(headings[0].id);
+		setActiveId(headings[0]?.id || "");
 	}, [pathname, isHidden]);
 
 	useEffect(() => {
@@ -94,9 +89,11 @@ export default function TableOfContents({
 
 	return (
 		<Root>
-			{!mobileMode && <h4 className="pl-[15px] mb-3 mt-4 uppercase font-bold tracking-wider text-[15px]">
-				On this page
-			</h4>}
+			{!mobileMode && (
+				<h4 className="pl-[15px] mb-3 mt-4 uppercase font-bold tracking-wider text-[15px]">
+					On this page
+				</h4>
+			)}
 			<ul className="list-none pr-2.5">
 				{headings.map(heading => (
 					<li key={heading.id}>

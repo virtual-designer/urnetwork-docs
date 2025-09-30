@@ -60,6 +60,24 @@ async function scanDirectory(
 		}
 	}
 
+	if (!directoryMetadataParsed?.thisPage?.title) {
+		directoryMetadataParsed = {
+			...directoryMetadataParsed,
+			thisPage: {
+				...directoryMetadataParsed?.thisPage,
+				title: path
+					.basename(directory)
+					.replace(
+						/([-_]*)([^-_]+)/g,
+						(_, $1, $2) =>
+							`${$1 ? " " : ""}${$2[0].toUpperCase()}${$2.slice(
+								1,
+							)}`,
+					),
+			},
+		};
+	}
+
 	self: {
 		const mdFilePath = path.join(directory, "page.md");
 		const mdxFilePath = path.join(directory, "page.mdx");
@@ -85,11 +103,6 @@ async function scanDirectory(
 
 		console.log("Found page %s via file %s", uri, filePath);
 
-		if (!frontmatter && !directoryMetadataParsed) {
-			console.error("%s: Not enough data to index", filePath);
-			break self;
-		}
-
 		mainResult.title =
 			extractTitle(frontmatter?.title) ??
 			directoryMetadataParsed?.thisPage?.title ??
@@ -106,7 +119,9 @@ async function scanDirectory(
 		mainResult.name =
 			mainResult.href === "/" ? "[root]" : path.basename(mainResult.href);
 		mainResult.data = frontmatter || undefined;
-		mainResult.type = filePath ? "page" : "directory";
+		mainResult.type =
+			directoryMetadataParsed?.thisPage?.type ??
+			(filePath ? "page" : "directory");
 
 		if (!directoryMetadataParsed?.hideThisDirectory) {
 			results.push(mainResult);
@@ -295,7 +310,9 @@ async function extractFrontmatter(
 
 	if (contents.startsWith("---\n")) {
 		const slicedContent = contents.slice(4);
-		const frontmatterEndIndex = slicedContent.indexOf("\n---\n");
+		const frontmatterEndIndex = slicedContent.endsWith("\n---")
+			? slicedContent.length - 4
+			: slicedContent.indexOf("\n---\n");
 
 		if (!frontmatterEndIndex) {
 			console.error(
