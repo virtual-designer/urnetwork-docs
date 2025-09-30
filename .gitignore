@@ -46,3 +46,4 @@ local_types.d.ts
 
 *.bak
 .lastpatch
+.env
