@@ -14,19 +14,17 @@ const ShowTableOfContentsToggle = () => {
 		return null;
 	}
 
-	if (!isTocHidden) {
-		return <div className="mt-10">&nbsp;</div>;
-	}
-
 	return (
-		<div className="block text-center">
+		<div className="block text-center mb-20">
 			<small
 				className="text-xs text-blue-500 hover:text-blue-600 cursor-pointer"
 				onClick={() => {
-					setIsTocHidden(false);
+					setIsTocHidden(s => !s);
 				}}
 			>
-				Show table of contents
+				{isTocHidden
+					? "Show table of contents"
+					: "Hide table of contents"}
 			</small>
 		</div>
 	);

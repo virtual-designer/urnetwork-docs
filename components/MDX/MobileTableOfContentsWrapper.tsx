@@ -1,62 +1,63 @@
 "use client";
 
 import { LocalStorageKey, useLocalStorage } from "@/hooks/useLocalStorage";
-import { Button, Tooltip } from "@mui/material";
+import { Button } from "@mui/material";
 import clsx from "clsx";
-import { FC, Fragment, useCallback, useState } from "react";
-import { HiChevronDown, HiChevronUp, HiOutlineXCircle } from "react-icons/hi2";
+import { FC, Fragment, PointerEvent, useCallback, useState } from "react";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import TableOfContents from "./TableOfContents";
 
 const MobileTableOfContentsWrapper: FC = () => {
 	const [isExpanded, setIsExpanded] = useState(false);
-    const [isTocHidden, setIsTocHidden] = useLocalStorage<boolean>(LocalStorageKey.ShowTableOfContentsOnMobile, false);
+	const [isTocHidden] = useLocalStorage<boolean>(
+		LocalStorageKey.ShowTableOfContentsOnMobile,
+		false,
+	);
 
-	const toggleIsExpanded = useCallback(() => {
+	const toggleIsExpanded = useCallback((event: PointerEvent) => {
 		setIsExpanded(s => !s);
+		event.stopPropagation();
 	}, [setIsExpanded]);
 
-	const hideToc = useCallback(() => {
-		setIsTocHidden(true);
-	}, [setIsTocHidden]);
-
-    if (isTocHidden) {
-        return null;
-    }
+	if (isTocHidden) {
+		return null;
+	}
 
 	return (
-		<div className="fixed bottom-0 md:hidden bg-neutral-800/20 backdrop-blur-2xl m-3 px-2 py-3 rounded-lg shadow shadow-white/40 z-[900] overflow-x-hidden block w-[calc(100vw-1.5rem)]">
-			<div className="pl-3 pr-2 flex items-center justify-between">
-				<h4 className="uppercase font-bold tracking-wider text-[15px]">
-					On this page
-				</h4>
-
-				<div className="flex gap-1 items-center">
-					<Tooltip title="Hide this">
+		<div className="fixed bottom-0 md:hidden block z-[900]" onPointerUp={toggleIsExpanded}>
+			<div className="bg-neutral-800/20 backdrop-blur-2xl m-3 px-2 py-3 rounded-lg shadow shadow-white/40 overflow-x-hidden w-[calc(100vw-1.5rem)]">
+				<div className="pl-3 pr-2 flex items-center justify-between relative">
+					<h4 className="uppercase font-bold tracking-wider text-[15px]">
+						On this page
+					</h4>
+					<div className="flex gap-1 items-center">
 						<Button
 							className="!min-w-0 !text-white !text-base"
-							onClick={hideToc}
+							 onPointerUp={toggleIsExpanded}
 						>
-							<HiOutlineXCircle />
+							{isExpanded ? <HiChevronDown /> : <HiChevronUp />}
 						</Button>
-					</Tooltip>
+					</div>
+				</div>
 
-					<Button
-						className="!min-w-0 !text-white !text-base"
-						onClick={toggleIsExpanded}
-					>
-						{isExpanded ? <HiChevronDown /> : <HiChevronUp />}
-					</Button>
+				<div
+					className={clsx("[transition:ease_0.2s]", {
+						"max-h-0 overflow-y-hidden": !isExpanded,
+						"max-h-[40vh] overflow-y-scroll": isExpanded,
+					})}
+				>
+					<TableOfContents mobileMode as={Fragment} />
 				</div>
 			</div>
 
-			<div
-				className={clsx("[transition:ease_0.2s]", {
-					"max-h-0 overflow-y-hidden": !isExpanded,
-					"max-h-[40vh] overflow-y-scroll": isExpanded,
-				})}
-			>
-				<TableOfContents mobileMode as={Fragment} />
-			</div>
+			{/* <div className="absolute -top-5 left-1/2 -translate-x-1/2 block">
+				<Button
+					className="!min-w-0 !text-white !text-base !p-1"
+					onClick={toggleIsExpanded}
+				>
+					<MdExpandMore className={`text-3xl text-neutral-200 ${isExpanded ? '' : 'rotate-180'}`} />
+				</Button>
+			</div> */}
 		</div>
 	);
 };
