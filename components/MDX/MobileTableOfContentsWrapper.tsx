@@ -45,19 +45,11 @@ const MobileTableOfContentsWrapper: FC = () => {
 						"max-h-0 overflow-y-hidden": !isExpanded,
 						"max-h-[40vh] overflow-y-scroll": isExpanded,
 					})}
+					onPointerDown={e => e.stopPropagation()}
 				>
 					<TableOfContents mobileMode as={Fragment} />
 				</div>
 			</div>
-
-			{/* <div className="absolute -top-5 left-1/2 -translate-x-1/2 block">
-				<Button
-					className="!min-w-0 !text-white !text-base !p-1"
-					onClick={toggleIsExpanded}
-				>
-					<MdExpandMore className={`text-3xl text-neutral-200 ${isExpanded ? '' : 'rotate-180'}`} />
-				</Button>
-			</div> */}
 		</div>
 	);
 };
