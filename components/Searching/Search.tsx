@@ -91,17 +91,21 @@ export default function Search() {
                         onClick={() => setToggled(false)}
                     >
                         <div
-                            className="overflow-y-scroll bg-neutral-900 w-[calc(100vw-2rem)] h-[calc(80vh-4rem)] mx-[1rem] rounded-lg p-[1rem] absolute bottom-4"
+                            className="overflow-y-scroll shadow shadow-neutral-700 bg-neutral-500/20 backdrop-blur-2xl w-[calc(100vw-1.4rem)] h-[calc(80vh-0.7rem)] mx-[0.7rem] rounded-lg absolute bottom-3"
                             onClickCapture={event => event.stopPropagation()}
                         >
-                            <SearchInput ref={inputRef} setQuery={setQuery} />
+                            <div className="p-4">
+                                <SearchInput ref={inputRef} setQuery={setQuery} />
+                            </div>
 
-                            {query && (
+                            <div className="p-2">
+{query && (
                                 <SearchResults
                                     query={query}
                                     onClose={() => setQuery(null)}
                                 />
                             )}
+                                </div>
                         </div>
                     </div>
                 )}
