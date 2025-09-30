@@ -27,3 +27,29 @@ Run the following command to install provider for linux as well as urnet-tools:
 ```powershell
 powershell -c "irm https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Win32.ps1 | iex"
 ```
+<Callout type="warning">
+    * Windows MAY flag URnetwork CLI as a virus, this is due to the program not being signed, it has nothing to do with an actual virus. The code is fully open source and scanned on virus total.
+
+    * Windows MAY show an error when running the command such as: `urnet-tools.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.`
+    
+    * Don't worry, this can be fixed by opening Powershell as an admin and running: `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` then typing `y` then enter to accept risk.
+</Callout>
+
+
+This command will install the latest URnetwork provider binary, and a small
+helper tool called **urnet-tools**.
+
+After you run this script, you should follow the steps in the [post install instructions section](#post-install-instructions).
+
+### Post-install instructions
+
+The first thing to do after installation is to restart your terminal (close it then open up a new one)
+
+This will ensure urnetwork commands work from now on.
+
+To further verify that your installation was successful, run:
+
+```bash
+urnetwork -help
+urnet-tools -help
+```
