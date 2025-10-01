@@ -86,4 +86,8 @@ a:hover {
 	#article {
 		border-radius: 0;
 	}
+
+	html, #article {
+		background: linear-gradient(135deg, rgba(36, 41, 60, 0.97), rgba(36, 41, 60, 0.85));
+	}
 }
