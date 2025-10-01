@@ -73,7 +73,7 @@ const SearchResults = (
 				))}
 			<div
 				ref={ref}
-				className={`${styles.searchResultsWrapper} !outline-none lg:fixed lg:right-0 top-12 lg:top-15 w-full lg:max-w-[20vw] lg:min-w-64 lg:z-[1000000002] rounded-lg p-2 lg:max-h-[60vh] lg:bg-neutral-500/30 lg:backdrop-blur-2xl lg:overflow-y-scroll lg:[box-shadow:0_0_3px_0_rgba(255,255,255,0.4)]`}
+				className={`${styles.searchResultsWrapper} !outline-none lg:fixed lg:right-0 top-12 lg:top-15 w-full lg:max-w-[20vw] lg:min-w-64 lg:z-[1000000002] rounded-lg p-2 lg:max-h-[60vh] lg:bg-neutral-500/30 lg:backdrop-blur-2xl lg:overflow-y-scroll lg:[box-shadow:0_0_3px_0_rgba(255,255,255,0.4)] searchResults`}
 			>
 				{isLoading && (
 					<div className="flex items-center gap-2 justify-center">

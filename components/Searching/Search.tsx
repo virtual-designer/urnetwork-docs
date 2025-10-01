@@ -57,7 +57,7 @@ export default function Search() {
 	return (
 		<>
 			<div
-				className="relative lg:max-w-[20vw] lg:min-w-64 lg:w-full justify-self-end"
+				className="searchWrapper relative lg:max-w-[20vw] lg:min-w-64 lg:w-full justify-self-end"
 				ref={wrapperRef}
 			>
 				{isDesktop && (

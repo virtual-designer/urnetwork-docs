@@ -60,6 +60,7 @@ export default function Sidebar({
 						"md:left-[-30vw]": !isSidebarExpanded,
 					},
 				)}
+				id={desktopOnly ? "sidebarDesktop" : "sidebarMobile"}
 			>
 				<ul className="list-none m-3">
 					{getPageTree().children.map(item => (

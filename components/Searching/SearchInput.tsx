@@ -15,7 +15,7 @@ const SearchInput = (
         <div
             className={`flex items-center gap-2 bg-neutral-900 lg:bg-neutral-800 rounded-lg p-2 ${
                 isFocusJumped ? "outline-2 outline-blue-500" : ""
-            }`}
+            } searchInputWrapper`}
         >
             <MdSearch
                 className="text-black/50 mt-0.5 dark:text-white/90 pointer-events-none flex-shrink-0"
@@ -33,7 +33,7 @@ const SearchInput = (
                     }
                 }}
                 placeholder="Type to search..."
-                className="!outline-none !border-0 !focus:outline-none"
+                className="!outline-none !border-0 !focus:outline-none searchInput"
                 onBlur={() => (isFocusJumped ? clearFocusJumped?.() : void 0)}
             />
         </div>
