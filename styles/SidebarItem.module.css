@@ -5,6 +5,10 @@
 	padding: var(--sidebar-root-padding) 0;
 }
 
+.root, .children {
+	--sidebar-margin-left: 0.45rem;
+}
+
 .root:first-child {
 	padding-top: 0;
 }
@@ -15,11 +19,11 @@
 
 .rootNested {
 	border-left: 1px solid #444;
-	margin-left: 0.45rem;
+	margin-left: var(--sidebar-margin-left);
 }
 
 .root:not(.rootNested) > .innerDiv > div > .children > .rootNested {
-	margin-left: 0;
+	--sidebar-margin-left: 0;
 }
 
 .rootWithChildren .children {
@@ -35,6 +39,11 @@
 	position: absolute;
 	top: calc(var(--sidebar-selected-index) * (var(--sidebar-root-height) + (2 * var(--sidebar-root-padding))));
 	transition: 0.2s ease;
+	left: var(--sidebar-margin-left);
+}
+
+.root:not(.rootNested) > .innerDiv > div > .children::before {
+	left: 0;
 }
 
 .anchor {

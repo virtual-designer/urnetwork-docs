@@ -6,12 +6,12 @@ import { flatten, resolveDocsURL } from "@/utils/pages";
 import { getTitle } from "@/utils/utils";
 import { Button } from "@mui/material";
 import {
-    JSX,
-    SyntheticEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
+	JSX,
+	SyntheticEvent,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
 } from "react";
 import { MdExpandMore } from "react-icons/md";
 
@@ -85,7 +85,7 @@ export default function SidebarItem({
 		() =>
 			item.children.findIndex(
 				page =>
-					item.type === "page" &&
+					page.type === "page" &&
 					page.href &&
 					resolveDocsURL(page.href) === pathname,
 			),
