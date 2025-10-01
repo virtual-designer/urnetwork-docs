@@ -13,7 +13,7 @@ import SidebarToggleButton from "./SidebarToggleButton";
 export default function Navbar() {
 	return (
 		<>
-			<nav className={styles.nav}>
+			<nav className={`${styles.nav} navbar`}>
 				<div className="flex items-center gap-3">
 					<SidebarToggleButton />
 
