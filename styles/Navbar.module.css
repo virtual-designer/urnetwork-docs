@@ -60,8 +60,12 @@
 }
 
 @media (min-width: 1350px) {
-    .nav, .navGrid {
+    .nav {
         padding: 10px;
+    }
+    
+    .navGrid {
+        padding: 0 10px;
     }
 
     .searchResultsWrapper {
@@ -91,8 +95,12 @@
 }
 
 @media (min-width: 971px) and (max-width: 1350px) {
-    .nav, .navGrid {
+    .nav {
         padding: 10px 15px;
+    }
+
+    .navGrid {
+        padding: 0 15px;
     }
 
     .searchResultsWrapper {
