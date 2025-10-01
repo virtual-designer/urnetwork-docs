@@ -1,0 +1,7 @@
+.rootWithChildren .children::before {
+    background-color: #89b4fa;
+}
+
+.rootNested {
+    border-left-color: #4775c0;
+}
