@@ -21,3 +21,4 @@ app/page.jsx
 app/page.md
 app/directory.ts
 app/(blog)/*
+LICENSE

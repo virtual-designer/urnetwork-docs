@@ -21,3 +21,57 @@ including GNU/Linux, macOS and Windows.  We'll give you a short guide on how
 set them up on your system.
 
 ## Windows
+
+Run the following command to install provider for linux as well as urnet-tools:
+
+```powershell
+powershell -c "irm https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Win32.ps1 | iex"
+```
+<Callout type="warning">
+    * Windows MAY flag URnetwork CLI as a virus, this is due to the program not being signed, it has nothing to do with an actual virus. The code is fully open source and scanned on virus total.
+
+    * Windows MAY show an error when running the command such as: `urnet-tools.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.`
+
+    * Don't worry, this can be fixed by opening Powershell as an admin and running: `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` then typing `y` then enter to accept risk.
+</Callout>
+
+
+This command will install the latest URnetwork provider binary, and a small
+helper tool called **urnet-tools**.
+
+After you run this script, you should follow the steps in the [post install instructions section](#post-install-instructions).
+
+### Post-install instructions
+
+The first thing to do after installation is to restart your terminal (close it then open up a new one)
+
+This will ensure urnetwork commands work from now on.
+
+To further verify that your installation was successful, run:
+
+```bash
+urnetwork -help
+urnet-tools -help
+```
+
+Both of these commands should print out help instructions.
+
+### Authentication
+
+Next, you have to log into URnetwork. To do so, run:
+
+```bash
+urnetwork auth
+```
+
+Then:
+
+It will ask for an auth code. You can obtain an auth code at https://ur.io, https://app.ur.network or inside the mobile app.
+The auth code button should be located in the settings section of their respective app.
+
+<img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/urio_auth.png" height="335px" width="576px" />
+<img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/web_app_auth.png" height="1199px" width="2348px" />
+<img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/mobile_auth.png" height="907px" width="1179px" />
+
+If your auth code was correctly copied, you should be logged into URnetwork now. The command above saves your account
+JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
