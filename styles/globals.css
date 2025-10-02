@@ -131,6 +131,14 @@ body {
 	display: none;
 }
 
+#article a {
+	transition: color 0.2s;
+}
+
+#article a:hover {
+	color: hsl(0 0 80%);
+}
+
 .autolink {
 	height: 1em;
 	width: 1em;
