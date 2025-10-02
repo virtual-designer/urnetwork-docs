@@ -76,6 +76,24 @@ a:hover {
 	background: rgba(53, 66, 105, 0.99);
 }
 
+.editbuttonOptionsDropdown {
+	background: rgba(44, 50, 80, 0.9);
+	backdrop-filter: blur(20px);
+}
+
+.editbuttonOptions ul > li,
+.editbuttonOptions ul > a {
+	color: #fff;
+	font-weight: normal;
+}
+
+.editbuttonOptions ul > li:hover,
+.editbuttonOptions ul > a:hover,
+.editbuttonOptions ul > li:focus,
+.editbuttonOptions ul > a:focus {
+	background: rgba(53, 66, 105, 0.9);
+}
+
 @media (max-width: 970px) {
 	.navbar {
 		background: rgba(24, 32, 53, 0.97);
@@ -89,3 +107,4 @@ a:hover {
 		background: linear-gradient(135deg, rgba(36, 41, 60, 0.97), rgba(36, 41, 60, 0.85));
 	}
 }
+
