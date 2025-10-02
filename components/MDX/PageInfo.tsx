@@ -1,19 +1,17 @@
 "use client";
 
 import { getPageInfo } from "@/actions/pageinfo";
-import { GITHUB_REPOSITORY, GITHUB_REPOSITORY_BRANCH } from "@/config/config";
 import { useRouterContext } from "@/contexts/RouterContext";
 import useActualPathname from "@/hooks/useActualPathname";
 import { Tooltip } from "@heroui/react";
-import { Button } from "@mui/material";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useEffect, useState } from "react";
-import { MdEdit } from "react-icons/md";
+import EditButton from "./EditButton";
 
 export default function LastModified() {
 	const [date, setDate] = useState<Date | null>(null);
 	const [avatar, setAvatar] = useState<string | null>(null);
-	const [editURL, setEditURL] = useState<string | null>(null);
+	const [editPath, setEditPath] = useState<string | null>(null);
 	const [username, setUsername] = useState<string | null>(null);
 	const pathname = useActualPathname();
 	const { isChanging } = useRouterContext();
@@ -24,7 +22,7 @@ export default function LastModified() {
 				({ avatarURL, lastModifiedDate, urlEncodedPath, username }) => {
 					setDate(lastModifiedDate);
 					setAvatar(avatarURL);
-					setEditURL(urlEncodedPath);
+					setEditPath(urlEncodedPath);
 					setUsername(username);
 				},
 			)
@@ -59,22 +57,7 @@ export default function LastModified() {
 			</div>
 
 			<div>
-				<Button
-					href={
-						editURL
-							? `https://github.com/${GITHUB_REPOSITORY}/edit/${encodeURIComponent(
-									GITHUB_REPOSITORY_BRANCH,
-							  )}/${editURL ?? ""}`
-							: "#"
-					}
-					disabled={!editURL || isChanging}
-					target="_blank"
-					rel="noreferrer"
-					startIcon={<MdEdit size={16} />}
-					className="-mt-1"
-				>
-					Edit this page
-				</Button>
+				<EditButton editPath={editPath} isChanging={isChanging} />
 			</div>
 		</div>
 	);
