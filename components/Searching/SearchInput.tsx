@@ -13,7 +13,7 @@ const SearchInput = (
 ) => {
     return (
         <div
-            className={`flex items-center gap-2 bg-neutral-900 lg:bg-neutral-800 rounded-lg p-2 ${
+            className={`text-lg lg:text-base flex items-center gap-2 bg-neutral-500/20 backdrop-blur-2xl lg:bg-neutral-800 rounded-lg p-3 lg:p-2 ${
                 isFocusJumped ? "outline-2 outline-blue-500" : ""
             } searchInputWrapper`}
         >

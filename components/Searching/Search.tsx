@@ -85,28 +85,24 @@ export default function Search() {
 
 				{!isDesktop && toggled && (
 					<div
-						className="fixed top-0 left-0 w-screen h-screen bg-black/30 z-[100000005]"
+						className="fixed top-0 left-0 w-screen h-screen bg-black/30 z-[100000005] flex items-center justify-center"
 						onClick={() => setToggled(false)}
 					>
-						<div
-							className="overflow-y-scroll shadow shadow-neutral-700 bg-neutral-500/20 backdrop-blur-2xl w-[calc(100vw-1.4rem)] h-[calc(80vh-0.7rem)] mx-[0.7rem] rounded-lg absolute bottom-3"
-							onClickCapture={event => event.stopPropagation()}
-						>
-							<div className="p-4">
+						<div onClickCapture={event => event.stopPropagation()}>
+							<div className="px-2 py-1">
 								<SearchInput
 									ref={inputRef}
 									setQuery={setQuery}
 								/>
 							</div>
-
-							<div className="p-2">
-								{query && (
+							{query && (
+								<div className="p-2 overflow-y-scroll overflow-x-hidden w-[calc(100vw-1.4rem)] max-h-[calc(80vh-0.7rem)] mx-[0.7rem] bg-neutral-500/20 backdrop-blur-2xl rounded-lg">
 									<SearchResults
 										query={query}
 										onClose={() => setQuery(null)}
 									/>
-								)}
-							</div>
+								</div>
+							)}
 						</div>
 					</div>
 				)}
