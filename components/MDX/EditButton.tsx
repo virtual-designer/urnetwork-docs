@@ -76,7 +76,7 @@ export default function EditButton({ editPath, isChanging }: EditButtonProps) {
 				<DropdownMenu
 					disallowEmptySelection
 					aria-label="Options"
-					className="max-w-[300px]"
+					className="max-w-[300px] editbuttonOptions"
 					selectionMode="single"
 				>
 					<DropdownItem
