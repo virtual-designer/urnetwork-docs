@@ -67,7 +67,7 @@ export default function EditButton({ editPath, isChanging }: EditButtonProps) {
 			>
 				Edit this page
 			</Button>
-			<Dropdown placement="bottom-end">
+			<Dropdown placement="bottom-end" className="editbuttonOptionsDropdown">
 				<DropdownTrigger>
 					<Button isIconOnly isDisabled={isDisabled}>
 						<HiChevronDown />
