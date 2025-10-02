@@ -56,7 +56,7 @@ export default function LastModified() {
 				)}
 			</div>
 
-			<div class="editbutton-wrapper">
+			<div className="editbutton-wrapper">
 				<EditButton editPath={editPath} isChanging={isChanging} />
 			</div>
 		</div>
