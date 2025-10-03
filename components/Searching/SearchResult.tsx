@@ -16,7 +16,7 @@ function SearchResult({ result, query, onClick }: SearchResultProps) {
         >
             <h3>{result.title}</h3>
 
-            <p className="text-[#999] md:text-sm">
+            <p className="text-[#999] text-sm">
                 May include information related to{" "}
                 <strong className="text-white">{query}</strong>
             </p>

@@ -88,21 +88,23 @@ export default function Search() {
 						className="fixed top-0 left-0 w-screen h-screen bg-black/30 z-[100000005] flex items-center justify-center"
 						onClick={() => setToggled(false)}
 					>
-						<div onClickCapture={event => event.stopPropagation()}>
-							<div className="px-2 py-1">
+						<div className="mx-[0.7rem] flex flex-col gap-1 w-[calc(100vw-1.4rem)]">
+							<div onClickCapture={event => event.stopPropagation()}>
 								<SearchInput
 									ref={inputRef}
 									setQuery={setQuery}
 								/>
 							</div>
-							{query && (
-								<div className="p-2 overflow-y-scroll overflow-x-hidden w-[calc(100vw-1.4rem)] max-h-[calc(80vh-0.7rem)] mx-[0.7rem] bg-neutral-500/20 backdrop-blur-2xl rounded-lg">
-									<SearchResults
-										query={query}
-										onClose={() => setQuery(null)}
-									/>
-								</div>
-							)}
+							<div className="h-[calc(50vh-0.7rem)]">
+								{query && (
+									<div onClickCapture={event => event.stopPropagation()} className="p-2 overflow-y-scroll overflow-x-hidden max-h-[calc(50vh-0.7rem)] bg-neutral-500/20 backdrop-blur-2xl rounded-lg">
+										<SearchResults
+											query={query}
+											onClose={() => setQuery(null)}
+										/>
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				)}
