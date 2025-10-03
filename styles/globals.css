@@ -141,6 +141,28 @@ body {
 	color: hsl(0 0 80%);
 }
 
+#article a[data-footnote-ref] {
+	color: hsl(0 0 70%);
+}
+
+#article a[data-footnote-ref]:hover, 
+#article a[data-footnote-ref]:active {
+	color: hsl(0 0 90%);
+}
+
+#article a[data-footnote-ref]::before {
+	content: '[';
+}
+
+#article a[data-footnote-ref]::after {
+	content: ']';
+}
+
+#article section[data-footnotes] {
+	border-top: 1px solid hsl(0 0 25%);
+	font-size: 0.85rem;
+}
+
 .autolink {
 	height: 1em;
 	width: 1em;
