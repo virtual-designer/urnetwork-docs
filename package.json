@@ -22,7 +22,7 @@
         "@mdx-js/loader": "^3.1.1",
         "@mdx-js/react": "^3.1.1",
         "@mui/material": "^7.3.2",
-        "@next/mdx": "^15.5.2",
+        "@next/mdx": "^16.0.7",
         "@tailwindcss/typography": "^0.5.16",
         "@types/mdx": "^2.0.13",
         "clsx": "^2.1.1",
@@ -38,7 +38,7 @@
         "remark-frontmatter": "^5.0.0",
         "remark-gfm": "^4.0.1",
         "remark-mdx-frontmatter": "^5.2.0",
-        "shiki": "^3.12.2",
+        "shiki": "^3.19.0",
         "zustand": "^5.0.8"
     },
     "devDependencies": {
@@ -49,7 +49,7 @@
         "@types/react-dom": "^19",
         "eslint": "^9",
         "eslint-config-next": "15.5.2",
-        "glob": "^11.0.3",
+        "glob": "^11.1.0",
         "tailwindcss": "^4",
         "typescript": "^5",
         "yaml": "^2.8.1",
