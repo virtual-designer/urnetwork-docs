@@ -12,59 +12,44 @@ import Callout from "@/components/Alerts/Callout";
 
 # Providing to URnetwork
 
-To provide your internet to URnetwork, you run a small provider application
-on your system, which shares your internet with the network.  This application
-is often referred to as the "provider binary" or "provider executable".
+Sharing your connection is easy: you just run a small 'provider' program on your system. This program acts as your gateway to the URnetwork.
 
-We maintain URnetwork provider binaries for many platforms and architectures,
-including GNU/Linux, macOS and Windows.  We'll give you a short guide on how
-set them up on your system.
+URnetwork provider software is available for Linux, macOS, and Windows. This guide will help you get it running on your Linux system in just a few minutes.
 
-## GNU/Linux
+## GNU/Linux Setup
+
 <Callout type="warning">
-The installation script requires you have the following installed:
+**Before you start**
 
- * [cURL](https://curl.se)
- * Either [jq](https://jqlang.org) or [Python 3.8+](https://python.org)
- * A POSIX-compatible shell
+Our installation script needs a few basic tools: **cURL**, **jq** (or Python 3.8+), and a standard terminal. 
 
-Follow this link then copy and paste it inside of your terminal then hit enter (You must be root): 
-
-[Install Helper](https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Deps.sh).
-
-Or just install using your chosen package manager.
+Most systems have these already. If you are on a very "minimal" system and aren't sure, you can automatically install them by running our **[Install Helper script](https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Deps.sh)** as a root user, or just install **cURL** and **jq** via your system's package manager.
 </Callout>
 
-Run the following command to install provider for linux as well as urnet-tools:
+### 1. Installation
+
+Run the following command to install the URnetwork provider and the **urnet-tools** helper:
 
 ```bash
 curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Linux.sh | sh
 ```
-
-This command will install the latest URnetwork provider binary, and a small
-helper tool called **urnet-tools**.
-
-Most modern GNU/Linux systems already have these installed, so you usually
-won't have to worry about them.  But if yours does not have these, or if you
-use a very minimal system, you will have to consult your Distro's packaging
-system to figure out how to install them.
 
 After you run this script, you should follow the steps in the [post install instructions section](#post-install-instructions).
 
 
 ### Post-install instructions
 
-The first thing to do after installation is to re-source your `~/.bashrc`. To do so, run:
+Once the installation is finished, your terminal needs to be "refreshed" so it recognizes the new `urnetwork` commands. To do this, run:
 
 ```bash
 source ~/.bashrc
 ```
 
-This will ensure urnetwork commands work from now on.
-
 <Callout type="info">
-    If you do not use bash as your default shell, the installer will create a `~/.bashrc` file,
-    which you should open up and copy paste its contents into your shell's profile or `*rc` file accordingly.
+   **Using something other than Bash?**
+   Most Linux systems use a "shell" called **Bash**. If you use a different one (like **Zsh**), the installer will still create a `~/.bashrc` file for you. 
+   
+   If your commands aren't working, simply open that `~/.bashrc` file, copy the text inside, and paste it into your own shell's settings file (usually `~/.zshrc`).
 </Callout>
 
 To further verify that your installation was successful, run:
@@ -84,10 +69,10 @@ Next, you have to log into URnetwork. To do so, run:
 urnetwork auth
 ```
 
-Then:
+When prompted, enter your **Auth Code**. Get one from https://ur.io, https://app.ur.network or inside the mobile app.
+The auth code button should be located in the settings section of their respective app. 
 
-It will ask for an auth code. You can obtain an auth code at https://ur.io, https://app.ur.network or inside the mobile app.
-The auth code button should be located in the settings section of their respective app.
+Keep in mind that the auth code is time-sensitive and by default will expire after 5 minutes. Also, for security reasons, no characters will show up in the terminal when you type or paste the code. This is normal for Linux terminals, just like when you enter a password.
 
 <img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/urio_auth.png" height="335px" width="576px" />
 <img src="https://raw.githubusercontent.com/virtual-designer/urnetwork-docs/refs/heads/main/app/(content)/web_app_auth.png" height="1199px" width="2348px" />
@@ -105,15 +90,15 @@ Finally, you can start the provider:
 urnet-tools start
 ```
 
-Or if you want to run it in the foreground for your own purposes
+Or if you want to run it in the foreground for your own purposes:
 
 ```bash
 urnetwork provide
 ```
 
-Keep in mind if you close the foreground process it will die, so it's recommeneded to use urnet-tools to create a service automatically.
+Keep in mind if you close the terminal window while running in the foreground, the process will stop. It's recommended to use **urnet-tools** to create a service automatically.
 
-Next, it's also recommended to allow to service to startup when you restart your system so you won't have to worry about manually starting it.
+It's also recommended to allow the service to start automatically on boot. Set & forget. 
 
 Use the following to enable system startup:
 
@@ -121,7 +106,7 @@ Use the following to enable system startup:
 urnet-tools auto-start on
 ```
 
-This will enable the service, use `off` to turn startup off.
+This will enable the service; use `off` to turn startup off.
 
 If everything was set up correctly, this will not produce any output. To see the status of
 the service, run:
@@ -133,28 +118,54 @@ urnet-tools status
 This should show that the service is active and running. Congratulations, you are now a part of
 URnetwork!
 
+### Persistent Hosting (Lingering)
+
+Because the URnetwork provider runs as a **user-level process** (not as root), most Linux systems will automatically stop the service the moment you log out or close your SSH session. To keep the provider running 24/7, you must enable **lingering**. 
+
+Run the following command:
+
+```bash
+loginctl enable-linger
+```
+
+To verify it is active, run:
+
+```bash
+loginctl show-user $USER --property=Linger
+```
+
+<Callout type="info">
+  If the output shows `Linger=yes`, your provider will stay online after you log out and start automatically on boot.
+</Callout>
+
 ### Updating
 
-If you'd like to manually update you can easily run:
+If you'd like to manually update, you can easily run:
 
 ```bash
 urnet-tools update
 ```
 
-This command also allows you to choose a build version, you can find the build tag [here](https://github.com/urnetwork/connect/releases).
+This command also allows you to choose a build version; you can find the build tag [here](https://github.com/urnetwork/connect/releases).
 
-If you prefer to not worry about it, you can set it to automatically update to the latest stable using:
+If you prefer to not worry about it, you can set it to automatically update to the latest stable version using:
 
 ```bash
 urnet-tools auto-update on
 ```
 
-This will check for updates daily, use `off` to turn auto updates off.
+This will check for updates daily; use `off` to turn auto updates off.
 
 ### Uninstalling
 
-In case if you want to uninstall URnetwork, you can use `urnet-tools` for that:
+In case you want to uninstall URnetwork, you can use `urnet-tools` for that:
 
 ```bash
 urnet-tools uninstall
+```
+
+Or paste the official uninstaller script into your terminal:
+
+```bash
+curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Uninstall_Linux.sh | sh
 ```
