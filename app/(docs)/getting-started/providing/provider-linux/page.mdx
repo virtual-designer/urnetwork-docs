@@ -118,25 +118,6 @@ urnet-tools status
 This should show that the service is active and running. Congratulations, you are now a part of
 URnetwork!
 
-### Persistent Hosting (Lingering)
-
-Because the URnetwork provider runs as a **user-level process** (not as root), most Linux systems will automatically stop the service the moment you log out or close your SSH session. To keep the provider running 24/7, you must enable **lingering**. 
-
-Run the following command:
-
-```bash
-loginctl enable-linger
-```
-
-To verify it is active, run:
-
-```bash
-loginctl show-user $USER --property=Linger
-```
-
-<Callout type="info">
-  If the output shows `Linger=yes`, your provider will stay online after you log out and start automatically on boot.
-</Callout>
 
 ### Updating
 
