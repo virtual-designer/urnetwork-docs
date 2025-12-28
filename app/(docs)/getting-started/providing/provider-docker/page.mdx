@@ -1,0 +1,118 @@
+# How-To: Provide for URnetwork with Docker 
+
+This guide explains how to deploy a URnetwork Provider using Docker.
+
+---
+
+## Prerequisites
+
+- Docker installed on your host machine.
+- A URnetwork Account. Register at https://ur.io (**Note:** SSO like Gmail login is NOT compatible with this docker image).
+
+---
+
+## 1. Get Your Credentials
+
+To run the container, you will need your account credentials. This version handles authentication via environment variables.
+
+* **Email or Mobile Phone:** The email or phone number used for your URnetwork account.
+* **Password:** Your URnetwork account password. 
+
+---
+
+## 2. Proxy Setup (Optional)
+
+URnetwork supports only **SOCKS5** proxies. To use proxies, create a `proxy.txt` file on your host machine. (
+
+* **Format:** `ip:port:username:password` (One proxy per line).
+  
+Example:
+```
+123.456.789.012:55555:myproxyusername:myproxypassword
+234.567.890.123:44444:myproxyusername:myproxypassword
+345.678.901.234:33333:myproxyusername:myproxypassword
+456.789.012.345:22222:myproxyusername:myproxypassword
+567.890.123.456:11111:myproxyusername:myproxypassword
+```
+  
+* You will link this file to the container using the `-v` flag in the commands below.
+
+---
+
+## 3. Deployment Options
+
+### Identifying your Architecture
+Before starting, identify which architecture line to use. Run `uname -m` in your terminal:
+* If it returns `x86_64`, use **Option 1 (amd64)**.
+* If it returns `aarch64`, use **Option 2 (arm64)**.
+
+### Option 1: amd64 build (Standard Intel or AMD PC/VPS)
+```bash
+docker run -d --platform linux/amd64 \
+  --name='urnetwork' \
+  --restart='always' \
+  --pull='always' \
+  --privileged \
+  --log-driver=json-file \
+  --log-opt max-size=5m \
+  --log-opt max-file=3 \
+  -e USER_AUTH='example@gmail.com' \
+  -e PASSWORD='mYv3rYsEcUr3dP@sSw0rD' \
+  -e ENABLE_IP_CHECKER=false \
+  -v /path/to/your/proxy.txt:/app/proxy.txt \
+  -v vnstat_data:/var/lib/vnstat \
+  -p 8080:8080 \
+  techroy23/docker-urnetwork:latest
+```
+
+### Option 2: arm64 build (ARM Server / Raspberry Pi)
+```bash
+docker run -d --platform linux/arm64 \
+  --name='urnetwork' \
+  --restart='always' \
+  --pull='always' \
+  --privileged \
+  --log-driver=json-file \
+  --log-opt max-size=5m \
+  --log-opt max-file=3 \
+  -e USER_AUTH='example@gmail.com' \
+  -e PASSWORD='mYv3rYsEcUr3dP@sSw0rD' \
+  -e ENABLE_IP_CHECKER=false \
+  -v /path/to/your/proxy.txt:/app/proxy.txt \
+  -v vnstat_data:/var/lib/vnstat \
+  -p 8080:8080 \
+  techroy23/docker-urnetwork:latest
+```
+
+---
+
+## 4. Configuration Details
+
+| Variable / Flag | Description |
+| :--- | :--- |
+| **USER_AUTH** | **Required.** Your URnetwork email or phone number. |
+| **PASSWORD** | **Required.** Your URnetwork password. |
+| **ENABLE_IP_CHECKER** | *Optional.* Prints your public IP to logs for monitoring. |
+| **-v .../proxy.txt** | *Optional.* Mounts your SOCKS5 proxy list to the container. |
+| **-v vnstat_data** | *Optional.* Mounts a volume to persist bandwidth data. |
+| **-p 8080:8080** | *Optional.* Access stats at `http://localhost:8080/cgi-bin/stats`. |
+
+---
+
+## 5. Monitoring & Maintenance
+
+### Check Status
+Check if your provider is running and authenticated correctly:
+```bash
+docker logs -f urnetwork
+```
+
+### Updates
+Updates will be handled automatically. To manually refresh the image: 
+```bash
+docker pull techroy23/docker-urnetwork:latest
+docker stop urnetwork && docker rm urnetwork
+# Re-run your chosen Docker Run command from Step 3
+```
+
+---
