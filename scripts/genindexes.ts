@@ -310,11 +310,12 @@ async function extractFrontmatter(
 
 	if (contents.startsWith("---\n")) {
 		const slicedContent = contents.slice(4);
-		const frontmatterEndIndex = slicedContent.endsWith("\n---")
+		const frontmatterEndIndex = slicedContent.endsWith("\n---") 
+			&& slicedContent.split("\n---\n").length <= 1
 			? slicedContent.length - 4
 			: slicedContent.indexOf("\n---\n");
 
-		if (!frontmatterEndIndex) {
+		if (frontmatterEndIndex < 0) {
 			console.error(
 				"%s: Could not extract frontmatter, end marker missing",
 				pageFile,
