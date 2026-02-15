@@ -1,0 +1,197 @@
+---
+title: Last 90
+short_name: Last 90
+description: Get network statistics for the last 90 days.
+---
+# Last 90
+
+This document describes the `last-90` endpoint, which provides network statistics accumulated over the last 90 days. The statistics are updated approximately every 60 seconds.
+
+---
+
+## `GET /stats/last-90`
+
+Get network statistics for the last 90 days. The statistics are updated approximately every 60s.
+
+### Request
+
+`GET /stats/last-90`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Accept": "*/*"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns comprehensive network statistics for the last 90 days.
+
+```json
+{
+  "lookback": 1,
+  "created_time": 1,
+  "all_transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "all_transfer_summary": 1,
+  "all_transfer_summary_rate": 1,
+  "all_packets_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "all_packets_summary": 1,
+  "all_packets_summary_rate": 1,
+  "providers_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "providers_superspeed_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "providers_summary": 1,
+  "providers_summary_superspeed": 1,
+  "countries_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "countries_summary": 1,
+  "regions_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "regions_summary": 1,
+  "cities_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "cities_summary": 1,
+  "extender_transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "extender_transfer_summary": 1,
+  "extender_transfer_summary_rate": 1,
+  "extenders_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "extenders_superspeed_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "extenders_summary": 1,
+  "extenders_summary_superspeed": 1,
+  "networks_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "networks_summary": 1,
+  "devices_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "devices_summary": 1
+}
+```
+
+| Field                       | Type      | Description                                                                                                                                           |
+| --------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lookback`                  | `number`  | The number of days the statistics cover (e.g., 90).                                                                                                   |
+| `created_time`              | `number`  | Timestamp when the statistics were created or last updated.                                                                                           |
+| `all_transfer_data`         | `object`  | Detailed data on all network transfer activities. Keys represent categories, values are transfer amounts.                                            |
+| `all_transfer_summary`      | `number`  | Summary of all transfer data.                                                                                                                         |
+| `all_transfer_summary_rate` | `number`  | Rate of all transfer data.                                                                                                                            |
+| `all_packets_data`          | `object`  | Detailed data on all network packet activities. Keys represent categories, values are packet counts.                                                 |
+| `all_packets_summary`       | `number`  | Summary of all packet data.                                                                                                                           |
+| `all_packets_summary_rate`  | `number`  | Rate of all packet data.                                                                                                                              |
+| `providers_data`            | `object`  | Detailed data on providers. Keys represent provider IDs/categories, values represent related metrics.                                                |
+| `providers_superspeed_data` | `object`  | Detailed data on superspeed providers. Keys represent provider IDs/categories, values represent related metrics.                                     |
+| `providers_summary`         | `number`  | Summary of provider data.                                                                                                                             |
+| `providers_summary_superspeed` | `number`  | Summary of superspeed provider data.                                                                                                                  |
+| `countries_data`            | `object`  | Detailed data on traffic by country. Keys represent country codes, values represent related metrics.                                                 |
+| `countries_summary`         | `number`  | Summary of country data.                                                                                                                              |
+| `regions_data`              | `object`  | Detailed data on traffic by region. Keys represent region codes, values represent related metrics.                                                  |
+| `regions_summary`           | `number`  | Summary of region data.                                                                                                                               |
+| `cities_data`               | `object`  | Detailed data on traffic by city. Keys represent city names, values represent related metrics.                                                       |
+| `cities_summary`            | `number`  | Summary of city data.                                                                                                                                 |
+| `extender_transfer_data`    | `object`  | Detailed data on extender transfer activities. Keys represent extenders/categories, values are transfer amounts.                                     |
+| `extender_transfer_summary` | `number`  | Summary of extender transfer data.                                                                                                                    |
+| `extender_transfer_summary_rate` | `number`  | Rate of extender transfer data.                                                                                                                               |
+| `extenders_data`            | `object`  | Detailed data on extenders. Keys represent extender IDs/categories, values represent related metrics.                                                |
+| `extenders_superspeed_data` | `object`  | Detailed data on superspeed extenders. Keys represent extender IDs/categories, values represent related metrics.                                     |
+| `extenders_summary`         | `number`  | Summary of extender data.                                                                                                                             |
+| `extenders_summary_superspeed` | `number`  | Summary of superspeed extender data.                                                                                                                  |
+| `networks_data`             | `object`  | Detailed data on networks. Keys represent network IDs/categories, values represent related metrics.                                                  |
+| `networks_summary`          | `number`  | Summary of network data.                                                                                                                              |
+| `devices_data`              | `object`  | Detailed data on devices. Keys represent device IDs/categories, values represent related metrics.                                                    |
+| `devices_summary`           | `number`  | Summary of device data.                                                                                                                               |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /stats/last-90 HTTP/1.1
+Host: api.bringyour.com
+Accept: */*
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "lookback": 1,
+  "created_time": 1,
+  "all_transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "all_transfer_summary": 1,
+  "all_transfer_summary_rate": 1,
+  "all_packets_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "all_packets_summary": 1,
+  "all_packets_summary_rate": 1,
+  "providers_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "providers_superspeed_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "providers_summary": 1,
+  "providers_summary_superspeed": 1,
+  "countries_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "countries_summary": 1,
+  "regions_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "regions_summary": 1,
+  "cities_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "cities_summary": 1,
+  "extender_transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "extender_transfer_summary": 1,
+  "extender_transfer_summary_rate": 1,
+  "extenders_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "extenders_superspeed_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "extenders_summary": 1,
+  "extenders_summary_superspeed": 1,
+  "networks_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "networks_summary": 1,
+  "devices_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "devices_summary": 1
+}
+```

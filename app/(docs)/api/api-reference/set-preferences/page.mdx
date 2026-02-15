@@ -1,0 +1,84 @@
+---
+title: Set Preferences
+short_name: Set Preferences
+description: Set account preferences.
+---
+# Set Preferences
+
+This document describes the `set-preferences` endpoint, which is used to set account preferences for the authenticated user.
+
+---
+
+## `POST /preferences/set-preferences`
+
+Set account preferences.
+
+### Authorizations
+
+This endpoint requires a BringYour JWT.
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Content-Type": "application/json",
+  "Accept": "*/*"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the preferences to be set.
+
+```json
+{
+  "product_updates": "boolean"
+}
+```
+
+| Field           | Type      | Description                                          |
+| --------------- | --------- | ---------------------------------------------------- |
+| `product_updates` | `boolean` | Set to `true` if the user wishes to receive product updates; `false` otherwise. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates that the preferences have been successfully updated.
+
+```json
+{}
+```
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+|       |      |             |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /preferences/set-preferences HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_SECRET_TOKEN
+Content-Type: application/json
+Accept: */*
+Content-Length: 24
+
+{
+  "product_updates": true
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

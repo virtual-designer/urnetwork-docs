@@ -1,0 +1,107 @@
+---
+title: Code Create
+short_name: Code Create
+description: Create a limited use code (auth code) to share authentication with connected apps and tools.
+---
+# Code Create
+
+This document describes the `code-create` endpoint, which allows you to create a limited use authentication code to share authentication with connected apps and tools. The code is tied to the caller session and will expire with any of the caller's sessions. Currently, a code cannot be created for a client JWT (from `/network/auth-client`). This is a subset of an OAuth flow.
+
+---
+
+## `POST /auth/code-create`
+
+Create a limited use code (auth code) to share authentication with connected apps and tools.
+
+### Request
+
+`POST /auth/code-create`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object specifying the duration and number of uses for the authentication code.
+
+```json
+{
+  "duration_minutes": "number",
+  "uses": "integer"
+}
+```
+
+| Field            | Type      | Description                                                                 |
+| ---------------- | --------- | --------------------------------------------------------------------------- |
+| `duration_minutes` | `number`  | The duration in minutes for which the authentication code will be valid.    |
+| `uses`           | `integer` | The number of times the authentication code can be used.                    |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns the newly created authentication code, its duration, and number of uses.
+
+```json
+{
+  "auth_code": "text",
+  "duration_minutes": 1,
+  "uses": 1,
+  "error": {
+    "auth_code_limit_exceeded": true,
+    "message": "text"
+  }
+}
+```
+
+| Field                  | Type      | Description                                                                         |
+| ---------------------- | --------- | ----------------------------------------------------------------------------------- |
+| `auth_code`            | `string`  | The generated authentication code.                                                  |
+| `duration_minutes`     | `number`  | The duration in minutes for which the code is valid.                                |
+| `uses`                 | `integer` | The number of times the code can be used.                                           |
+| `error`                | `object`  | An optional error object, e.g., if an auth code limit is exceeded.                  |
+| `error.auth_code_limit_exceeded` | `boolean` | `true` if the limit for creating auth codes has been exceeded.                      |
+| `error.message`        | `string`  | A descriptive message if an error or informational note is present.                 |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/code-create HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 31
+
+{
+  "duration_minutes": 1,
+  "uses": 1
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "auth_code": "text",
+  "duration_minutes": 1,
+  "uses": 1,
+  "error": {
+    "auth_code_limit_exceeded": true,
+    "message": "text"
+  }
+}
+```

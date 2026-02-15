@@ -1,0 +1,112 @@
+---
+title: Providers Overview Last 90
+short_name: Providers Overview
+description: Get network statistics for all providers in the caller network for the last 90 days.
+---
+# Providers Overview Last 90
+
+This document describes the `providers-overview-last-90` endpoint, which provides aggregated statistics for all providers within the caller's network over the last 90 days. This endpoint is designed to answer top-level questions about provider performance within the network. These statistics are updated approximately every 60 seconds.
+
+---
+
+## `GET /stats/providers-overview-last-90`
+
+Get statistics for all providers in the caller network for the last 90 days. This is meant to answer the top level question of how the providers in a network are performing.
+
+### Authorizations
+
+This endpoint requires a BringYour JWT.
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Accept": "*/*"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns a comprehensive overview of provider statistics within the network for the last 90 days.
+
+```json
+{
+  "lookback": 1,
+  "created_time": "text",
+  "uptime": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "payout": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "search_interest": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "contracts": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "clients": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  }
+}
+```
+
+| Field                     | Type     | Description                                                                     |
+| ------------------------- | -------- | ------------------------------------------------------------------------------- |
+| `lookback`                | `number` | The number of days the statistics cover (e.g., 90).                             |
+| `created_time`            | `string` | Timestamp indicating when the statistics were generated or last updated.        |
+| `uptime`                  | `object` | Key-value pairs representing uptime statistics (e.g., by provider ID or category). |
+| `transfer_data`           | `object` | Key-value pairs representing transfer data (e.g., by provider ID or type).    |
+| `payout`                  | `object` | Key-value pairs representing payout statistics (e.g., by provider ID or status). |
+| `search_interest`         | `object` | Key-value pairs representing search interest data.                              |
+| `contracts`               | `object` | Key-value pairs representing contract statistics.                               |
+| `clients`                 | `object` | Key-value pairs representing client statistics.                                 |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /stats/providers-overview-last-90 HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_SECRET_TOKEN
+Accept: */*
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "lookback": 1,
+  "created_time": "text",
+  "uptime": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "payout": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "search_interest": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "contracts": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "clients": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  }
+}
+```

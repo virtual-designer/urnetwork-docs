@@ -1,0 +1,15 @@
+---
+title: Getting started with the API
+short_name: Getting Started
+description: A simple guide on how to use URnetwork API
+---
+
+import Callout from "@/components/Alerts/Callout";
+
+# Getting Started
+
+<Callout type="info">
+	Note the API lives at https://api.bringyour.com.
+</Callout>
+
+The API uses an authentication JWT. There are two roles of JWT: admin (user) and client. Admins have more privileges on the network. To get started with an admin JWT, [create a network on the website](https://ur.io/?auth). Then in the dialog, tap the button "Copy an Auth Code". This will copy a limited-time auth code to the clipboard. Use the following API request to convert the auth code into an admin JWT.

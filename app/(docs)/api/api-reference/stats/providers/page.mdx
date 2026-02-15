@@ -1,0 +1,118 @@
+---
+title: Providers
+short_name: Providers
+description: Get all providers in the caller network, including stats from the last 24 hours.
+---
+# Providers
+
+This document describes the `providers` endpoint, which is used to retrieve a list of all providers within the caller's network, along with their statistics from the last 24 hours.
+
+---
+
+## `GET /stats/providers`
+
+Get all providers in the caller network. Each provider includes stats from the last 24 hours.
+
+### Authorizations
+
+This endpoint requires a BringYour JWT.
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Accept": "*/*"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns a list of providers in the network, each with detailed statistics for the last 24 hours.
+
+```json
+{
+  "created_time": "text",
+  "providers": [
+    {
+      "client_id": "text",
+      "connected": true,
+      "connected_events_last_24h": [
+        {
+          "event_time": "text",
+          "connected": true
+        }
+      ],
+      "uptime_last_24h": 1,
+      "transfer_data_last_24h": 1,
+      "payout_last_24h": 1,
+      "search_interest_last_24h": 1,
+      "contracts_last_24h": 1,
+      "clients_last_24h": 1,
+      "provide_mode": 1
+    }
+  ]
+}
+```
+
+| Field                           | Type      | Description                                                                 |
+| ------------------------------- | --------- | --------------------------------------------------------------------------- |
+| `created_time`                  | `string`  | Timestamp indicating when the statistics were created or last updated.        |
+| `providers`                     | `array`   | An array of provider objects.                                               |
+| &nbsp;&nbsp;&nbsp;&nbsp;`client_id`                   | `string`  | The unique identifier for the provider client.                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;`connected`                   | `boolean` | Indicates if the provider is currently connected.                           |
+| &nbsp;&nbsp;&nbsp;&nbsp;`connected_events_last_24h`   | `array`   | A list of connection events within the last 24 hours.                       |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`event_time`              | `string`  | Timestamp of the connection event.                                          |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`connected`               | `boolean` | Connection status at the event time.                                        |
+| &nbsp;&nbsp;&nbsp;&nbsp;`uptime_last_24h`             | `number`  | Uptime percentage for the last 24 hours.                                    |
+| &nbsp;&nbsp;&nbsp;&nbsp;`transfer_data_last_24h`      | `number`  | Data transferred in the last 24 hours.                                      |
+| &nbsp;&nbsp;&nbsp;&nbsp;`payout_last_24h`             | `number`  | Payout amount in the last 24 hours.                                         |
+| &nbsp;&nbsp;&nbsp;&nbsp;`search_interest_last_24h`    | `number`  | Search interest for the provider in the last 24 hours.                      |
+| &nbsp;&nbsp;&nbsp;&nbsp;`contracts_last_24h`          | `number`  | Number of contracts in the last 24 hours.                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;`clients_last_24h`            | `number`  | Number of connected clients in the last 24 hours.                           |
+| &nbsp;&nbsp;&nbsp;&nbsp;`provide_mode`                | `number`  | The mode in which the provider is operating.                                |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /stats/providers HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_SECRET_TOKEN
+Accept: */*
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "created_time": "text",
+  "providers": [
+    {
+      "client_id": "text",
+      "connected": true,
+      "connected_events_last_24h": [
+        {
+          "event_time": "text",
+          "connected": true
+        }
+      ],
+      "uptime_last_24h": 1,
+      "transfer_data_last_24h": 1,
+      "payout_last_24h": 1,
+      "search_interest_last_24h": 1,
+      "contracts_last_24h": 1,
+      "clients_last_24h": 1,
+      "provide_mode": 1
+    }
+  ]
+}
+```

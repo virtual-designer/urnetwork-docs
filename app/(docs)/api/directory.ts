@@ -1,7 +1,10 @@
 import type { DirectoryMetadataType } from "@/schemas/IndexSchema";
 
 const config: DirectoryMetadataType = {
-	sortOrder: ["[root]", "getting-started", "api"],
+	sortOrder: ["getting-started", "api-reference"],
+	thisPage: {
+		title: "API",
+	},
 };
 
 export default config;

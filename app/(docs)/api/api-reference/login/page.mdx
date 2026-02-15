@@ -1,0 +1,122 @@
+---
+title: Login
+short_name: Login
+description: Start a login process for a user authority (email, phone number, Apple JWT, or Google JWT).
+---
+# Login
+
+Start a login process for a user authority. The user authority may be an email, phone number, Apple JWT, or Google JWT.
+
+---
+
+## `POST /auth/login`
+
+Start a login for a user authority.
+
+### Request
+
+`POST /auth/login`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the user authentication details.
+
+```json
+{
+  "user_auth": "string",
+  "auth_jwt": "string",
+  "auth_jwt_type": "string"
+}
+```
+
+| Field           | Type     | Description                                                          | Possible values           |
+| --------------- | -------- | -------------------------------------------------------------------- | ------------------------- |
+| `user_auth`     | `string` | Email or phone number of the user.                                   |                           |
+| `auth_jwt`      | `string` | The authentication JWT (e.g., from Apple or Google).               |                           |
+| `auth_jwt_type` | `string` | The type of authentication JWT.                                      | `apple`, `google` |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates the start of a login flow, providing user information and allowed authentication methods.
+
+```json
+{
+  "user_name": "string",
+  "user_auth": "string",
+  "auth_allowed": [
+    "string"
+  ],
+  "error": {
+    "suggested_user_auth": "string",
+    "message": "string"
+  },
+  "network": {
+    "by_jwt": "string"
+  }
+}
+```
+
+| Field                 | Type     | Description                                                                                             |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `user_name`           | `string` | The user's name.                                                                                        |
+| `user_auth`           | `string` | The authenticated user's identifier (email or phone number).                                            |
+| `auth_allowed`        | `array`  | An array of authentication methods allowed for this user (e.g., `["password"]`).                        |
+| `error`               | `object` | An optional error object, typically for informational messages or suggested actions during success.     |
+| `error.suggested_user_auth` | `string` | A suggested user authentication method if the initial attempt needs refinement (e.g., `"password"`). |
+| `error.message`       | `string` | A descriptive message if an error or informational note is present.                                     |
+| `network`             | `object` | Network-specific information.                                                                           |
+| `network.by_jwt`      | `string` | A JWT for network authentication.                                                                       |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/login HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 62
+
+{
+  "user_auth": "text",
+  "auth_jwt": "text",
+  "auth_jwt_type": "apple"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "user_name": "text",
+  "user_auth": "text",
+  "auth_allowed": [
+    "password"
+  ],
+  "error": {
+    "suggested_user_auth": "password",
+    "message": "text"
+  },
+  "network": {
+    "by_jwt": "text"
+  }
+}
+```

@@ -1,0 +1,67 @@
+---
+title: Preferences
+short_name: Preferences
+description: Get account preferences.
+---
+# Preferences
+
+This document describes the `preferences` endpoint, which is used to retrieve account preferences for the authenticated user.
+
+---
+
+## `GET /preferences`
+
+Get account preferences.
+
+### Authorizations
+
+This endpoint requires a BringYour JWT.
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Accept": "*/*"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns the user's account preferences.
+
+```json
+{
+  "product_updates": true
+}
+```
+
+| Field           | Type      | Description                                          |
+| --------------- | --------- | ---------------------------------------------------- |
+| `product_updates` | `boolean` | Indicates if the user wishes to receive product updates. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /preferences HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_SECRET_TOKEN
+Accept: */*
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "product_updates": true
+}
+```

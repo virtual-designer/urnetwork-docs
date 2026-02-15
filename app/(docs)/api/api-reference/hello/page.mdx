@@ -1,0 +1,65 @@
+---
+title: Hello
+short_name: Hello
+description: Simple hello to the network that returns some useful information for discovery.
+---
+# Hello
+
+This document describes the `hello` endpoint, which provides a simple network greeting and returns useful information for network discovery.
+
+---
+
+## `GET /hello`
+
+Simple hello to the network that returns some useful information. This can be used for discovery.
+
+### Request
+
+`GET /hello`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Accept": "*/*"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns a greeting including the client's IP address and can be used for network discovery.
+
+```json
+{
+  "client_address": "text"
+}
+```
+
+| Field            | Type     | Description                                     |
+| ---------------- | -------- | ----------------------------------------------- |
+| `client_address` | `string` | The IP address of the client making the request. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /hello HTTP/1.1
+Host: api.bringyour.com
+Accept: */*
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "client_address": "text"
+}
+```

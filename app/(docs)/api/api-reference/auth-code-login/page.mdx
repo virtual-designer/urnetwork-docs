@@ -1,0 +1,98 @@
+---
+title: Auth Code Login
+short_name: Auth Code Login
+description: Authenticate with an authentication code.
+---
+
+# Auth Code Login
+
+This document describes the `code-login` endpoint, which allows you to authenticate with an authentication code. This process is a subset of an OAuth flow. The returned session is tied to the session that created the auth code and will expire if any of the creator's sessions expire.
+
+---
+
+## `POST /auth/code-login`
+
+Authenticate with an authentication code.
+
+### Request
+
+`POST /auth/code-login`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the authentication code.
+
+```json
+{
+  "auth_code": "string"
+}
+```
+
+| Field       | Type   | Description                               |
+| ----------- | ------ | ----------------------------------------- |
+| `auth_code` | `string` | The authentication code received to log in. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response will return a JSON object containing a JWT for the new session and an optional error object.
+
+```json
+{
+  "by_jwt": "string",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field         | Type     | Description                                                          |
+| ------------- | -------- | -------------------------------------------------------------------- |
+| `by_jwt`      | `string` | The JSON Web Token for the authenticated session.                    |
+| `error`       | `object` | An optional error object, typically used for informational messages during success. |
+| `error.message` | `string` | A descriptive message if an error or informational note is present. |
+
+
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/code-login HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 20
+
+{
+  "auth_code": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "by_jwt": "text",
+  "error": {
+    "message": "text"
+  }
+}
+```

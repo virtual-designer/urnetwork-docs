@@ -1,0 +1,152 @@
+---
+title: Provider Last 90
+short_name: Provider Last 90
+description: Get detailed statistics on a single provider in the caller network for the last 90 days.
+---
+# Provider Last 90
+
+This document describes the `provider-last-90` endpoint, which is used to retrieve detailed statistics for a single provider within the caller's network over the last 90 days. This endpoint provides complete visibility over a provider's usage.
+
+---
+
+## `POST /stats/provider-last-90`
+
+Get detailed stats on a single provider in the caller network. This is meant to give the user complete visibility over usage.
+
+### Authorizations
+
+This endpoint requires a BringYour JWT.
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Content-Type": "application/json",
+  "Accept": "*/*"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the `client_id` of the provider for which to retrieve statistics.
+
+```json
+{
+  "client_id": "string"
+}
+```
+
+| Field       | Type     | Description                                |
+| ----------- | -------- | ------------------------------------------ |
+| `client_id` | `string` | The unique identifier (UDID) of the provider. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns detailed statistics for the specified provider over the last 90 days.
+
+```json
+{
+  "lookback": 1,
+  "created_time": "text",
+  "uptime": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "payout": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "search_interest": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "contracts": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "clients": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "client_details": [
+    {
+      "client_id": "text",
+      "transfer_data": {
+        "ANY_ADDITIONAL_PROPERTY": 1
+      }
+    }
+  ]
+}
+```
+
+| Field                       | Type     | Description                                                                     |
+| --------------------------- | -------- | ------------------------------------------------------------------------------- |
+| `lookback`                  | `number` | The number of days the statistics cover (e.g., 90).                             |
+| `created_time`              | `string` | Timestamp indicating when the statistics were generated or last updated.        |
+| `uptime`                    | `object` | Key-value pairs representing uptime statistics (e.g., daily uptime averages).   |
+| `transfer_data`             | `object` | Key-value pairs representing transfer data (e.g., daily transfer volumes).    |
+| `payout`                    | `object` | Key-value pairs representing payout statistics (e.g., daily payout amounts).    |
+| `search_interest`           | `object` | Key-value pairs representing search interest data.                              |
+| `contracts`                 | `object` | Key-value pairs representing contract statistics.                               |
+| `clients`                   | `object` | Key-value pairs representing client statistics.                                 |
+| `client_details`            | `array`  | An array of client detail objects connected to this provider.                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;`client_id`                   | `string` | The unique identifier for the client.                                           |
+| &nbsp;&nbsp;&nbsp;&nbsp;`transfer_data`               | `object` | Key-value pairs representing transfer data specific to this client.           |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /stats/provider-last-90 HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_SECRET_TOKEN
+Content-Type: application/json
+Accept: */*
+Content-Length: 20
+
+{
+  "client_id": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "lookback": 1,
+  "created_time": "text",
+  "uptime": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "transfer_data": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "payout": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "search_interest": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "contracts": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "clients": {
+    "ANY_ADDITIONAL_PROPERTY": 1
+  },
+  "client_details": [
+    {
+      "client_id": "text",
+      "transfer_data": {
+        "ANY_ADDITIONAL_PROPERTY": 1
+      }
+    }
+  ]
+}
+```

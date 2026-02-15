@@ -1,0 +1,87 @@
+---
+title: Password Reset
+short_name: Password Reset
+description: Send a password reset code to a user's email or phone number.
+---
+# Password Reset
+
+This document describes the `password-reset` endpoint, which is used to send a password reset code to a user's email or phone number.
+
+---
+
+## `POST /auth/password-reset`
+
+Send a password reset code to a specified email or phone number.
+
+### Request
+
+`POST /auth/password-reset`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the user's email or phone number to which the password reset code will be sent.
+
+```json
+{
+  "user_auth": "string"
+}
+```
+
+| Field       | Type     | Description                      |
+| ----------- | -------- | -------------------------------- |
+| `user_auth` | `string` | Email or phone number of the user. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates that a password reset code has been successfully sent to the specified `user_auth`.
+
+```json
+{
+  "user_auth": "text"
+}
+```
+
+| Field       | Type     | Description                                                     |
+| ----------- | -------- | --------------------------------------------------------------- |
+| `user_auth` | `string` | The email or phone number to which the password reset was sent. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/password-reset HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 20
+
+{
+  "user_auth": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "user_auth": "text"
+}
+```

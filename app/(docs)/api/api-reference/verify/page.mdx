@@ -1,0 +1,93 @@
+---
+title: Verify
+short_name: Verify
+description: Verify ownership of an email or phone number using a verification code.
+---
+# Verify
+
+This document describes the `verify` endpoint, which is used to verify ownership of an email or phone number using a verification code.
+
+---
+
+## `POST /auth/verify`
+
+Verify ownership of an email or phone number using a provided verification code.
+
+### Request
+
+`POST /auth/verify`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the user's authentication detail (email or phone number) and the verification code.
+
+```json
+{
+  "user_auth": "string",
+  "verify_code": "string"
+}
+```
+
+| Field         | Type     | Description                                |
+| ------------- | -------- | ------------------------------------------ |
+| `user_auth`   | `string` | Email or phone number of the user.         |
+| `verify_code` | `string` | The verification code received by the user. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates that the email or phone number has been successfully verified.
+
+```json
+{
+  "network": {},
+  "error": {}
+}
+```
+
+| Field     | Type     | Description                                                     |
+| --------- | -------- | --------------------------------------------------------------- |
+| `network` | `object` | Network-specific information (may be an empty object).          |
+| `error`   | `object` | An optional error object (may be an empty object if no error). |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/verify HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 41
+
+{
+  "user_auth": "text",
+  "verify_code": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "network": {},
+  "error": {}
+}
+```

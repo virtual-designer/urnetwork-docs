@@ -1,0 +1,86 @@
+---
+title: Password Set
+short_name: Password Set
+description: Change a user's password using a reset code.
+---
+# Password Set
+
+This document describes the `password-set` endpoint, which is used to change a user's password using a reset code.
+
+---
+
+## `POST /auth/password-set`
+
+Change user password with a provided reset code.
+
+### Request
+
+`POST /auth/password-set`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the reset code and the new password.
+
+```json
+{
+  "reset_code": "string",
+  "password": "string"
+}
+```
+
+| Field        | Type     | Description                                |
+| ------------ | -------- | ------------------------------------------ |
+| `reset_code` | `string` | The password reset code received by the user. |
+| `password`   | `string` | The new password for the user.             |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates that the password has been successfully changed.
+
+```json
+{}
+```
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+|       |      |             |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/password-set HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 39
+
+{
+  "reset_code": "text",
+  "password": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

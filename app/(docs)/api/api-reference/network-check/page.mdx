@@ -1,0 +1,87 @@
+---
+title: Network Check
+short_name: Network Check
+description: Check the availability and validity of a network name.
+---
+# Network Check
+
+This document describes the `network-check` endpoint, which is used to check the availability and validity of a network name.
+
+---
+
+## `POST /auth/network-check`
+
+Check if a proposed network name is available and meets the specified criteria.
+
+### Request
+
+`POST /auth/network-check`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the proposed network name.
+
+```json
+{
+  "network_name": "string"
+}
+```
+
+| Field          | Type     | Description                                                     |
+| -------------- | -------- | --------------------------------------------------------------- |
+| `network_name` | `string` | The proposed name for the network. It must satisfy the following criteria:<ul><li>At least 3 characters different from an existing network name.</li><li>At least 8 characters in total.</li><li>Domain name compatible (see <a href="https://datatracker.ietf.org/doc/html/rfc5890">RFC 5890</a>).</li><li>Must not contain the dash (-) character (BringYour subdomains are reverse-flattened to a single level using dashes).</li></ul> |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates whether the proposed `network_name` is available.
+
+```json
+{
+  "available": true
+}
+```
+
+| Field       | Type      | Description                                          |
+| ----------- | --------- | ---------------------------------------------------- |
+| `available` | `boolean` | `true` if the network name is available; `false` otherwise. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/network-check HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 23
+
+{
+  "network_name": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "available": true
+}
+```

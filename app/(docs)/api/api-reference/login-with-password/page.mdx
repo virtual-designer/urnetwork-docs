@@ -1,0 +1,114 @@
+---
+title: Login with Password
+short_name: Login with Password
+description: Login using an email or phone number combined with a password.
+---
+# Login with Password
+
+This document describes the `login-with-password` endpoint, which allows users to log in using an email or phone number combined with a password.
+
+---
+
+## `POST /auth/login-with-password`
+
+Password login for email and phone number.
+
+### Request
+
+`POST /auth/login-with-password`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Content-Length": "[calculated-length]"
+}
+```
+
+**Body:**
+
+The request body should be a JSON object containing the user's authentication details (email or phone number) and their password.
+
+```json
+{
+  "user_auth": "string",
+  "password": "string"
+}
+```
+
+| Field       | Type     | Description                      |
+| ----------- | -------- | -------------------------------- |
+| `user_auth` | `string` | Email or phone number of the user. |
+| `password`  | `string` | The user's password.             |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates a successful login or that further verification is required.
+
+```json
+{
+  "verification_required": {
+    "user_auth": "string"
+  },
+  "network": {
+    "by_jwt": "string",
+    "name": "string"
+  },
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field                       | Type     | Description                                                               |
+| --------------------------- | -------- | ------------------------------------------------------------------------- |
+| `verification_required`     | `object` | Indicates if an additional verification step is needed.                     |
+| `verification_required.user_auth` | `string` | The user authentication detail for which verification is required.        |
+| `network`                   | `object` | Network-specific information.                                             |
+| `network.by_jwt`            | `string` | A JWT for network authentication.                                         |
+| `network.name`              | `string` | The name associated with the network.                                     |
+| `error`                     | `object` | An optional error object, typically for informational messages.           |
+| `error.message`             | `string` | A descriptive message if an error or informational note is present.       |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/login-with-password HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Accept: */*
+Content-Length: 38
+
+{
+  "user_auth": "text",
+  "password": "text"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "verification_required": {
+    "user_auth": "text"
+  },
+  "network": {
+    "by_jwt": "text",
+    "name": "text"
+  },
+  "error": {
+    "message": "text"
+  }
+}
+```
