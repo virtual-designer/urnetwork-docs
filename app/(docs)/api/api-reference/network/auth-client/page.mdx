@@ -1,29 +1,36 @@
 ---
 title: Auth Network Client
 short_name: Auth Client
-description: Authenticate an existing client device or register a new one in your network. Returns a client-scoped JWT and optional proxy or relay configuration results.
+description: Authenticate or register a standard client device within the network.
 ---
 
 # Auth Network Client
 
-Authenticates an existing client device or registers a new one into your network. On success, the API returns a client-specific JWT `by_client_jwt` plus any computed proxy configuration in `proxy_config_result`. On failure, the API returns an `error` object with details (including device limit information).
+This endpoint is used to authenticate an existing client device or register a new one into your network. It returns a specific JWT for the client device (`by_client_jwt`) and optional proxy or relay configuration in `proxy_config_result`.
 
-## POST /network/auth-client
+---
 
-Register or authenticate a network client. For new devices, omit `client_id` and optionally provide `description` and `device_spec`. You can also pass `proxy_config` to request proxy, HTTPS auth, WireGuard, IP locking, and an initial device state.
+## `POST /network/auth-client`
+
+Register or authenticate a network client. For new devices, you can provide a description and hardware specification. You can also request proxy, HTTPS auth, WireGuard, IP locking, and an initial device state via `proxy_config`.
 
 ### Request
 
-POST /network/auth-client
+`POST /network/auth-client`
 
-Headers:
+**Headers:**
+
+```json
 {
   "Host": "api.bringyour.com",
   "Content-Type": "application/json",
   "Authorization": "Bearer YOUR_JWT_TOKEN"
 }
+```
 
-Body:
+**Body:**
+
+```json
 {
   "client_id": "string",
   "source_client_id": "string",
@@ -32,7 +39,9 @@ Body:
   "device_spec": "macOS-arm64-v1.0.0",
   "proxy_config": {
     "lock_caller_ip": true,
-    "lock_ip_list": ["203.0.113.10"],
+    "lock_ip_list": [
+      "203.0.113.10"
+    ],
     "https_require_auth": true,
     "enable_wg": true,
     "initial_device_state": {
@@ -62,63 +71,42 @@ Body:
     }
   }
 }
+```
 
-### Request fields
+#### Fields
 
-client_id (string, optional): UDID of an existing client. Omit to register a new device.
-source_client_id (string, optional): Source client identifier for ancillary or derived clients.
-derived_client_id (string, optional): Explicit identifier for a derived client (when applicable).
-description (string, optional): Human-friendly device name, typically used on new registrations.
-device_spec (string, optional): Hardware or software specification identifier for the device.
-proxy_config (object, optional): Requested proxy behavior, IP locking, HTTPS auth requirements, WireGuard, and initial state.
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | `string` | **Optional.** UDID of an existing client. Omit to register a new device. |
+| `source_client_id` | `string` | **Optional.** The source client identifier for ancillary or derived clients. |
+| `derived_client_id` | `string` | **Optional.** Identifier for a client derived from `source_client_id` where applicable. |
+| `description` | `string` | **Optional.** Sets the device name if this is a new registration. |
+| `device_spec` | `string` | **Optional.** Hardware or software specification identifier for the device. |
+| `proxy_config` | `object` | **Optional.** Configuration for proxy behavior, including IP locking, HTTPS auth, WireGuard, and an initial device state. |
+| `proxy_config.lock_caller_ip` | `boolean` | **Optional.** If true, locks access to the caller IP observed by the API. |
+| `proxy_config.lock_ip_list` | `string[]` | **Optional.** Explicit allow-list of IPs permitted to use the proxy. |
+| `proxy_config.https_require_auth` | `boolean` | **Optional.** If true, HTTPS proxy requires auth credentials/token. |
+| `proxy_config.enable_wg` | `boolean` | **Optional.** If true, includes WireGuard configuration in the response. |
+| `proxy_config.initial_device_state` | `object` | **Optional.** Sets initial country, location selection, and performance profile hints. |
+| `proxy_config.initial_device_state.country_code` | `string` | **Optional.** Two-letter country code. |
+| `proxy_config.initial_device_state.location` | `object` | **Optional.** Desired initial location selection. |
+| `proxy_config.initial_device_state.location.connect_location_id` | `object` | **Optional.** Specific location identity fields; set `best_available` to true to auto-pick. |
+| `proxy_config.initial_device_state.location.name` | `string` | **Optional.** Human-readable location name. |
+| `proxy_config.initial_device_state.location.location_type` | `string` | **Optional.** Location type, for example `country`. |
+| `proxy_config.initial_device_state.performance_profile` | `object` | **Optional.** Performance profile settings for connection selection behavior. |
+| `proxy_config.initial_device_state.performance_profile.window_type` | `string` | **Optional.** Window strategy, for example `quality`. |
+| `proxy_config.initial_device_state.performance_profile.window_size_settings` | `object` | **Optional.** Window sizing values controlling connection selection and health. |
 
-### proxy_config fields
-
-lock_caller_ip (boolean, optional): When true, lock access to the caller public IP (as seen by the API).
-lock_ip_list (array of string, optional): Explicit allowlist of IPs permitted to use the proxy for this client.
-https_require_auth (boolean, optional): When true, the response may include `auth_token` to use for proxy authentication.
-enable_wg (boolean, optional): When true, WireGuard config may be provisioned and returned in `proxy_config_result.wg_config`.
-initial_device_state (object, optional): Initial configuration applied to the client at auth or registration.
-
-### initial_device_state fields
-
-country_code (string, optional): ISO country code.
-location (object, optional): Location selection information.
-performance_profile (object, optional): Performance tuning parameters.
-
-### location fields
-
-connect_location_id (object, optional): Connect location selector.
-name (string, optional): Human readable location name.
-location_type (string, optional): Location type enum, example country.
-
-### connect_location_id fields
-
-client_id (string, optional): Client identifier context.
-location_id (string, optional): Specific location identifier.
-location_group_id (string, optional): Location group identifier.
-best_available (boolean, optional): When true, select the best available location automatically.
-
-### performance_profile fields
-
-window_type (string, optional): Example value quality.
-window_size_settings (object, optional): Window sizing parameters.
-
-### window_size_settings fields
-
-window_size_min (number, optional)
-window_size_min_p2p_only (number, optional)
-window_size_max (number, optional)
-window_size_hard_max (number, optional)
-window_size_reconnect_scale (number, optional)
-keep_healthiest_count (number, optional)
-ulimit (number, optional)
+---
 
 ### Response
 
-200 OK
-Content-Type: application/json
+#### `200 Success`
 
+**Status:** `200 OK`  
+**Content-Type:** `application/json`
+
+```json
 {
   "by_client_jwt": "string",
   "proxy_config_result": {
@@ -146,44 +134,35 @@ Content-Type: application/json
     "message": "string"
   }
 }
+```
 
-### Response fields
+#### Fields
 
-by_client_jwt (string): Authentication token specific to this client device.
-proxy_config_result (object): Resulting proxy configuration for the client.
-error (object): Present if authentication or registration failed.
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `by_client_jwt` | `string` | The authentication token specific to this client device. |
+| `proxy_config_result` | `object` | Resulting network configuration for the client, including proxy URLs, ports, and optional WireGuard config. |
+| `proxy_config_result.keepalive_seconds` | `number` | Keepalive interval (seconds) for maintaining the session. |
+| `proxy_config_result.http_proxy_url` | `string` | HTTP proxy URL if issued. |
+| `proxy_config_result.https_proxy_url` | `string` | HTTPS proxy URL if issued. |
+| `proxy_config_result.socks_proxy_url` | `string` | SOCKS proxy URL if issued. |
+| `proxy_config_result.auth_token` | `string` | Token used for authenticating to proxy endpoints when required. |
+| `proxy_config_result.instance_id` | `string` | Proxy instance identifier. |
+| `proxy_config_result.proxy_host` | `string` | Proxy host address. |
+| `proxy_config_result.socks_proxy_port` | `number` | SOCKS proxy port. |
+| `proxy_config_result.http_proxy_port` | `number` | HTTP proxy port. |
+| `proxy_config_result.https_proxy_port` | `number` | HTTPS proxy port. |
+| `proxy_config_result.wg_config` | `object` | WireGuard configuration, present when `proxy_config.enable_wg` is true. |
+| `error` | `object` | Present if authentication or registration failed. |
+| `error.client_limit_exceeded` | `boolean` | True if the network has reached its maximum device limit. |
 
-### proxy_config_result fields
-
-keepalive_seconds (number): Keepalive interval in seconds.
-http_proxy_url (string): HTTP proxy URL, if provisioned.
-https_proxy_url (string): HTTPS proxy URL, if provisioned.
-socks_proxy_url (string): SOCKS proxy URL, if provisioned.
-auth_token (string): Token used to authenticate to proxies when required.
-instance_id (string): Identifier for the proxy instance allocated to the client.
-proxy_host (string): Proxy host address.
-socks_proxy_port (number): SOCKS proxy port.
-http_proxy_port (number): HTTP proxy port.
-https_proxy_port (number): HTTPS proxy port.
-wg_config (object): WireGuard configuration bundle when enable_wg is requested and available.
-
-### wg_config fields
-
-wg_proxy_port (number): WireGuard endpoint port.
-client_private_key (string): Client private key for WireGuard. Handle securely.
-client_public_key (string): Client public key for WireGuard.
-client_ipv4 (string): Assigned client IPv4 address for the tunnel.
-proxy_public_key (string): Proxy public key for WireGuard peer config.
-config (string): Full WireGuard config payload.
-
-### error fields
-
-client_limit_exceeded (boolean): True if the network has reached its maximum device limit.
-message (string): Human-readable error message.
+---
 
 ### Example
 
-HTTP request:
+#### HTTP Request
+
+```http
 POST /network/auth-client HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
@@ -193,44 +172,38 @@ Authorization: Bearer YOUR_JWT_TOKEN
   "description": "Office Desktop",
   "device_spec": "linux-x64-deb",
   "proxy_config": {
-    "lock_caller_ip": true,
+    "enable_wg": true,
     "https_require_auth": true,
-    "enable_wg": true
+    "lock_caller_ip": true
   }
 }
+```
 
-Successful response:
+#### Successful HTTP Response
+
+```json
 {
   "by_client_jwt": "eyJhbGciOiJIUzI1NiI...",
   "proxy_config_result": {
     "keepalive_seconds": 300,
-    "http_proxy_url": "http://proxy.example.com:8080",
-    "https_proxy_url": "https://proxy.example.com:8443",
-    "socks_proxy_url": "socks5://proxy.example.com:1080",
-    "auth_token": "some-auth-token",
-    "instance_id": "instance-123",
-    "proxy_host": "proxy.example.com",
+    "http_proxy_url": "http://proxy.example:8080",
+    "https_proxy_url": "https://proxy.example:8443",
+    "socks_proxy_url": "socks5://proxy.example:1080",
+    "auth_token": "token...",
+    "instance_id": "instance...",
+    "proxy_host": "proxy.example",
     "socks_proxy_port": 1080,
     "http_proxy_port": 8080,
     "https_proxy_port": 8443,
     "wg_config": {
       "wg_proxy_port": 51820,
-      "client_private_key": "REDACTED",
-      "client_public_key": "client-pub-key",
+      "client_private_key": "...",
+      "client_public_key": "...",
       "client_ipv4": "10.0.0.2/32",
-      "proxy_public_key": "proxy-pub-key",
-      "config": "[Interface]\nPrivateKey=...\nAddress=...\n\n[Peer]\nPublicKey=...\nEndpoint=...\n"
+      "proxy_public_key": "...",
+      "config": "..."
     }
   },
   "error": null
 }
-
-Failure example:
-{
-  "by_client_jwt": "",
-  "proxy_config_result": null,
-  "error": {
-    "client_limit_exceeded": true,
-    "message": "Client limit exceeded for this network"
-  }
-}
+```
