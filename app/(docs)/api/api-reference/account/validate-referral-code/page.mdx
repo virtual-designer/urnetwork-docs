@@ -1,0 +1,93 @@
+---
+title: Validate Referral Code
+short_name: Validate Code
+description: Check if a referral code is valid and eligible for use.
+---
+
+# Validate Referral Code
+
+This endpoint allows you to verify the validity of a referral code before using it during network creation or registration. It checks if the code exists and if it has reached its usage cap.
+
+---
+
+## `POST /referral-code/validate`
+
+Validate a specific referral code.
+
+### Request
+
+`POST /referral-code/validate`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "referral_code": "string"
+}
+```
+
+| Field | Type | Description |
++| :--- | :--- | :--- |
++| `referral_code` | `string` | **Required.** The referral code to validate. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "is_valid": true,
+  "is_capped": false,
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `is_valid` | `boolean` | True if the referral code exists and is recognized by the system. |
+| `is_capped` | `boolean` | True if the referral code has reached its maximum number of allowed uses. |
+| `error` | `object` | Details on validation failure. |
+| `error.message` | `string` | Human-readable explanation of why the code is invalid or capped. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /referral-code/validate HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "referral_code": "UR-FRIEND-2025"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "is_valid": true,
+  "is_capped": false,
+  "error": null
+}
+```

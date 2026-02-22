@@ -1,0 +1,60 @@
+---
+title: Network Delete
+short_name: Network Delete
+description: Delete the network and all associated accounts.
+---
+# Network Delete
+
+This document describes the `network-delete` endpoint, which is used to delete the caller's network and all associated user accounts and data.
+
+---
+
+## `POST /auth/network-delete`
+
+Delete the caller's network and all associated accounts. This action is permanent and cannot be undone.
+
+### Authorizations
+
+This endpoint requires a BringYour JWT for the network to be deleted.
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "*/*"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates that the network deletion process has completed.
+
+```json
+{}
+```
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/network-delete HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: */*
+Content-Length: 0
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

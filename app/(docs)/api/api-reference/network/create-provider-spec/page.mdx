@@ -1,0 +1,107 @@
+---
+title: Create Provider Spec
+short_name: Create Spec
+description: Generate connection specifications based on a search query.
+---
+
+# Create Provider Spec
+
+The `create-provider-spec` endpoint allows you to generate specific connection requirements (Provider Specs) based on a natural language query or intent. This is useful for translating user needs (e.g., "fast connection in London") into actionable technical parameters.
+
+---
+
+## `POST /network/create-provider-spec`
+
+Generate provider specifications for a connection query.
+
+### Request
+
+`POST /network/create-provider-spec`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "query": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `query` | `string` | A description of the intended use or geographical preference for the connection. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns an array of matched provider specifications.
+
+```json
+{
+  "specs": [
+    {
+      "location_id": "udid",
+      "location_group_id": "udid",
+      "client_id": "udid",
+      "best_available": true
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `specs` | `array` | List of [Provider Spec](#provider-spec) objects matching the query. |
+
+#### Provider Spec
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `location_id` | `string` | The UDID of the specific matching location. |
+| `location_group_id` | `string` | The UDID of the matching location group. |
+| `client_id` | `string` | UDID of a specific recommended hardware client. |
+| `best_available` | `boolean` | If true, the system recommends this as the optimal choice. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/create-provider-spec HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "query": "High speed node in Germany"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "specs": [
+    {
+      "location_id": "de-fra-1",
+      "best_available": true
+    }
+  ]
+}
+```

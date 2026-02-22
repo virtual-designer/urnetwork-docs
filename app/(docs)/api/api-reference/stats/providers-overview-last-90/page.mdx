@@ -22,7 +22,7 @@ This endpoint requires a BringYour JWT.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
   "Accept": "*/*"
 }
 ```
@@ -80,7 +80,7 @@ A successful response returns a comprehensive overview of provider statistics wi
 ```http
 GET /stats/providers-overview-last-90 HTTP/1.1
 Host: api.bringyour.com
-Authorization: Bearer YOUR_SECRET_TOKEN
+Authorization: Bearer YOUR_JWT_TOKEN
 Accept: */*
 ```
 

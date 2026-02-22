@@ -1,0 +1,121 @@
+---
+title: Provider Locations
+short_name: Locations
+description: Get details about available provider locations and groups.
+---
+
+# Provider Locations
+
+This endpoint retrieves a comprehensive list of all locations where provider devices are available. It categorizes these by groups (clusters), specific geographical locations (cities, regions, countries), and individual devices.
+
+---
+
+## `GET /network/provider-locations`
+
+Retrieves the structural hierarchy of the global provider network.
+
+### Request
+
+`GET /network/provider-locations`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "specs": [],
+  "groups": [
+    {
+      "location_group_id": "string",
+      "name": "string",
+      "provider_count": 0,
+      "promoted": true,
+      "match_distance": 0
+    }
+  ],
+  "locations": [
+    {
+      "location_id": "string",
+      "location_type": "city",
+      "name": "string",
+      "city": "string",
+      "city_location_id": "string",
+      "region": "string",
+      "region_location_id": "string",
+      "country": "string",
+      "country_location_id": "string",
+      "country_code": "string",
+      "provider_count": 0,
+      "match_distance": 0
+    }
+  ],
+  "devices": [
+    {
+      "client_id": "string",
+      "device_name": "string"
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `groups` | `array` | Clusters of providers organized by low-latency regions or specific groups. |
+| `groups[].name` | `string` | The display name of the provider group. |
+| `groups[].provider_count` | `integer` | Number of active providers in this group. |
+| `locations` | `array` | List of geographical locations containing providers. |
+| `locations[].location_type` | `string` | Hierarchy level: `country`, `region`, or `city`. |
+| `locations[].country_code` | `string` | Two-letter ISO country code. |
+| `devices` | `array` | List of specific individual provider devices if available. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /network/provider-locations HTTP/1.1
+Host: api.bringyour.com
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "groups": [
+    {
+      "location_group_id": "grp_us_east",
+      "name": "US East Coast",
+      "provider_count": 450,
+      "promoted": true
+    }
+  ],
+  "locations": [
+    {
+      "location_id": "loc_nyc",
+      "location_type": "city",
+      "name": "New York",
+      "city": "New York City",
+      "country_code": "US",
+      "provider_count": 120
+    }
+  ],
+  "devices": []
+}
+```

@@ -1,0 +1,115 @@
+---
+title: Auth Network Client
+short_name: Auth Client
+description: Authenticate or register a standard client device within the network.
+---
+
+# Auth Network Client
+
+This endpoint is used to authenticate an existing client device or register a new one into your network. It returns a specific JWT for the client device (`by_client_jwt`) and optional proxy/relay configurations.
+
+---
+
+## `POST /network/auth-client`
+
+Register or authenticate a network client. For new devices, you can provide a description and hardware specification.
+
+### Request
+
+`POST /network/auth-client`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "client_id": "string",
+  "source_client_id": "string",
+  "description": "My Laptop",
+  "device_spec": "macOS-arm64-v1.0.0",
+  "proxy_config": {
+    "enable_wg": true,
+    "lock_caller_ip": false
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | `string` | **Optional.** UDID of an existing client. Omit to register a new device. |
+| `source_client_id` | `string` | **Optional.** The source client identifier for ancillary or derived clients. |
+| `description` | `string` | **Optional.** Sets the device name if this is a new registration. |
+| `device_spec` | `string` | **Optional.** Hardware or software specification identifier for the device. |
+| `proxy_config` | `object` | **Optional.** Configuration for proxy behavior, including IP locking and WireGuard support. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "by_client_jwt": "string",
+  "proxy_config_result": {
+    "keepalive_seconds": 60,
+    "http_proxy_url": "string"
+  },
+  "error": {
+    "client_limit_exceeded": false,
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `by_client_jwt` | `string` | The authentication token specific to this client device. |
+| `proxy_config_result`| `object` | Resulting network configuration for the client (endpoints, ports, etc). |
+| `error` | `object` | Present if authentication or registration failed. |
+| `error.client_limit_exceeded` | `boolean` | True if the network has reached its maximum device limit. |
+
+---
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/auth-client HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "description": "Office Desktop",
+  "device_spec": "linux-x64-deb"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "by_client_jwt": "eyJhbGciOiJIUzI1NiI...",
+  "proxy_config_result": {
+    "keepalive_seconds": 300
+  },
+  "error": null
+}
+```

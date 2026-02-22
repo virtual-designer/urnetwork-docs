@@ -1,29 +1,29 @@
----
-title: Providers
+title: Stats Providers
 short_name: Providers
-description: Get all providers in the caller network, including stats from the last 24 hours.
+description: Get performance statistics for all providers in your network for the last 24 hours.
 ---
-# Providers
 
-This document describes the `providers` endpoint, which is used to retrieve a list of all providers within the caller's network, along with their statistics from the last 24 hours.
+# Stats Providers
+
+This endpoint provides a summary of the performance and state of all provider devices within your network for the last 24 hours. Use this to monitor which devices are active and how much bandwidth they are contributing.
 
 ---
 
 ## `GET /stats/providers`
 
-Get all providers in the caller network. Each provider includes stats from the last 24 hours.
+Retrieves a detailed list of providers associated with the authenticated network, including uptime, transfer density, and estimated payouts.
 
-### Authorizations
+### Request
 
-This endpoint requires a BringYour JWT.
+`GET /stats/providers`
 
 **Headers:**
 
 ```json
 {
   "Host": "api.bringyour.com",
-  "Authorization": "Bearer YOUR_SECRET_TOKEN",
-  "Accept": "*/*"
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
 }
 ```
 
@@ -35,49 +35,56 @@ This endpoint requires a BringYour JWT.
 
 **Content-Type:** `application/json`
 
-A successful response returns a list of providers in the network, each with detailed statistics for the last 24 hours.
-
 ```json
 {
-  "created_time": "text",
+  "created_time": "2025-01-20T12:00:00Z",
   "providers": [
     {
-      "client_id": "text",
+      "client_id": "d8e3-...",
       "connected": true,
       "connected_events_last_24h": [
         {
-          "event_time": "text",
+          "event_time": "2025-01-20T10:00:00Z",
           "connected": true
         }
       ],
-      "uptime_last_24h": 1,
-      "transfer_data_last_24h": 1,
-      "payout_last_24h": 1,
-      "search_interest_last_24h": 1,
-      "contracts_last_24h": 1,
-      "clients_last_24h": 1,
-      "provide_mode": 1
+      "uptime_last_24h": 23.5,
+      "transfer_data_last_24h": 12.4,
+      "payout_last_24h": 1.24,
+      "search_interest_last_24h": 150,
+      "contracts_last_24h": 45,
+      "clients_last_24h": 12,
+      "provide_mode": 2
     }
   ]
 }
 ```
 
-| Field                           | Type      | Description                                                                 |
-| ------------------------------- | --------- | --------------------------------------------------------------------------- |
-| `created_time`                  | `string`  | Timestamp indicating when the statistics were created or last updated.        |
-| `providers`                     | `array`   | An array of provider objects.                                               |
-| &nbsp;&nbsp;&nbsp;&nbsp;`client_id`                   | `string`  | The unique identifier for the provider client.                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;`connected`                   | `boolean` | Indicates if the provider is currently connected.                           |
-| &nbsp;&nbsp;&nbsp;&nbsp;`connected_events_last_24h`   | `array`   | A list of connection events within the last 24 hours.                       |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`event_time`              | `string`  | Timestamp of the connection event.                                          |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`connected`               | `boolean` | Connection status at the event time.                                        |
-| &nbsp;&nbsp;&nbsp;&nbsp;`uptime_last_24h`             | `number`  | Uptime percentage for the last 24 hours.                                    |
-| &nbsp;&nbsp;&nbsp;&nbsp;`transfer_data_last_24h`      | `number`  | Data transferred in the last 24 hours.                                      |
-| &nbsp;&nbsp;&nbsp;&nbsp;`payout_last_24h`             | `number`  | Payout amount in the last 24 hours.                                         |
-| &nbsp;&nbsp;&nbsp;&nbsp;`search_interest_last_24h`    | `number`  | Search interest for the provider in the last 24 hours.                      |
-| &nbsp;&nbsp;&nbsp;&nbsp;`contracts_last_24h`          | `number`  | Number of contracts in the last 24 hours.                                   |
-| &nbsp;&nbsp;&nbsp;&nbsp;`clients_last_24h`            | `number`  | Number of connected clients in the last 24 hours.                           |
-| &nbsp;&nbsp;&nbsp;&nbsp;`provide_mode`                | `number`  | The mode in which the provider is operating.                                |
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `created_time` | `string` | ISO 8601 timestamp of when this report was generated. |
+| `providers` | `array` | A list of provider devices and their performance metrics. |
+| `providers[].client_id` | `string` | The unique UDID of the provider client. |
+| `providers[].connected` | `boolean` | Indicates if the device is currently online and connected to the controller. |
+| `providers[].uptime_last_24h` | `number` | Total number of hours the device was online in the last 24 hours. |
+| `providers[].transfer_data_last_24h` | `number` | Total data provided in GiB during the specified period. |
+| `providers[].payout_last_24h` | `number` | Total estimated earnings in USDC for the period. |
+| `providers[].provide_mode` | `integer` | The current [Provision Mode](#provision-mode) set for this device. |
+
+### Enums
+
+#### Provision Mode
+
+| Value | Title | Description |
+| :--- | :--- | :--- |
+| `0` | Default | Standard system behavior. |
+| `1` | None | Device is registered but inactive. |
+| `2` | Network | Provides to the owner's private network. |
+| `3` | Friends & Family | Provides to trusted peer groups. |
+| `4` | Public | Provides to the global URnetwork. |
+| `5` | Stream | Optimized for high-throughput streaming. |
 
 ### Example
 
@@ -86,32 +93,23 @@ A successful response returns a list of providers in the network, each with deta
 ```http
 GET /stats/providers HTTP/1.1
 Host: api.bringyour.com
-Authorization: Bearer YOUR_SECRET_TOKEN
-Accept: */*
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
 ```
 
 #### Successful HTTP Response
 
 ```json
 {
-  "created_time": "text",
+  "created_time": "2025-01-20T15:30:00Z",
   "providers": [
     {
-      "client_id": "text",
+      "client_id": "a1b2-c3d4-e5f6",
       "connected": true,
-      "connected_events_last_24h": [
-        {
-          "event_time": "text",
-          "connected": true
-        }
-      ],
-      "uptime_last_24h": 1,
-      "transfer_data_last_24h": 1,
-      "payout_last_24h": 1,
-      "search_interest_last_24h": 1,
-      "contracts_last_24h": 1,
-      "clients_last_24h": 1,
-      "provide_mode": 1
+      "uptime_last_24h": 24.0,
+      "transfer_data_last_24h": 5.2,
+      "payout_last_24h": 0.52,
+      "provide_mode": 4
     }
   ]
 }

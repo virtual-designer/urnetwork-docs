@@ -1,0 +1,114 @@
+---
+title: Account Payments
+short_name: Payments
+description: Get details on payout history and status for your network.
+---
+
+# Account Payments
+
+This endpoint provides a detailed history of all payments and payouts processed for your network. It includes information on transfer volumes, earnings in USDC nano-cents, and blockchain transaction details.
+
+---
+
+## `GET /account/payments`
+
+Retrieve a list of payout records for the authenticated network account.
+
+### Request
+
+`GET /account/payments`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns an object containing an array of payment objects detailing past and pending distributions.
+
+```json
+{
+  "account_payments": [
+    {
+      "payment_id": "string",
+      "payment_plan_id": "string",
+      "wallet_id": "string",
+      "network_id": "string",
+      "payout_byte_count": 0,
+      "payout_nano_cents": 0,
+      "subsidy_payout_nano_cents": 0,
+      "min_sweep_time": "string",
+      "create_time": "string",
+      "payment_record": "string",
+      "token_type": "string",
+      "token_amount": 0,
+      "payment_time": "string",
+      "payment_receipt": "string",
+      "wallet_address": "string",
+      "blockchain": "string",
+      "tx_hash": "string",
+      "completed": true,
+      "complete_time": "string",
+      "canceled": false,
+      "cancel_time": "string"
+    }
+  ],
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `account_payments` | `array` | List of payout records for the network. |
+| `account_payments[].payment_id` | `string` | Unique identifier for the payment record. |
+| `account_payments[].payout_byte_count` | `integer` | Total bytes provided during this payment period. |
+| `account_payments[].payout_nano_cents` | `integer` | Earnings based on data volume in USDC nano-cents. |
+| `account_payments[].token_amount` | `number` | The actual amount of tokens transferred. |
+| `account_payments[].wallet_address` | `string` | The blockchain address where the payout was sent. |
+| `account_payments[].blockchain` | `string` | The network used for the transfer (e.g., SOL, MATIC). |
+| `account_payments[].tx_hash` | `string` | The blockchain transaction hash for the payment. |
+| `account_payments[].completed` | `boolean` | Whether the payout has successfully finished. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /account/payments HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "account_payments": [
+    {
+      "payment_id": "pay_98765",
+      "payout_byte_count": 5368709120,
+      "payout_nano_cents": 1250000000,
+      "token_amount": 12.5,
+      "blockchain": "SOL",
+      "wallet_address": "HN7cABqL36v...8Q4sG",
+      "completed": true,
+      "tx_hash": "4zqP...xyz"
+    }
+  ]
+}
+```

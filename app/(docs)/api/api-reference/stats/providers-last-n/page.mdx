@@ -1,0 +1,113 @@
+---
+title: Providers Last N
+short_name: Last N
+description: Get performance stats for all providers in your network for the last N hours.
+---
+
+# Providers Last N
+
+This endpoint retrieves performance and event statistics for all provider devices in your network over a custom lookback window (N hours).
+
+---
+
+## `POST /stats/providers-last-n`
+
+Retrieves a detailed report of provider activity, including connectivity events and transfer volumes for a specific number of hours.
+
+### Request
+
+`POST /stats/providers-last-n`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Content-Type": "application/json"
+}
+```
+
+**Body:**
+
+```json
+{
+  "last_n": 12
+}
+```
+
+#### Fields
+
+| Field    | Type     | Description                                |
+| -------- | -------- | ------------------------------------------ |
+| `last_n` | `number` | The number of hours to look back (e.g., 6, 12, 48). |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "created_time": "2025-01-20T15:00:00Z",
+  "providers": [
+    {
+      "client_id": "string",
+      "connected": true,
+      "connected_events_last_24h": [],
+      "uptime_last_24h": 0,
+      "transfer_data_last_24h": 0,
+      "payout_last_24h": 0,
+      "provide_mode": 0
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `created_time` | `string` | ISO 8601 timestamp of when the report was generated. |
+| `providers` | `array` | List of provider devices and their stats for the period. |
+| `providers[].client_id` | `string` | Unique identifier for the provider. |
+| `providers[].connected` | `boolean` | Current connection status. |
+| `providers[].uptime_last_24h` | `number` | Hours online during the lookback period. |
+| `providers[].transfer_data_last_24h` | `number` | GiB provided during the period. |
+| `providers[].payout_last_24h` | `number` | Estimated USDC earned. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /stats/providers-last-n HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "last_n": 6
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "created_time": "2025-01-20T16:00:00Z",
+  "providers": [
+    {
+      "client_id": "c73040c1-0000-0000-0000-000000000000",
+      "connected": true,
+      "uptime_last_24h": 5.8,
+      "transfer_data_last_24h": 2.1,
+      "payout_last_24h": 0.21,
+      "provide_mode": 2
+    }
+  ]
+}
+```

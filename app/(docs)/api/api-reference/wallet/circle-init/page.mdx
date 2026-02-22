@@ -1,0 +1,85 @@
+---
+title: Wallet Circle Init
+short_name: Circle Init
+description: Initialize a Circle programmable wallet session for user authentication.
+---
+
+# Wallet Circle Init
+
+This endpoint initializes a session with Circle's Programmable Wallets service. It returns the necessary tokens and encryption keys required to perform sensitive wallet operations (like creating a PIN or answering security questions) using the Circle SDK.
+
+---
+
+## `POST /wallet/circle-init`
+
+Initialize a Circle wallet session. This is required before performing on-chain operations that require user interaction via the Circle UI components.
+
+### Request
+
+`POST /wallet/circle-init`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "user_token": {
+    "user_token": "string",
+    "encryption_key": "string"
+  },
+  "challenge_id": "string",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_token` | `object` | Session tokens for the Circle SDK. |
+| `user_token.user_token` | `string` | The Circle user session token. |
+| `user_token.encryption_key` | `string` | The key used to encrypt user inputs in the Circle SDK. |
+| `challenge_id` | `string` | The ID of the challenge that needs to be solved (e.g., initial PIN setup). |
+| `error` | `object` | Present if initialization failed. |
+| `error.message` | `string` | Human-readable explanation of the error. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /wallet/circle-init HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "user_token": {
+    "user_token": "eyJraWQiOiI...truncated",
+    "encryption_key": "MIIBIjANBg...truncated"
+  },
+  "challenge_id": "8db2938a-0000-4fac-88bc-000000000000",
+  "error": null
+}
+```

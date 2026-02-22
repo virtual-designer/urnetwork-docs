@@ -1,0 +1,84 @@
+---
+title: Network Ranking
+short_name: Ranking
+description: Get the current ranking and leaderboard status of your network.
+---
+
+# Network Ranking
+
+This endpoint allows you to retrieve your network's current performance metrics relative to the global URnetwork, including your rank on the leaderboard and your total data contribution.
+
+---
+
+## `GET /network/ranking`
+
+Fetch the ranking details for the authenticated network.
+
+### Request
+
+`GET /network/ranking`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "network_ranking": {
+    "net_mib_count": 1250.75,
+    "leaderboard_rank": 42,
+    "leaderboard_public": true
+  },
+  "error": {
+    "message": null
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network_ranking` | `object` | Container for the ranking data. |
+| `network_ranking.net_mib_count` | `number` | Total data provided by your network in MiB (float). |
+| `network_ranking.leaderboard_rank` | `integer` | Your current position on the global leaderboard. |
+| `network_ranking.leaderboard_public` | `boolean` | Whether your network is currently visible to others on the leaderboard. |
+| `error` | `object` | Contains error information if the ranking could not be retrieved. |
+| `error.message` | `string` | Human-readable error or warning message. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /network/ranking HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "network_ranking": {
+    "net_mib_count": 52428.0,
+    "leaderboard_rank": 5,
+    "leaderboard_public": true
+  }
+}
+```

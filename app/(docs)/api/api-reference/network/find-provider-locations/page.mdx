@@ -1,0 +1,105 @@
+---
+title: Find Provider Locations
+short_name: Providers Search
+description: Search for specific locations where bandwidth providers are active.
+---
+
+# Find Provider Locations
+
+The `find-provider-locations` endpoint allows you to search for active bandwidth providers based on a geographic search query. It returns a list of provider specifications that can be used to establish connections.
+
+---
+
+## `POST /network/find-provider-locations`
+
+Find active provider locations matching a search string.
+
+### Request
+
+`POST /network/find-provider-locations`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Content-Type": "application/json"
+}
+```
+
+**Body:**
+
+```json
+{
+  "query": "New York"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `query` | `string` | **Required.** The search term for the location (e.g., "Germany", "London", "Asia"). |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns a list of provider specifications (`specs`).
+
+```json
+{
+  "specs": [
+    {
+      "location_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "location_group_id": "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8",
+      "client_id": "c73040c1-0000-0000-0000-000000000000",
+      "best_available": true
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `specs` | `array` | List of matching provider specifications. |
+| `specs[].location_id` | `string` | Unique identifier (UDID) for the specific location. |
+| `specs[].location_group_id` | `string` | Identifier for the wider geographic group. |
+| `specs[].client_id` | `string` | The UDID of the specific provider client at this location. |
+| `specs[].best_available` | `boolean` | Whether this is the recommended provider for the query. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/find-provider-locations HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "query": "United States"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "specs": [
+    {
+      "location_id": "loc-us-east-001",
+      "location_group_id": "grp-us-east",
+      "best_available": true
+    }
+  ]
+}
+```

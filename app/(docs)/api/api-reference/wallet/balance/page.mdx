@@ -1,0 +1,91 @@
+---
+title: Wallet Balance
+short_name: Balance
+description: Get the balance and details of your blockchain wallet.
+---
+
+# Wallet Balance
+
+This endpoint retrieves the current balance and metadata for the primary wallet associated with your account, including the blockchain address and asset details.
+
+---
+
+## `GET /wallet/balance`
+
+Retrieve details and USDC balance for your account wallet.
+
+### Request
+
+`GET /wallet/balance`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "wallet_info": {
+    "wallet_id": "string",
+    "token_id": "string",
+    "blockchain": "string",
+    "blockchain_symbol": "string",
+    "create_date": "string",
+    "balance_usdc_nano_cents": 0,
+    "address": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `wallet_info` | `object` | Container for wallet identification and balance. |
+| `wallet_info.wallet_id` | `string` | Unique internal identifier for the wallet. |
+| `wallet_info.token_id` | `string` | Identifier for the token (usually USDC). |
+| `wallet_info.blockchain` | `string` | The network name (e.g., "SOL", "MATIC"). |
+| `wallet_info.blockchain_symbol` | `string` | The native currency symbol. |
+| `wallet_info.create_date` | `string` | ISO 8601 timestamp of wallet creation. |
+| `wallet_info.balance_usdc_nano_cents` | `integer` | Balance in USDC nano-cents (1/10^11 of a dollar). |
+| `wallet_info.address` | `string` | The public blockchain address. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /wallet/balance HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "wallet_info": {
+    "wallet_id": "w_12345",
+    "token_id": "USDC",
+    "blockchain": "SOL",
+    "blockchain_symbol": "SOL",
+    "create_date": "2024-10-15T10:00:00Z",
+    "balance_usdc_nano_cents": 5000000000,
+    "address": "HN7cABqL36vRRXYZ8Q4sG"
+  }
+}
+```

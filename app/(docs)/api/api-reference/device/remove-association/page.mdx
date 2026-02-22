@@ -1,0 +1,85 @@
+---
+title: Remove Association
+short_name: Remove Association
+description: Remove a device association (share or adoption) from your network.
+---
+
+# Remove Association
+
+This endpoint allows you to terminate a device association. This applies to devices you have shared with other networks, devices shared with you, or devices currently in the adoption process. Once the association is removed, the related permissions and network access are revoked.
+
+---
+
+## `POST /device/remove-association`
+
+Revoke a share or adoption association based on its unique code.
+
+### Request
+
+`POST /device/remove-association`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "code": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `code` | `string` | **Required.** The unique share or adopt code associated with the link you wish to remove. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Details on failure if the association could not be removed (can be null). |
+| `error.message` | `string` | A human-readable error message. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/remove-association HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "code": "SHARE-1234-ABCD"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

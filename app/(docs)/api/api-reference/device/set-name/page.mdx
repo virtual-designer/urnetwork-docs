@@ -1,0 +1,92 @@
+---
+title: Set Device Name
+short_name: Set Name
+description: Update the human-readable name of a device in your network.
+---
+
+# Set Device Name
+
+This endpoint allows you to update the display name of a device within your network. This is useful for organization and identification when managing multiple provider or client devices.
+
+---
+
+## `POST /device/set-name`
+
+Updates the name of a specific device.
+
+### Request
+
+`POST /device/set-name`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "device_id": "string",
+  "device_name": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `device_id` | `string` | **Required.** The unique UDID of the device to rename. |
+| `device_name` | `string` | **Required.** The new display name for the device. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Present if the update failed (null on success). |
+| `error.message` | `string` | Details on why the name update could not be processed. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/set-name HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "device_id": "c73040c1-0000-0000-0000-000000000000",
+  "device_name": "Living Room Hub"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

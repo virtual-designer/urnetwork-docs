@@ -1,0 +1,115 @@
+---
+title: Upgrade Guest
+short_name: Upgrade Guest
+description: Transition a guest account to a fully registered network user.
+---
+
+# Upgrade Guest
+
+This endpoint facilitates the transition of a temporary guest account to a permanent, registered network. This involves providing permanent authentication credentials (like an email and password) and establishing a unique network name.
+
+---
+
+## `POST /auth/upgrade-guest`
+
+Convert a guest session into a full network account.
+
+### Request
+
+`POST /auth/upgrade-guest`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <GUEST_JWT_TOKEN>"
+}
+```
+
+**Body:**
+
+```json
+{
+  "user_auth": "user@example.com",
+  "password": "secure-password-123",
+  "network_name": "my-permanent-network",
+  "auth_jwt_type": "un",
+  "wallet_auth": null
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | **Required.** The permanent email or phone number for the user. |
+| `network_name` | `string` | **Required.** The unique name for the new network. |
+| `password` | `string` | The password for the new account (required if not using third-party JWT). |
+| `auth_jwt` | `string` | Optional third-party authentication token (Apple/Google). |
+| `auth_jwt_type` | `string` | Type of registration token. One of: `google`, `apple`, `un`. |
+| `wallet_auth` | `object` | Optional wallet signature data for blockchain-linked accounts. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response indicates the upgrade has initiated. Depending on the `user_auth` provided, verification may be required.
+
+```json
+{
+  "network": {
+    "by_jwt": "eyJhbGciOiJIUzI1NiI..."
+  },
+  "verification_required": {
+    "user_auth": "user@example.com"
+  },
+  "error": {
+    "message": null
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network` | `object` | Contains the permanent authorized network session. |
+| `network.by_jwt` | `string` | The new JWT for authorized network requests. |
+| `verification_required` | `object` | Present if the new `user_auth` needs to be verified (e.g., via email code). |
+| `error` | `object` | Contains error details if the upgrade failed (can be null). |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /auth/upgrade-guest HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer GUEST_TOKEN_HERE
+
+{
+  "user_auth": "support@ur.io",
+  "network_name": "prod-network-01",
+  "password": "temporary-password-999"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "network": {
+    "by_jwt": "eyJhbGciOiJIUzI1NiI..."
+  },
+  "verification_required": {
+    "user_auth": "support@ur.io"
+  }
+}
+```

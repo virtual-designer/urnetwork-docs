@@ -1,18 +1,18 @@
 ---
 title: Auth Code Login
-short_name: Auth Code Login
-description: Authenticate with an authentication code.
+short_name: Code Login
+description: Log in using an temporary authentication code.
 ---
 
 # Auth Code Login
 
-This document describes the `code-login` endpoint, which allows you to authenticate with an authentication code. This process is a subset of an OAuth flow. The returned session is tied to the session that created the auth code and will expire if any of the creator's sessions expire.
+This endpoint allows a user to exchange a temporary, ephemeral authentication code for a persistent network session token (JWT). This is typically used for secondary device onboarding or quick-access scenarios.
 
 ---
 
 ## `POST /auth/code-login`
 
-Authenticate with an authentication code.
+Authenticate and receive a network JWT using an alphanumeric access code.
 
 ### Request
 
@@ -23,15 +23,11 @@ Authenticate with an authentication code.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Content-Type": "application/json"
 }
 ```
 
 **Body:**
-
-The request body should be a JSON object containing the authentication code.
 
 ```json
 {
@@ -39,9 +35,9 @@ The request body should be a JSON object containing the authentication code.
 }
 ```
 
-| Field       | Type   | Description                               |
-| ----------- | ------ | ----------------------------------------- |
-| `auth_code` | `string` | The authentication code received to log in. |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `auth_code` | `string` | **Required.** The temporary alphanumeric code obtained from an existing session or device invitation. |
 
 ### Response
 
@@ -51,7 +47,7 @@ The request body should be a JSON object containing the authentication code.
 
 **Content-Type:** `application/json`
 
-A successful response will return a JSON object containing a JWT for the new session and an optional error object.
+A successful response returns the primary network JWT used for subsequent authorized requests.
 
 ```json
 {
@@ -62,13 +58,13 @@ A successful response will return a JSON object containing a JWT for the new ses
 }
 ```
 
-| Field         | Type     | Description                                                          |
-| ------------- | -------- | -------------------------------------------------------------------- |
-| `by_jwt`      | `string` | The JSON Web Token for the authenticated session.                    |
-| `error`       | `object` | An optional error object, typically used for informational messages during success. |
-| `error.message` | `string` | A descriptive message if an error or informational note is present. |
+#### Fields
 
-
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `by_jwt` | `string` | The network-level JSON Web Token for the authenticated session. |
+| `error` | `object` | Returned if the code was invalid, expired, or reached its usage limit. |
+| `error.message` | `string` | Human-readable explanation of the login failure. |
 
 ### Example
 
@@ -78,11 +74,9 @@ A successful response will return a JSON object containing a JWT for the new ses
 POST /auth/code-login HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 20
 
 {
-  "auth_code": "text"
+  "auth_code": "UR-ABC-123-XYZ"
 }
 ```
 
@@ -90,9 +84,7 @@ Content-Length: 20
 
 ```json
 {
-  "by_jwt": "text",
-  "error": {
-    "message": "text"
-  }
+  "by_jwt": "eyJhbGciOiJIUzI1NiI...",
+  "error": null
 }
 ```

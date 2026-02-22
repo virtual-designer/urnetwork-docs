@@ -1,0 +1,124 @@
+---
+title: Find Providers 2
+short_name: Find Providers 2
+description: Highly granular search for provider client IDs based on multiple ProviderSpecs.
+---
+
+# Find Providers 2
+
+This endpoint allows for a highly specific search for suitable provider nodes across the URnetwork. It enables multi-criteria filtering using an array of specifications, client exclusions, and performance ranking modes.
+
+---
+
+## `POST /network/find-providers2`
+
+Query the network for provider devices that match a list of geographic or instance-specific criteria.
+
+### Request
+
+`POST /network/find-providers2`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json"
+}
+```
+
+**Body:**
+
+```json
+{
+  "specs": [
+    {
+      "location_id": "string",
+      "location_group_id": "string",
+      "client_id": "string",
+      "best_available": true
+    }
+  ],
+  "count": 5,
+  "exclude_client_ids": ["string"],
+  "exclude_destinations": [["string"]],
+  "rank_mode": "quality"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `specs` | `array` | A list of `ProviderSpec` objects defining the search criteria. |
+| `count` | `integer` | The maximum number of providers to return. |
+| `exclude_client_ids` | `array` | A list of UDIDs to ignore in the search. |
+| `exclude_destinations` | `array` | A nested list of destination client IDs to exclude. |
+| `rank_mode` | `string` | The sorting algorithm. Currently only `quality` is supported. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "providers": [
+    {
+      "client_id": "string",
+      "estimated_bytes_per_second": 0,
+      "tier": 0,
+      "intermediary_ids": ["string"]
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `providers` | `array` | List of matching provider results. |
+| `providers[].client_id` | `string` | The UDID of the recommended provider. |
+| `providers[].estimated_bytes_per_second` | `integer` | Predicted throughput for this connection. |
+| `providers[].tier` | `integer` | Performance tier assigned by the controller. |
+| `providers[].intermediary_ids` | `array` | UDIDs of relay nodes involved in this path. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/find-providers2 HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+
+{
+  "specs": [
+    {
+      "location_id": "us-east-1",
+      "best_available": true
+    }
+  ],
+  "count": 2,
+  "rank_mode": "quality"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "providers": [
+    {
+      "client_id": "550e8400-e29b-41d4-a716-446655440000",
+      "estimated_bytes_per_second": 10485760,
+      "tier": 1,
+      "intermediary_ids": []
+    }
+  ]
+}
+```

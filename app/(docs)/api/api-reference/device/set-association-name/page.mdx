@@ -1,0 +1,88 @@
+---
+title: Set Association Name
+short_name: Association Name
+description: Rename a specific device association.
+---
+
+# Set Association Name
+
+This endpoint allows you to update the display name of an existing device association (either a share or a pending adoption). This renaming affects how the shared device appears in your associations list.
+
+---
+
+## `POST /device/set-association-name`
+
+Updates the local descriptive name for a specific device code.
+
+### Request
+
+`POST /device/set-association-name`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "code": "string",
+  "device_name": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `code` | `string` | **Required.** The unique share or adopt code for the association. |
+| `device_name` | `string` | **Required.** The new display name for the device. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Details on failure if renaming was unsuccessful (can be null). |
+| `error.message` | `string` | A descriptive message explaining any issues encountered. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/set-association-name HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "code": "SHARE-1234-ABCD",
+  "device_name": "Redesigned Office Node"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

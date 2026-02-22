@@ -1,0 +1,86 @@
+title: Blocked Locations
+short_name: Blocked Locations
+description: Retrieve the list of geographical locations currently blocked by your network.
+---
+
+# Blocked Locations
+
+This endpoint provides a list of all geographical locations that have been restricted via the `block-location` endpoint. When a location is blocked, providers in your network will not route traffic through these areas.
+
+---
+
+## `GET /network/blocked-locations`
+
+Fetch the list of locations currently on your network's blocklist.
+
+### Request
+
+`GET /network/blocked-locations`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{
+  "blocked_locations": [
+    {
+      "location_id": "string",
+      "location_name": "string",
+      "location_type": "string",
+      "country_code": "string"
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `blocked_locations` | `array` | A list of geographical locations currently being blocked. |
+| `blocked_locations[].location_id` | `string` | Unique UUID of the blocked location. |
+| `blocked_locations[].location_name` | `string` | Human-readable name of the location. |
+| `blocked_locations[].location_type` | `string` | The type of location (e.g., country, region, city). |
+| `blocked_locations[].country_code` | `string` | ISO 3166-1 alpha-2 country code. |
+
+---
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /network/blocked-locations HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "blocked_locations": [
+    {
+      "location_id": "loc_de_001",
+      "location_name": "Germany",
+      "location_type": "country",
+      "country_code": "DE"
+    }
+  ]
+}
+```

@@ -1,0 +1,75 @@
+---
+title: Unblock Location
+short_name: Unblock Location
+description: Remove a previously blocked geographic location from your network's restriction list.
+---
+
+# Unblock Location
+
+The `unblock-location` endpoint allows you to restore traffic routing for a geographic location that was previously restricted. This enables your provider devices to once again facilitate connections for users or services associated with that region.
+
+---
+
+## `POST /network/unblock-location`
+
+Removes a specific location from your network's regional blocklist.
+
+### Request
+
+`POST /network/unblock-location`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "location_id": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `location_id` | `string` | **Required.** The unique UUID of the geographic location to unblock. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{}
+```
+
+A successful response returns an empty object, indicating the location has been successfully removed from the blocklist.
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/unblock-location HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "location_id": "loc-ger-001"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

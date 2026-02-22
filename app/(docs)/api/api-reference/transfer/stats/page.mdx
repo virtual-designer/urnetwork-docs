@@ -1,0 +1,73 @@
+---
+title: Transfer Stats
+short_name: Transfer Stats
+description: Get details on the total amount of data provided by your network.
+---
+
+# Transfer Stats
+
+This document describes the `stats` endpoint within the `transfer` module, providing data on the quantity of bytes your provider devices have transferred.
+
+---
+
+## `GET /transfer/stats`
+
+Retrieve global transfer statistics for the authenticated network, broken down by payment status.
+
+### Request
+
+`GET /transfer/stats`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns a breakdown of the data your devices have provided.
+
+```json
+{
+  "paid_bytes_provided": 1073741824,
+  "unpaid_bytes_provided": 536870912
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `paid_bytes_provided` | `integer` | Total count of bytes provided for which you earned a reward (monetized traffic). |
+| `unpaid_bytes_provided` | `integer` | Total count of bytes provided that were not monetized (e.g., local traffic or overhead). |
+
+---
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /transfer/stats HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "paid_bytes_provided": 1073741824,
+  "unpaid_bytes_provided": 536870912
+}
+```

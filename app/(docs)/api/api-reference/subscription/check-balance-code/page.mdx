@@ -1,0 +1,99 @@
+---
+title: Check Balance Code
+short_name: Check Code
+description: Verify the contents and validity of a data balance top-up code.
+---
+
+# Check Balance Code
+
+This endpoint allows you to inspect a data balance code before redeeming it. It provides information about how much data the code contains and its expiration window.
+
+---
+
+## `POST /subscription/check-balance-code`
+
+Check the validity and data volume of a balance secret.
+
+### Request
+
+`POST /subscription/check-balance-code`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "secret": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `secret` | `string` | **Required.** The alphanumeric secret code to check. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "balance": {
+    "start_time": "string",
+    "end_time": "string",
+    "balance_byte_count": 0
+  },
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `balance` | `object` | Details of the data credit in the code. |
+| `balance.balance_byte_count` | `integer` | Total bytes that will be added upon redemption. |
+| `balance.start_time` | `string` | ISO 8601 timestamp of when the code becomes active. |
+| `balance.end_time` | `string` | ISO 8601 timestamp of when the code expires. |
+| `error` | `object` | Present if the code is invalid or already used. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /subscription/check-balance-code HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "secret": "GIFT-10GB-XYZ"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "balance": {
+    "balance_byte_count": 10737418240,
+    "start_time": "2025-01-01T00:00:00Z",
+    "end_time": "2025-12-31T23:59:59Z"
+  }
+}
+```

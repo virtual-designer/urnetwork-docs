@@ -1,0 +1,91 @@
+---
+title: Find Providers
+short_name: Find Providers
+description: Find available provider devices for a specific location or group.
+---
+
+# Find Providers
+
+The `find-providers` endpoint allows you to discover specific client (provider) IDs that are currently available to serve traffic for a given location or location group.
+
+---
+
+## `POST /network/find-providers`
+
+Find available provider IDs based on location criteria.
+
+### Request
+
+`POST /network/find-providers`
+
+**Headers:**
+
+```http
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+**Body:**
+
+```json
+{
+  "location_id": "string",
+  "location_group_id": "string",
+  "count": 5,
+  "exclude_location_ids": ["string"]
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `location_id` | `string` | **Optional.** UDID of the specific location to target. |
+| `location_group_id` | `string` | **Optional.** UDID of the location group to target. |
+| `count` | `integer` | **Optional.** The maximum number of provider IDs to return. |
+| `exclude_location_ids` | `array` | **Optional.** List of location UDIDs to ignore in the search. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "client_ids": ["string"]
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_ids` | `array` | A list of client UDIDs (provider devices) matching the search criteria. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/find-providers HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "location_id": "8db2938a-0000-4fac-88bc-000000000000",
+  "count": 3
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "client_ids": [
+    "c73040c1-0000-4444-8888-000000000001",
+    "c73040c1-0000-4444-8888-000000000002",
+    "c73040c1-0000-4444-8888-000000000003"
+  ]
+}
+```

@@ -1,17 +1,18 @@
 ---
 title: Login with Password
-short_name: Login with Password
-description: Login using an email or phone number combined with a password.
+short_name: Password Login
+description: Authenticate using an email or phone number and a password.
 ---
+
 # Login with Password
 
-This document describes the `login-with-password` endpoint, which allows users to log in using an email or phone number combined with a password.
+This endpoint allows users to complete their authentication by providing their password. It is typically the second step in the login flow after `/auth/login` identifies the user and determines that password authentication is required.
 
 ---
 
 ## `POST /auth/login-with-password`
 
-Password login for email and phone number.
+Login using a username (email/phone) and password combination.
 
 ### Request
 
@@ -22,27 +23,23 @@ Password login for email and phone number.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Content-Type": "application/json"
 }
 ```
 
 **Body:**
 
-The request body should be a JSON object containing the user's authentication details (email or phone number) and their password.
-
 ```json
 {
-  "user_auth": "string",
-  "password": "string"
+  "user_auth": "user@example.com",
+  "password": "your-password-here"
 }
 ```
 
-| Field       | Type     | Description                      |
-| ----------- | -------- | -------------------------------- |
-| `user_auth` | `string` | Email or phone number of the user. |
-| `password`  | `string` | The user's password.             |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | **Required.** The email address or phone number of the account. |
+| `password` | `string` | **Required.** The user's account password. |
 
 ### Response
 
@@ -52,7 +49,7 @@ The request body should be a JSON object containing the user's authentication de
 
 **Content-Type:** `application/json`
 
-A successful response indicates a successful login or that further verification is required.
+A successful response returns the network authentication token or indicates if multi-factor verification is required.
 
 ```json
 {
@@ -60,7 +57,7 @@ A successful response indicates a successful login or that further verification 
     "user_auth": "string"
   },
   "network": {
-    "by_jwt": "string",
+    "by_jwt": "eyJhbGciOi...",
     "name": "string"
   },
   "error": {
@@ -69,15 +66,15 @@ A successful response indicates a successful login or that further verification 
 }
 ```
 
-| Field                       | Type     | Description                                                               |
-| --------------------------- | -------- | ------------------------------------------------------------------------- |
-| `verification_required`     | `object` | Indicates if an additional verification step is needed.                     |
-| `verification_required.user_auth` | `string` | The user authentication detail for which verification is required.        |
-| `network`                   | `object` | Network-specific information.                                             |
-| `network.by_jwt`            | `string` | A JWT for network authentication.                                         |
-| `network.name`              | `string` | The name associated with the network.                                     |
-| `error`                     | `object` | An optional error object, typically for informational messages.           |
-| `error.message`             | `string` | A descriptive message if an error or informational note is present.       |
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `verification_required` | `object` | Present if the account requires a final OTP verification step. |
+| `network` | `object` | Contains the network access token if login is complete. |
+| `network.by_jwt` | `string` | The primary JWT for interacting with the URnetwork API. |
+| `network.name` | `string` | The display name of the authenticated network. |
+| `error` | `object` | Details on why the login attempt failed (e.g., invalid credentials). |
 
 ### Example
 
@@ -87,12 +84,10 @@ A successful response indicates a successful login or that further verification 
 POST /auth/login-with-password HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 38
 
 {
-  "user_auth": "text",
-  "password": "text"
+  "user_auth": "support@ur.io",
+  "password": "example-password"
 }
 ```
 
@@ -100,15 +95,10 @@ Content-Length: 38
 
 ```json
 {
-  "verification_required": {
-    "user_auth": "text"
-  },
   "network": {
-    "by_jwt": "text",
-    "name": "text"
+    "by_jwt": "eyJhbGciOiJIUzI1NiI...",
+    "name": "URnetwork Admin"
   },
-  "error": {
-    "message": "text"
-  }
+  "error": null
 }
 ```

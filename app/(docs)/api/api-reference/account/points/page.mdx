@@ -1,0 +1,88 @@
+---
+title: Account Points
+short_name: Points
+description: Retrieve the history of reward points earned by your network.
+---
+
+# Account Points
+
+This endpoint allows you to view the ledger of reward points earned by your network account. Points are typically awarded for activities such as referral signups or sharing provider resources.
+
+---
+
+## `GET /account/points`
+
+Retrieve a list of all point-earning events associated with the authenticated network.
+
+### Request
+
+`GET /account/points`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns an object containing an array of point records.
+
+```json
+{
+  "network_points": [
+    {
+      "network_id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "event": "referral_signup",
+      "point_value": 100,
+      "create_time": "2025-01-15T08:30:00Z"
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network_points` | `array` | List of point transactions. |
+| `network_points[].network_id` | `string` | Unique identifier (UUID) of the network. |
+| `network_points[].event` | `string` | The type of activity that earned points. |
+| `network_points[].point_value` | `integer` | The number of points awarded for this event. |
+| `network_points[].create_time` | `string` | ISO 8601 timestamp of when the points were awarded. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /account/points HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "network_points": [
+    {
+      "network_id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "event": "referral_signup",
+      "point_value": 500,
+      "create_time": "2025-01-15T08:30:00Z"
+    }
+  ]
+}
+```

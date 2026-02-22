@@ -1,35 +1,18 @@
 ---
 title: Network Create
 short_name: Network Create
-description: Create a new network.
+description: Create a new network and associate it with a user authority.
 ---
 
 # Network Create
 
-This document describes the `network-create` endpoint, which is used to create a new network and associate a user authority with it. A user authority can be associated with at most one network.
+This endpoint is used to create a new network and associate it with a user authority (email, phone, or third-party JWT). A user authority can only be associated with one network at a time.
 
 ---
 
 ## `POST /auth/network-create`
 
-Create a new network. A user authority can be associated with at most one network.
-
-### Request
-
-`POST /auth/network-create`
-
-**Headers:**
-
-```json
-# Network Create
-
-This document describes the `network-create` endpoint, which is used to create a new network and associate a user authority with it. A user authority can be associated with at most one network.
-
----
-
-## `POST /auth/network-create`
-
-Create a new network. A user authority can be associated with at most one network.
+Create a new URnetwork account and network configuration.
 
 ### Request
 
@@ -41,36 +24,45 @@ Create a new network. A user authority can be associated with at most one networ
 {
   "Host": "api.bringyour.com",
   "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Accept": "application/json"
 }
 ```
 
 **Body:**
-
-The request body should be a JSON object containing details for the new user and network.
 
 ```json
 {
   "user_name": "string",
   "user_auth": "string",
   "auth_jwt": "string",
-  "auth_jwt_type": "string",
+  "auth_jwt_type": "google",
   "password": "string",
   "network_name": "string",
-  "terms": "boolean"
+  "terms": true,
+  "referral_code": "string",
+  "balance_code": "string",
+  "wallet_auth": {
+    "wallet_address": "string",
+    "wallet_message": "string",
+    "wallet_signature": "string",
+    "blockchain": "SOL"
+  }
 }
 ```
 
-| Field           | Type      | Description                                                                                                                                                                                                                                                                 | Possible values     |
-| --------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `user_name`     | `string`  | The desired username for the new account.                                                                                                                                                                                                                                   |                     |
-| `user_auth`     | `string`  | The user's email or phone number.                                                                                                                                                                                                                                           |                     |
-| `auth_jwt`      | `string`  | An authentication JWT, if using a third-party authentication provider like Apple or Google.                                                                                                                                                                                 |                     |
-| `auth_jwt_type` | `string`  | The type of authentication JWT provided.                                                                                                                                                                                                                                    | `apple`, `google`   |
-| `password`      | `string`  | The desired password for the new account. This is required if `auth_jwt` is not provided.                                                                                                                                                                                   |                     |
-| `network_name`  | `string`  | The desired name for the new network. It must satisfy: <ul><li>at least 3 characters different from an existing network name</li><li>at least 8 characters</li><li>domain name compatible (see [RFC 5890](https://datatracker.ietf.org/doc/html/rfc5890))</li><li>not contain the dash (-) character (BringYour subdomains are reverse-flattened to a single level using dashes)</li></ul> |                     |
-| `terms`         | `boolean` | User's consent to accept the terms of service. Must be `true`.                                                                                                                                                                                                              | `true`              |
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_name` | `string` | The display name for the new account. |
+| `user_auth` | `string` | The primary identifier (email or phone number). |
+| `auth_jwt_type` | `string` | **Optional.** One of `google`, `apple`, or `un`. |
+| `password` | `string` | The account password. Required if not using third-party JWT. |
+| `network_name` | `string` | **Required.** The unique name for your network. Must be domain-compatible. |
+| `terms` | `boolean` | **Required.** Must be `true` to accept the Terms of Service. |
+| `referral_code` | `string` | **Optional.** Code of the network that referred you. |
+| `balance_code` | `string` | **Optional.** A top-up code to add initial data balance. |
+| `wallet_auth` | `object` | **Optional.** Parameters for linking a blockchain wallet during signup. |
 
 ### Response
 
@@ -80,34 +72,31 @@ The request body should be a JSON object containing details for the new user and
 
 **Content-Type:** `application/json`
 
-A successful response indicates that the network has been created and may include details for further verification or network information.
-
 ```json
 {
   "network": {
-    "by_jwt": "text",
-    "network_id": "text",
-    "network_name": "text"
+    "by_jwt": "string",
+    "network_id": "uuid",
+    "network_name": "string"
   },
   "verification_required": {
-    "user_auth": "text"
+    "user_auth": "string"
   },
   "error": {
-    "message": "text"
+    "message": "string"
   }
 }
 ```
 
-| Field                       | Type     | Description                                                                           |
-| --------------------------- | -------- | ------------------------------------------------------------------------------------- |
-| `network`                   | `object` | Details about the newly created network.                                              |
-| `network.by_jwt`            | `string` | A JWT for network authentication.                                                     |
-| `network.network_id`        | `string` | The unique identifier for the new network.                                            |
-| `network.network_name`      | `string` | The name of the new network.                                                          |
-| `verification_required`     | `object` | Indicates if an additional verification step is needed.                               |
-| `verification_required.user_auth` | `string` | The user authentication detail for which verification is required.                    |
-| `error`                     | `object` | An optional error object, typically for informational messages.                       |
-| `error.message`             | `string` | A descriptive message if an error or informational note is present.                   |
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network` | `object` | Details of the successfully created network. |
+| `network.by_jwt` | `string` | The authentication token for the new network. |
+| `network.network_id` | `string` | Unique UUID assigned to the network. |
+| `verification_required` | `object` | Present if email or phone verification is needed before completion. |
+| `error` | `object` | Details if creation failed (e.g., name taken). |
 
 ### Example
 
@@ -117,16 +106,12 @@ A successful response indicates that the network has been created and may includ
 POST /auth/network-create HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 134
 
 {
-  "user_name": "text",
-  "user_auth": "text",
-  "auth_jwt": "text",
-  "auth_jwt_type": "apple",
-  "password": "text",
-  "network_name": "text",
+  "user_name": "Alice Smith",
+  "user_auth": "alice@example.com",
+  "password": "secure-password-123",
+  "network_name": "alices-net",
   "terms": true
 }
 ```
@@ -136,15 +121,12 @@ Content-Length: 134
 ```json
 {
   "network": {
-    "by_jwt": "text",
-    "network_id": "text",
-    "network_name": "text"
+    "by_jwt": "eyJhbGciOi...",
+    "network_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "network_name": "alices-net"
   },
   "verification_required": {
-    "user_auth": "text"
-  },
-  "error": {
-    "message": "text"
+    "user_auth": "alice@example.com"
   }
 }
 ```

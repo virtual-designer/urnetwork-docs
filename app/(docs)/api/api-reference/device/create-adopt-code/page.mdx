@@ -1,0 +1,99 @@
+---
+title: Create Adopt Code
+short_name: Create Adopt Code
+description: Generate a code to transfer ownership of a device to another network.
+---
+
+# Create Adopt Code
+
+The `create-adopt-code` endpoint initiates the hardware adoption process. It generates a unique `adopt_code` and a corresponding `adopt_secret`. These credentials allow another network to "adopt" the device, effectively transferring its ownership and management to the target network.
+
+---
+
+## `POST /device/create-adopt-code`
+
+Generate a new adoption code for a specified device profile.
+
+### Request
+
+`POST /device/create-adopt-code`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "device_name": "string",
+  "device_spec": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `device_name` | `string` | **Required.** The human-readable name assigned to the device being prepared for adoption. |
+| `device_spec` | `string` | **Required.** Hardware or software specification identifier for the device. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "adopt_code": "string",
+  "adopt_secret": "string",
+  "duration_minutes": 0,
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `adopt_code` | `string` | The unique code used by the adopter to identify the device. |
+| `adopt_secret` | `string` | A secret token that must be shared with the adopter to authorize the transfer. |
+| `duration_minutes` | `integer` | The amount of time (in minutes) before the adoption code expires. |
+| `error` | `object` | Returned if the code generation fails. |
+| `error.message` | `string` | A description of the error encountered. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/create-adopt-code HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "device_name": "Living Room Relay",
+  "device_spec": "urn-pi-v4"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "adopt_code": "ADOPT-ABCD-1234",
+  "adopt_secret": "sec_987654321",
+  "duration_minutes": 15,
+  "error": null
+}
+```

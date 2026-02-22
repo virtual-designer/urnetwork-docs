@@ -1,0 +1,94 @@
+---
+title: Device Share Status
+short_name: Share Status
+description: Check the status of a device sharing invitation.
+---
+
+# Device Share Status
+
+This endpoint allows the initiator of a device share to check if the guest network has accepted or confirmed the invitation. It provides the current state of the sharing process and the name of the participating network.
+
+---
+
+## `POST /device/share-status`
+
+Retrieve information about a specific share code, including whether it is still pending acceptance.
+
+### Request
+
+`POST /device/share-status`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>"
+}
+```
+
+**Body:**
+
+```json
+{
+  "share_code": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `share_code` | `string` | **Required.** The unique invitation code for the device share. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{
+  "pending": true,
+  "associated_network_name": "string",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `pending` | `boolean` | `true` if the share invitation has not yet been confirmed by the guest. |
+| `associated_network_name` | `string` | The display name of the network involved in the share. |
+| `error` | `object` | Details if the status lookup failed. |
+| `error.message` | `string` | Human-readable explanation of any error. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/share-status HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "share_code": "SHARE-1234-5678"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "pending": false,
+  "associated_network_name": "GuestNetwork01",
+  "error": null
+}
+```

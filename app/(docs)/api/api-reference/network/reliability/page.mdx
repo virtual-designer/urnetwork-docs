@@ -1,0 +1,119 @@
+---
+title: Network Reliability
+short_name: Reliability
+description: Get global network reliability statistics and multipliers.
+---
+
+# Network Reliability
+
+This endpoint provides detailed statistics regarding the global network's reliability, analyzed through time-series windows and geographical multipliers. It is used to understand the current stability and weighting of the total network infrastructure.
+
+---
+
+## `GET /network/reliability`
+
+Retrieve the current reliability window and associated metrics.
+
+### Request
+
+`GET /network/reliability`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "reliability_window": {
+    "mean_reliability_weight": 0.92,
+    "min_time_unix_milli": 1737388800000,
+    "min_bucket_number": 48260,
+    "max_time_unix_milli": 1737475200000,
+    "max_bucket_number": 48284,
+    "bucket_duration_seconds": 3600,
+    "max_client_count": 1250,
+    "max_total_client_count": 5000,
+    "reliability_weights": [
+      0.91,
+      0.92,
+      0.92
+    ],
+    "client_counts": [
+      1200,
+      1210,
+      1250
+    ],
+    "total_client_counts": [
+      4800,
+      4900,
+      5000
+    ],
+    "country_multipliers": [
+      {
+        "country_location_id": "8db2938a-0000-4fac-88bc-000000000000",
+        "country": "United States",
+        "country_code": "US",
+        "reliability_multiplier": 1.05
+      }
+    ]
+  },
+  "error": {
+    "message": null
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `reliability_window` | `object` | The time-window based reliability calculation. |
+| `reliability_window.mean_reliability_weight` | `number` | The average reliability score across the network. |
+| `reliability_window.reliability_weights` | `array` | Time-series of reliability scores (weights). |
+| `reliability_window.client_counts` | `array` | Number of active clients per time bucket. |
+| `reliability_window.country_multipliers` | `array` | Reliability weight factors applied per country based on local network conditions. |
+| `error` | `object` | Optional error details. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /network/reliability HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "reliability_window": {
+    "mean_reliability_weight": 0.92,
+    "max_client_count": 1500,
+    "country_multipliers": [
+      {
+        "country_location_id": "8db2938a-0000-4fac-88bc-000000000000",
+        "country": "United States",
+        "country_code": "US",
+        "reliability_multiplier": 1.05
+      }
+    ]
+  }
+}
+```

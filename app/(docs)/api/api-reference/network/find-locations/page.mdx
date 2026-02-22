@@ -1,0 +1,129 @@
+---
+title: Find Locations
+short_name: Find Locations
+description: Search for available network locations based on a text query.
+---
+
+# Find Locations
+
+Search for available providing locations including countries, regions, and cities. This endpoint returns matching locations, proximity groups, and raw provider specifications.
+
+---
+
+## `POST /network/find-locations`
+
+Search the network for available provider locations using a text-based query.
+
+### Request
+
+`POST /network/find-locations`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json"
+}
+```
+
+**Body:**
+
+```json
+{
+  "query": "New York",
+  "max_distance_fraction": 0.5,
+  "enable_max_distance_fraction": true
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `query` | `string` | The text search query (e.g., "Germany", "London", "Tokyo"). |
+| `max_distance_fraction` | `number` | **Optional.** Tolerance for proximity matching. |
+| `enable_max_distance_fraction` | `boolean` | **Optional.** Enable or disable proximity-based searching. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "specs": [],
+  "groups": [
+    {
+      "location_group_id": "udid",
+      "name": "string",
+      "provider_count": 0,
+      "promoted": true,
+      "match_distance": 0
+    }
+  ],
+  "locations": [
+    {
+      "location_id": "udid",
+      "location_type": "city",
+      "name": "string",
+      "city": "string",
+      "region": "string",
+      "country": "string",
+      "country_code": "string",
+      "provider_count": 0,
+      "match_distance": 0
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `specs` | `array` | List of raw [Provider Specs](#provider-spec) matching the query. |
+| `groups` | `array` | High-level logical groups of providers (e.g., specific data centers). |
+| `locations` | `array` | Specific geographic locations matching the query. |
+| `locations[].location_type` | `string` | Type of geography: `country`, `region`, or `city`. |
+| `locations[].provider_count` | `integer` | Number of active provider devices in this specific location. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/find-locations HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+
+{
+  "query": "UK"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "locations": [
+    {
+      "location_id": "loc-uk-001",
+      "location_type": "country",
+      "name": "United Kingdom",
+      "country_code": "GB",
+      "provider_count": 1250
+    },
+    {
+      "location_id": "loc-lon-002",
+      "location_type": "city",
+      "name": "London",
+      "city": "London",
+      "country": "United Kingdom",
+      "country_code": "GB",
+      "provider_count": 450
+    }
+  ]
+}
+```

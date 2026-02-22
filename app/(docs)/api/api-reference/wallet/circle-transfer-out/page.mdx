@@ -1,0 +1,109 @@
+---
+title: Wallet Transfer Out
+short_name: Transfer Out
+description: Initiate an outbound transfer of USDC from your Circle-managed wallet to an external address.
+---
+
+# Wallet Transfer Out
+
+The `circle-transfer-out` endpoint allows you to withdraw USDC from your URnetwork account's Circle-managed wallet to an external blockchain address (e.g., a personal Solana or Polygon wallet). This process initiates a Circle "challenge" that must be completed using the Circle SDK.
+
+---
+
+## `POST /wallet/circle-transfer-out`
+
+Start the process of transferring USDC to an external blockchain address.
+
+### Request
+
+`POST /wallet/circle-transfer-out`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "to_address": "string",
+  "amount_usdc_nano_cents": 0,
+  "terms": true
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `to_address` | `string` | **Required.** The destination blockchain address for the USDC. |
+| `amount_usdc_nano_cents` | `integer` | **Required.** The amount to transfer in USDC nano-cents (1/10^11 USD). |
+| `terms` | `boolean` | **Required.** Must be `true` to indicate user consent to the transfer terms. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful initiation returns the `user_token` and `challenge_id` required by the Circle SDK to perform the on-chain transaction.
+
+```json
+{
+  "user_token": {
+    "user_token": "string",
+    "encryption_key": "string"
+  },
+  "challenge_id": "string",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_token.user_token` | `string` | The user session token for the Circle SDK. |
+| `user_token.encryption_key` | `string` | The encryption key for the Circle session. |
+| `challenge_id` | `string` | The unique ID of the transfer challenge to be solved in the SDK. |
+| `error` | `object` | Details on failure (can be null). |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /wallet/circle-transfer-out HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "to_address": "7xKX....xyz",
+  "amount_usdc_nano_cents": 10000000000,
+  "terms": true
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "user_token": {
+    "user_token": "eyJraWQiOiI...",
+    "encryption_key": "MIIBIjANBg..."
+  },
+  "challenge_id": "ec82938a-44af-4fac-88bc-0eaabbcc0000",
+  "error": null
+}
+```

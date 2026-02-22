@@ -1,0 +1,86 @@
+---
+title: Validate Wallet Address
+short_name: Validate Address
+description: Verify if a blockchain wallet address is valid for the supported networks.
+---
+
+# Validate Wallet Address
+
+This endpoint allows you to check if a specific blockchain wallet address (e.g., for Solana or Polygon) is syntactically correct and eligible to be linked to a URnetwork account.
+
+---
+
+## `POST /wallet/validate-address`
+
+Check the validity of a blockchain address.
+
+### Request
+
+`POST /wallet/validate-address`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "address": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `address` | `string` | **Required.** The public blockchain address to validate. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "valid": true
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `valid` | `boolean` | `true` if the address is a valid format for the supported networks. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /wallet/validate-address HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "address": "HN7cABqL36vRRXYZ8Q4sG"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "valid": true
+}
+```

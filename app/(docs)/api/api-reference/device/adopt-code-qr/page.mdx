@@ -1,0 +1,62 @@
+---
+title: Device Adopt Code QR
+short_name: Adopt QR
+description: Generate a QR code for a device adoption process.
+---
+
+# Device Adopt Code QR
+
+This endpoint generates a QR code image representing a device adoption code. This allows for easy scanning by mobile devices or other hardware to initiate the adoption process between networks.
+
+---
+
+## `GET /device/adopt-code/{code}/qr.png`
+
+Returns a PNG image of the QR code for the specified adoption code.
+
+### Request
+
+`GET /device/adopt-code/{code}/qr.png`
+
+**Parameters:**
+
+| Name | In | Type | Required | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `code` | path | `string` | Yes | The alphanumeric adoption code generated via `/device/create-adopt-code`. |
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Accept": "image/png"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `image/png`
+
+The response body contains the binary data of the PNG image.
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /device/adopt-code/ADOPT-XYZ-123/qr.png HTTP/1.1
+Host: api.bringyour.com
+Accept: image/png
+```
+
+#### Successful HTTP Response
+
+```http
+HTTP/1.1 200 OK
+Content-Type: image/png
+[Binary Image Data]
+```

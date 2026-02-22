@@ -1,18 +1,18 @@
 ---
 title: Verify Send
 short_name: Verify Send
-description: Send a verification code to a user's email or phone number.
+description: Request a verification code to be sent to an email or phone number.
 ---
 
 # Verify Send
 
-This document describes the `verify-send` endpoint, which is used to send a verification code to a user's email or phone number.
+The `verify-send` endpoint is used to initiate the ownership verification process for a user's communication channel (email or phone number). It triggers the delivery of a code that must then be submitted via the `/auth/verify` endpoint.
 
 ---
 
 ## `POST /auth/verify-send`
 
-Send a verification code to a specified email or phone number.
+Requests a verification code for a specific user authority.
 
 ### Request
 
@@ -23,25 +23,25 @@ Send a verification code to a specified email or phone number.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Content-Type": "application/json"
 }
 ```
 
 **Body:**
 
-The request body should be a JSON object containing the user's email or phone number to which the verification code will be sent.
-
 ```json
 {
-  "user_auth": "string"
+  "user_auth": "string",
+  "use_numeric": false
 }
 ```
 
-| Field       | Type     | Description                      |
-| ----------- | -------- | -------------------------------- |
-| `user_auth` | `string` | Email or phone number of the user. |
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | **Required.** The email address or phone number to verify. |
+| `use_numeric` | `boolean` | **Optional.** If `true`, a 6-digit numeric code is generated instead of the default 8-character alphanumeric code. |
 
 ### Response
 
@@ -51,17 +51,17 @@ The request body should be a JSON object containing the user's email or phone nu
 
 **Content-Type:** `application/json`
 
-A successful response indicates that a verification code has been successfully sent to the specified `user_auth`.
-
 ```json
 {
   "user_auth": "string"
 }
 ```
 
-| Field       | Type     | Description                                                     |
-| ----------- | -------- | --------------------------------------------------------------- |
-| `user_auth` | `string` | The email or phone number to which the verification was sent.   |
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | The identifier to which the code was successfully sent. |
 
 ### Example
 
@@ -71,11 +71,10 @@ A successful response indicates that a verification code has been successfully s
 POST /auth/verify-send HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 20
 
 {
-  "user_auth": "text"
+  "user_auth": "user@example.com",
+  "use_numeric": true
 }
 ```
 
@@ -83,6 +82,6 @@ Content-Length: 20
 
 ```json
 {
-  "user_auth": "text"
+  "user_auth": "user@example.com"
 }
 ```

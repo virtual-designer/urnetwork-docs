@@ -1,0 +1,71 @@
+---
+title: Account Referral Code
+short_name: Referral Code
+description: Retrieve your network's unique referral code and referral count.
+---
+
+# Account Referral Code
+
+This endpoint retrieves the unique referral code assigned to your network. You can share this code with others to earn rewards when they join the URnetwork.
+
+---
+
+## `GET /account/referral-code`
+
+Fetches your referral code and the total number of users who have signed up using it.
+
+### Request
+
+`GET /account/referral-code`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "referral_code": "string",
+  "total_referrals": 0
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `referral_code` | `string` | Your network's unique referral UDID. |
+| `total_referrals` | `integer` | The total number of successful referrals credited to your account. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /account/referral-code HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "referral_code": "c73040c1-8888-4444-aaaa-000000000000",
+  "total_referrals": 12
+}
+```

@@ -1,17 +1,18 @@
 ---
 title: Network Check
 short_name: Network Check
-description: Check the availability and validity of a network name.
+description: Verify the availability of a network name.
 ---
+
 # Network Check
 
-This document describes the `network-check` endpoint, which is used to check the availability and validity of a network name.
+The `network-check` endpoint allows you to verify whether a desired network name is available for registration.
 
 ---
 
 ## `POST /auth/network-check`
 
-Check if a proposed network name is available and meets the specified criteria.
+Checks if a specific network name can be assigned to a new network.
 
 ### Request
 
@@ -22,15 +23,11 @@ Check if a proposed network name is available and meets the specified criteria.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Content-Type": "application/json"
 }
 ```
 
 **Body:**
-
-The request body should be a JSON object containing the proposed network name.
 
 ```json
 {
@@ -38,9 +35,9 @@ The request body should be a JSON object containing the proposed network name.
 }
 ```
 
-| Field          | Type     | Description                                                     |
-| -------------- | -------- | --------------------------------------------------------------- |
-| `network_name` | `string` | The proposed name for the network. It must satisfy the following criteria:<ul><li>At least 3 characters different from an existing network name.</li><li>At least 8 characters in total.</li><li>Domain name compatible (see <a href="https://datatracker.ietf.org/doc/html/rfc5890">RFC 5890</a>).</li><li>Must not contain the dash (-) character (BringYour subdomains are reverse-flattened to a single level using dashes).</li></ul> |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network_name` | `string` | **Required.** The desired name for the new network. |
 
 ### Response
 
@@ -50,7 +47,7 @@ The request body should be a JSON object containing the proposed network name.
 
 **Content-Type:** `application/json`
 
-A successful response indicates whether the proposed `network_name` is available.
+A successful response indicates whether the provided name is available.
 
 ```json
 {
@@ -58,9 +55,9 @@ A successful response indicates whether the proposed `network_name` is available
 }
 ```
 
-| Field       | Type      | Description                                          |
-| ----------- | --------- | ---------------------------------------------------- |
-| `available` | `boolean` | `true` if the network name is available; `false` otherwise. |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `available` | `boolean` | `true` if the name is available, `false` otherwise. |
 
 ### Example
 
@@ -70,11 +67,9 @@ A successful response indicates whether the proposed `network_name` is available
 POST /auth/network-check HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 23
 
 {
-  "network_name": "text"
+  "network_name": "alpha-omega"
 }
 ```
 

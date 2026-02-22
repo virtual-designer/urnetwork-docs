@@ -1,0 +1,105 @@
+---
+title: Device Add
+short_name: Add
+description: Register a device to your network using a share or adopt code.
+---
+
+# Device Add
+
+This endpoint allows you to add a new device to your network by providing a valid `share_code` or `adopt_code`.
+
+---
+
+## `POST /device/add`
+
+Add a device to the authenticated network.
+
+### Request
+
+`POST /device/add`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "code": "string"
+}
+```
+
+#### Fields
+
+| Field  | Type     | Description                                |
+| ------ | -------- | ------------------------------------------ |
+| `code` | `string` | **Required.** The share code or adopt code for the device. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "code_type": "share",
+  "code": "string",
+  "device_name": "string",
+  "associated_network_name": "string",
+  "client_id": "udid",
+  "duration_minutes": 0,
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `code_type` | `string` | Type of code processed: `share` or `adopt`. |
+| `code` | `string` | The alphanumeric code that was processed. |
+| `device_name` | `string` | Name of the device being added. |
+| `associated_network_name` | `string` | **Share codes only.** Name of the network sharing the device. |
+| `client_id` | `string` | **Share codes only.** Unique identifier assigned to the added client. |
+| `duration_minutes` | `number` | Time limit for the association in minutes, if applicable. |
+| `error` | `object` | Details if the addition failed (can be null). |
+
+---
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/add HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "code": "SHARE-1234-5678"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "code_type": "share",
+  "code": "SHARE-1234-5678",
+  "device_name": "Shared Laptop",
+  "client_id": "c73040c1-0000-0000-0000-000000000000"
+}
+```

@@ -1,0 +1,118 @@
+---
+title: Payout Wallet
+short_name: Payout Wallet
+description: Manage the target wallet for USDC distributions and payouts.
+---
+
+# Payout Wallet
+
+This endpoint allows your network to designate or query which registered blockchain wallet should receive upcoming data provisioning payouts.
+
+---
+
+## `POST /account/payout-wallet`
+
+Assign an existing registered wallet to be the primary payout wallet.
+
+### Request
+
+`POST /account/payout-wallet`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>"
+}
+```
+
+**Body:**
+
+```json
+{
+  "wallet_id": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `wallet_id` | `string` | **Required.** The internal UDID of the wallet to receive payouts. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+A successful request returns an empty object, indicating the payout wallet was updated.
+
+```json
+{}
+```
+
+---
+
+## `GET /account/payout-wallet`
+
+Retrieve the currently assigned payout wallet for the authenticated network.
+
+### Request
+
+`GET /account/payout-wallet`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{
+  "wallet_id": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `wallet_id` | `string` | The UDID of the currently active payout wallet. |
+
+---
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /account/payout-wallet HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "wallet_id": "w_550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

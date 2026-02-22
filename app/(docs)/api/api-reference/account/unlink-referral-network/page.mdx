@@ -1,0 +1,59 @@
+---
+title: Unlink Referral Network
+short_name: Unlink Referral
+description: Detach your network account from the network that originally referred you.
+---
+
+# Unlink Referral Network
+
+This endpoint severs the connection between your network account and your referring network, effectively revoking any shared benefits or data distributions linked to the original referral signup process.
+
+---
+
+## `GET /account/unlink-referral-network`
+
+Unlink and detach your account's referral status.
+
+### Request
+
+`GET /account/unlink-referral-network`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{}
+```
+
+A successful response returns an empty object, indicating the unlinking was successful.
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /account/unlink-referral-network HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

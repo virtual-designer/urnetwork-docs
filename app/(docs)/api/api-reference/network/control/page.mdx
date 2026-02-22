@@ -1,0 +1,88 @@
+---
+title: Network Control
+short_name: Control
+description: Send control packets to manage network connections.
+---
+
+# Network Control
+
+The `control` endpoint is used to send and receive encrypted control packets for managing network connections and relay states.
+
+---
+
+## `POST /connect/control`
+
+Send a control packet to the network controller. This is primarily used by client software to negotiate connections and update state.
+
+### Request
+
+`POST /connect/control`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "pack": ["string"]
+}
+```
+
+| Field  | Type    | Description                                                                 |
+| ------ | ------- | --------------------------------------------------------------------------- |
+| `pack` | `array` | A list of base64 encoded strings representing encrypted control directives. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "pack": ["string"],
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field           | Type     | Description                                                        |
+| --------------- | -------- | ------------------------------------------------------------------ |
+| `pack`          | `array`  | Response control packets from the controller.                      |
+| `error`         | `object` | An error object if the control message could not be processed.     |
+| `error.message` | `string` | A descriptive message explaining why the control directive failed. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /connect/control HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "pack": ["ZXhhbXBsZSBjb250cm9sIHBhY2tldA=="]
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "pack": ["cmVzcG9uc2UgcGFja2V0"],
+  "error": null
+}
+```

@@ -1,0 +1,116 @@
+---
+title: Send Feedback
+short_name: Send Feedback
+description: Submit platform feedback, ratings, and usage categories.
+---
+
+# Send Feedback
+
+This endpoint is used to submit categorical feedback and a star rating regarding the URnetwork service experience.
+
+---
+
+## `POST /feedback/send-feedback`
+
+Submit user telemetry, feature requests, and satisfaction scores.
+
+### Request
+
+`POST /feedback/send-feedback`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>"
+}
+```
+
+**Body:**
+
+```json
+{
+  "uses": {
+    "personal": true,
+    "business": false
+  },
+  "needs": {
+    "private": true,
+    "safe": false,
+    "global": true,
+    "collaborate": false,
+    "app_control": true,
+    "block_data_brokers": true,
+    "block_ads": false,
+    "focus": false,
+    "connect_servers": true,
+    "run_servers": false,
+    "prevent_cyber": false,
+    "audit": false,
+    "zero_trust": true,
+    "visualize": false,
+    "other": "Faster UI required"
+  },
+  "star_count": 5
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `uses` | `object` | An object tracking whether the network is used for personal or business purposes (booleans). |
+| `needs` | `object` | Categorical booleans highlighting specific user needs like `private`, `safe`, `block_ads`, etc. |
+| `needs.other` | `string` | An optional text field for custom comments or unlisted feature requests. |
+| `star_count` | `integer` | An integer representing the rating score (typically 1-5). |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{
+  "feedback_id": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `feedback_id` | `string` | The UUID associated with the newly created feedback entry. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /feedback/send-feedback HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "uses": {
+    "personal": true
+  },
+  "needs": {
+    "block_ads": true,
+    "other": "Works great!"
+  },
+  "star_count": 5
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "feedback_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+}
+```

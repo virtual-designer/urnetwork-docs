@@ -1,0 +1,94 @@
+---
+title: Create Share Code
+short_name: Create Share Code
+description: Generate a share code to grant access to a specific device.
+---
+
+# Create Share Code
+
+This endpoint allows the owner of a device to generate a unique sharing code. This code can be provided to another network, allowing them to gain shared access to the device's capabilities without transferring ownership.
+
+---
+
+## `POST /device/create-share-code`
+
+Generate a new device sharing code.
+
+### Request
+
+`POST /device/create-share-code`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>"
+}
+```
+
+**Body:**
+
+```json
+{
+  "client_id": "string",
+  "device_name": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | `string` | **Required.** The unique UDID of the client device to be shared. |
+| `device_name` | `string` | **Required.** A human-readable name for the device that will be shown to the guest network. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{
+  "share_code": "string",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `share_code` | `string` | The alphanumeric code to give to the guest network. |
+| `error` | `object` | An error object if the code generation failed. |
+| `error.message` | `string` | A descriptive message explaining why the share could not be initiated. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/create-share-code HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "client_id": "c73040c1-0000-0000-0000-000000000000",
+  "device_name": "Living Room AP"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "share_code": "SHARE-1234-5678",
+  "error": null
+}
+```

@@ -1,0 +1,89 @@
+---
+title: Set Referral Code
+short_name: Set Referral
+description: Set the referral code for your network after account creation.
+---
+
+# Set Referral Code
+
+If you did not provide a referral code during the initial network creation process, you can use this endpoint to set one later. Setting a referral code may grant specific bonuses or benefits to your network based on current promotion rules.
+
+---
+
+## `POST /account/set-referral`
+
+Sets the referral code for the authenticated network. This operation can typically only be performed once if a referral code is not already set.
+
+### Request
+
+`POST /account/set-referral`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "referral_code": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `referral_code` | `string` | **Required.** The referral code of the network that invited you. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Returned if the code is invalid or if a referral is already set (can be null). |
+| `error.message` | `string` | Human-readable explanation of why the referral could not be set. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /account/set-referral HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "referral_code": "TOP-INVITE-CODE"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

@@ -1,0 +1,118 @@
+---
+title: Device Associations
+short_name: Associations
+description: Retrieve all shared and pending device associations for your network.
+---
+
+# Device Associations
+
+This endpoint provides a comprehensive view of all device-level partnerships and handovers associated with your network. It categorizes associations into those you are offering (pending adoption), devices shared with you by others, and your own devices that you have shared with other networks.
+
+---
+
+## `GET /device/associations`
+
+Retrieve lists of all pending and active device associations.
+
+### Request
+
+`GET /device/associations`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns an object categorizing three types of device associations.
+
+```json
+{
+  "pending_adoption_devices": [
+    {
+      "code": "string",
+      "device_name": "string",
+      "duration_minutes": 0
+    }
+  ],
+  "incoming_shared_devices": [
+    {
+      "pending": true,
+      "code": "string",
+      "device_name": "string",
+      "client_id": "udid",
+      "network_name": "string"
+    }
+  ],
+  "outgoing_shared_devices": [
+    {
+      "pending": true,
+      "code": "string",
+      "device_name": "string",
+      "client_id": "udid",
+      "network_name": "string"
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `pending_adoption_devices` | `array` | Devices you have created adopt codes for that are awaiting a new owner. |
+| `incoming_shared_devices` | `array` | Devices belonging to other networks that have been shared with you. |
+| `outgoing_shared_devices` | `array` | Devices you own that have been shared with other networks. |
+
+#### Shared Device Object
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `pending` | `boolean` | `true` if the share invitation has not yet been confirmed by the recipient. |
+| `code` | `string` | The unique alphanumeric code representing this association. |
+| `device_name` | `string` | Human-readable name of the hardware device. |
+| `client_id` | `string` | The UDID of the client involved in the share. |
+| `network_name` | `string` | The name of the peer network involved in the association. |
+
+---
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /device/associations HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "incoming_shared_devices": [
+    {
+      "pending": false,
+      "code": "SHARE-9988-7766",
+      "device_name": "Remote-Worker-Laptop",
+      "client_id": "c73040c1-0000-0000-0000-000000000000",
+      "network_name": "Main-Office-Net"
+    }
+  ],
+  "outgoing_shared_devices": [],
+  "pending_adoption_devices": []
+}
+```

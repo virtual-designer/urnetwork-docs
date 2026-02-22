@@ -1,0 +1,91 @@
+---
+title: Remove Adopt Code
+short_name: Remove Adopt Code
+description: Cancel an active device adoption code before it is used.
+---
+
+# Remove Adopt Code
+
+This endpoint allows the owner of a device to revoke an existing adoption code. Once removed, the code can no longer be used by any other network to take ownership of the device.
+
+---
+
+## `POST /device/remove-adopt-code`
+
+Revoke an active adopt code using the code and its associated secret.
+
+### Request
+
+`POST /device/remove-adopt-code`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "adopt_code": "string",
+  "adopt_secret": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `adopt_code` | `string` | **Required.** The alphanumeric adopt code to be removed. |
+| `adopt_secret` | `string` | **Required.** The secret associated with the adopt code (provided upon creation). |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Present if the request failed (null on success). |
+| `error.message` | `string` | Details on why the code could not be removed. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/remove-adopt-code HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "adopt_code": "ADOPT-1234-5678",
+  "adopt_secret": "xyz789-secret"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

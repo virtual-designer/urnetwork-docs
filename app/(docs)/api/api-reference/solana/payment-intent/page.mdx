@@ -1,0 +1,89 @@
+---
+title: Solana Payment Intent
+short_name: Payment Intent
+description: Create a unique reference string for identifying a Solana payment transaction.
+---
+
+# Solana Payment Intent
+
+This endpoint creates a unique reference string used to identify and verify a Solana payment transaction associated with your account.
+
+---
+
+## `POST /solana/payment-intent`
+
+Generates or validates a unique payment intent reference for the Solana blockchain.
+
+### Request
+
+`POST /solana/payment-intent`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "reference": "string"
+}
+```
+
+#### Fields
+
+| Field       | Type     | Description                                                                              |
+| ----------- | -------- | ---------------------------------------------------------------------------------------- |
+| `reference` | `string` | A unique reference string to identify the payment intent added to the Solana transaction. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field           | Type     | Description                                           |
+| --------------- | -------- | ----------------------------------------------------- |
+| `error`         | `object` | An error object if the request failed (can be null). |
+| `error.message` | `string` | A descriptive message explaining the error.           |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /solana/payment-intent HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "reference": "solana-tx-ref-12345"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

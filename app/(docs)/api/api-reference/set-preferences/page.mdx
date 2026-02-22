@@ -22,7 +22,7 @@ This endpoint requires a BringYour JWT.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Authorization": "Bearer YOUR_SECRET_TOKEN",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
   "Content-Type": "application/json",
   "Accept": "*/*"
 }
@@ -67,7 +67,7 @@ A successful response indicates that the preferences have been successfully upda
 ```http
 POST /preferences/set-preferences HTTP/1.1
 Host: api.bringyour.com
-Authorization: Bearer YOUR_SECRET_TOKEN
+Authorization: Bearer YOUR_JWT_TOKEN
 Content-Type: application/json
 Accept: */*
 Content-Length: 24

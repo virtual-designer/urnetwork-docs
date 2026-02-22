@@ -1,0 +1,97 @@
+---
+title: Subscription Balance
+short_name: Balance
+description: Get details on a network's current subscription and data balance.
+---
+
+# Subscription Balance
+
+This endpoint retrieves the data balance and subscription status for the authenticated network. It provides insights into active data plans, consumed bytes, and pending payouts.
+
+---
+
+## `GET /subscription/balance`
+
+Retrieve subscription details, including data usage and active transfer balances.
+
+### Request
+
+`GET /subscription/balance`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "start_balance_byte_count": 0,
+  "balance_byte_count": 0,
+  "open_transfer_byte_count": 0,
+  "current_subscription": {
+    "subscription_id": "string",
+    "store": "string",
+    "plan": "string"
+  },
+  "active_transfer_balances": [
+    {
+      "balance_id": "string",
+      "network_id": "string",
+      "start_time": "string",
+      "end_time": "string",
+      "start_balance_byte_count": 0,
+      "net_revenue_nano_cents": 0,
+      "balance_byte_count": 0
+    }
+  ],
+  "pending_payout_usd_nano_cents": 0,
+  "update_time": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `start_balance_byte_count` | `integer` | The initial data balance for the current period. |
+| `balance_byte_count` | `integer` | Remaining data balance in bytes. |
+| `open_transfer_byte_count`| `integer` | Data currently tied up in pending contracts or active transfers. |
+| `current_subscription` | `object` | Details of the active billing plan. |
+| `active_transfer_balances`| `array` | List of granular data balances granted by specific codes or periods. |
+| `pending_payout_usd_nano_cents` | `integer`| Accumulated revenue pending payout (in USD nano-cents). |
+| `update_time` | `string` | Last time the balance was computed. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /subscription/balance HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "balance_byte_count": 5368709120,
+  "current_subscription": {
+    "plan": "premium_10gb"
+  },
+  "update_time": "2025-01-20T14:30:00Z"
+}
+```

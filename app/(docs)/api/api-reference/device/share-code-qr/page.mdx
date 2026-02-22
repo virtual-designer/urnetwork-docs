@@ -1,0 +1,64 @@
+---
+title: Device Share Code QR
+short_name: Share QR
+description: Retrieve a QR code image for a specific device share code.
+---
+
+# Device Share Code QR
+
+This endpoint generates a PNG image containing a QR code for a given device share code. This is useful for allowing users to scan and add devices to their network using mobile apps.
+
+---
+
+## `GET /device/share-code/{code}/qr.png`
+
+Retrieve the QR code image for a specific share code.
+
+### Request
+
+`GET /device/share-code/{code}/qr.png`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer <YOUR_JWT_TOKEN>",
+  "Accept": "image/png"
+}
+```
+
+**Parameters:**
+
+| Name | In | Type | Required | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `code` | path | `string` | Yes | The unique share code generated via the `create-share-code` endpoint. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `image/png`
+
+A successful response returns the raw binary data of the QR code image in PNG format.
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /device/share-code/SHARE-1234-5678/qr.png HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: image/png
+```
+
+#### Successful HTTP Response
+
+```http
+HTTP/1.1 200 OK
+Content-Type: image/png
+
+[Binary Image Data]
+```

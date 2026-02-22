@@ -1,17 +1,18 @@
 ---
-title: Verify
+title: Auth Verify
 short_name: Verify
-description: Verify ownership of an email or phone number using a verification code.
+description: Complete the authentication process by verifying ownership of an email or phone number.
 ---
-# Verify
 
-This document describes the `verify` endpoint, which is used to verify ownership of an email or phone number using a verification code.
+# Auth Verify
+
+The `verify` endpoint is used to finalize an authentication flow by submitting a verification code sent to the user's email or phone number.
 
 ---
 
 ## `POST /auth/verify`
 
-Verify ownership of an email or phone number using a provided verification code.
+Submit a verification code to authenticate a user authority.
 
 ### Request
 
@@ -22,15 +23,11 @@ Verify ownership of an email or phone number using a provided verification code.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Content-Type": "application/json"
 }
 ```
 
 **Body:**
-
-The request body should be a JSON object containing the user's authentication detail (email or phone number) and the verification code.
 
 ```json
 {
@@ -39,10 +36,10 @@ The request body should be a JSON object containing the user's authentication de
 }
 ```
 
-| Field         | Type     | Description                                |
-| ------------- | -------- | ------------------------------------------ |
-| `user_auth`   | `string` | Email or phone number of the user.         |
-| `verify_code` | `string` | The verification code received by the user. |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | **Required.** The email or phone number being verified. |
+| `verify_code` | `string` | **Required.** The verification code received by the user. |
 
 ### Response
 
@@ -52,19 +49,23 @@ The request body should be a JSON object containing the user's authentication de
 
 **Content-Type:** `application/json`
 
-A successful response indicates that the email or phone number has been successfully verified.
+A successful verification returns the network authentication details.
 
 ```json
 {
-  "network": {},
-  "error": {}
+  "network": {
+    "by_jwt": "string"
+  },
+  "error": {
+    "message": "string"
+  }
 }
 ```
 
-| Field     | Type     | Description                                                     |
-| --------- | -------- | --------------------------------------------------------------- |
-| `network` | `object` | Network-specific information (may be an empty object).          |
-| `error`   | `object` | An optional error object (may be an empty object if no error). |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network.by_jwt` | `string` | The JWT used for authorized network requests. |
+| `error.message` | `string` | A descriptive message if verification failed. |
 
 ### Example
 
@@ -74,12 +75,10 @@ A successful response indicates that the email or phone number has been successf
 POST /auth/verify HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 41
 
 {
-  "user_auth": "text",
-  "verify_code": "text"
+  "user_auth": "user@example.com",
+  "verify_code": "12345678"
 }
 ```
 
@@ -87,7 +86,9 @@ Content-Length: 41
 
 ```json
 {
-  "network": {},
-  "error": {}
+  "network": {
+    "by_jwt": "eyJhbGciOiJIUzI1NiI..."
+  },
+  "error": null
 }
 ```

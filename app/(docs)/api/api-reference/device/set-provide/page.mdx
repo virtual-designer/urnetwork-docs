@@ -1,0 +1,108 @@
+---
+title: Set Device Provide Mode
+short_name: Set Provide Mode
+description: Update the provision mode for a specific provider device.
+---
+
+# Set Device Provide Mode
+
+This endpoint allows you to update how a specific device participates in the network. You can restrict its usage to your own network, share it with friends and family, or make it available to the public URnetwork.
+
+---
+
+## `POST /device/set-provide`
+
+Update the active provide mode for a client device.
+
+### Request
+
+`POST /device/set-provide`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "client_id": "string",
+  "provide_mode": 0
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | `string` | **Required.** The unique UDID of the client device. |
+| `provide_mode` | `integer` | **Required.** The target [Provision Mode](#provision-mode) value. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "provide_mode": 0,
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `provide_mode` | `integer` | The newly applied provision mode. |
+| `error` | `object` | Returned if the update failed (can be null). |
+| `error.message` | `string` | Details on why the mode could not be updated. |
+
+### Enums
+
+#### Provision Mode
+
+| Value | Title | Description |
+| :--- | :--- | :--- |
+| `0` | Default | Use system-wide defaults. |
+| `1` | None | Device is disabled from providing bandwidth. |
+| `2` | Network | Only provides bandwidth to your private network. |
+| `3` | Friends & Family | Provides to your designated contact circles. |
+| `4` | Public | Provides bandwidth to the global URnetwork for rewards. |
+| `5` | Stream | Optimized for high-throughput streaming traffic. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/set-provide HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "client_id": "c73040c1-0000-0000-0000-000000000000",
+  "provide_mode": 4
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "provide_mode": 4,
+  "error": null
+}
+```

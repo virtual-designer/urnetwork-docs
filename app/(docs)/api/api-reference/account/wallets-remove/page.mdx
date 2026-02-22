@@ -1,0 +1,90 @@
+---
+title: Remove Account Wallet
+short_name: Remove Wallet
+description: Unlink and remove a registered blockchain wallet from your account.
+---
+
+# Remove Account Wallet
+
+This endpoint allows you to disconnect a previously linked blockchain wallet from your URnetwork account. Note that removing a wallet may affect your ability to receive payouts or perform subscription-related tasks if no other active wallet remains.
+
+---
+
+## `POST /account/wallets/remove`
+
+Unlinks a specific wallet from the authenticated network account.
+
+### Request
+
+`POST /account/wallets/remove`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "wallet_id": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `wallet_id` | `string` | **Required.** The unique internal UDID of the wallet to be removed. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "success": true,
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `success` | `boolean` | `true` if the wallet was successfully unlinked. |
+| `error` | `object` | Present if the removal operation failed. |
+| `error.message` | `string` | A descriptive error message explaining the failure. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /account/wallets/remove HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "wallet_id": "w_987654321"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "success": true,
+  "error": null
+}
+```

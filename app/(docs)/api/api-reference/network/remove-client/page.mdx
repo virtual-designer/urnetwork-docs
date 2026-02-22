@@ -1,0 +1,85 @@
+---
+title: Remove Network Client
+short_name: Remove Client
+description: Unregister a client device from your network.
+---
+
+# Remove Network Client
+
+This endpoint removes a client device from your network. Once removed, the device will no longer be able to authenticate using its existing credentials or participate in network activities until it is re-registered.
+
+---
+
+## `POST /network/remove-client`
+
+Deletes a specific client configuration from the network.
+
+### Request
+
+`POST /network/remove-client`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "client_id": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | `string` | **Required.** The unique UDID of the client device to remove. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Returned if the removal process encountered an issue. |
+| `error.message` | `string` | A descriptive message about the failure. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/remove-client HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "client_id": "c73040c1-0000-0000-0000-000000000000"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

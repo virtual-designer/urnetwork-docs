@@ -1,0 +1,75 @@
+---
+title: Block Location
+short_name: Block Location
+description: Prevent your network's providers from routing traffic through a specific geographic location.
+---
+
+# Block Location
+
+The `block-location` endpoint allows you to restrict your provider devices from facilitating connections for specific geographic regions. This is useful for compliance, security, or performance optimization.
+
+---
+
+## `POST /network/block-location`
+
+Adds a specific location to your network's blocklist.
+
+### Request
+
+`POST /network/block-location`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "location_id": "uuid"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `location_id` | `string` | The unique UUID of the location to block. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+**Content-Type:** `application/json`
+
+```json
+{}
+```
+
+A successful response returns an empty object, indicating the location has been added to your blocklist.
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/block-location HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "location_id": "c73040c1-0000-0000-0000-000000000000"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{}
+```

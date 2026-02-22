@@ -1,0 +1,89 @@
+---
+title: Network Ranking Visibility
+short_name: Ranking Visibility
+description: Control whether your network is publicly visible on the leaderboard.
+---
+
+# Network Ranking Visibility
+
+By default, networks may be listed on the public leaderboard if they are among the top earners. This endpoint allows you to opt-in or opt-out of this public display.
+
+---
+
+## `POST /network/ranking-visibility`
+
+Update the visibility status of your network on the global leaderboard.
+
+### Request
+
+`POST /network/ranking-visibility`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "is_public": true
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `is_public` | `boolean` | Set to `true` to show your network on the leaderboard, or `false` to hide it. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `error` | `object` | Returned if the update failed (can be null). |
+| `error.message` | `string` | Details on why the visibility update could not be processed. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /network/ranking-visibility HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "is_public": false
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "error": null
+}
+```

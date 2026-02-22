@@ -1,0 +1,82 @@
+---
+title: Referral Network
+short_name: Referral Network
+description: Retrieve details about the network that referred your account.
+---
+
+# Referral Network
+
+This endpoint allows you to see information about the network that referred you to the URnetwork. If your account was not referred by an existing network, the `network` object will be null.
+
+---
+
+## `GET /account/referral-network`
+
+Get details of the referring network for the authenticated account.
+
+### Request
+
+`GET /account/referral-network`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "network": {
+    "id": "uuid",
+    "name": "string"
+  },
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `network` | `object` | Details of the network that referred the caller. |
+| `network.id` | `string` | The unique UUID of the referring network. |
+| `network.name` | `string` | The display name of the referring network. |
+| `error` | `object` | Error details if the request failed. |
+| `error.message` | `string` | A descriptive error message. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /account/referral-network HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "network": {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "name": "ReferrerNetwork01"
+  },
+  "error": null
+}
+```

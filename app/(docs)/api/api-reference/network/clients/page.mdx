@@ -1,0 +1,154 @@
+---
+title: Network Clients
+short_name: Clients
+description: Get a list of all clients registered to your network.
+---
+
+# Network Clients
+
+This endpoint retrieves a list of all clients (devices, proxies, and residents) currently registered to your network. It provides detailed information about each client's state, configuration, and recent connections.
+
+---
+
+## `GET /network/clients`
+
+Get list of clients for the network. This includes details about their device type, authentication time, provision mode, and active connections.
+
+### Request
+
+`GET /network/clients`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+A successful response returns an object containing an array of clients.
+
+```json
+{
+  "clients": [
+    {
+      "client_id": "udid",
+      "source_client_id": "udid",
+      "device_id": "udid",
+      "network_id": "udid",
+      "description": "string",
+      "device_name": "string",
+      "device_spec": "string",
+      "create_time": "string",
+      "auth_time": "string",
+      "provide_mode": 0,
+      "proxy_client": {
+        "http_proxy_url": "string",
+        "https_proxy_url": "string",
+        "socks_proxy_url": "string",
+        "auth_token": "string",
+        "instance_id": "string",
+        "proxy_host": "string",
+        "socks_proxy_port": 0,
+        "http_proxy_port": 0,
+        "https_proxy_port": 0,
+        "wg_config": {
+          "wg_proxy_port": 0,
+          "client_private_key": "string",
+          "client_public_key": "string",
+          "client_ipv4": "string",
+          "proxy_public_key": "string",
+          "config": "string"
+        }
+      },
+      "resident": {
+        "client_id": "udid",
+        "instance_id": "udid",
+        "resident_id": "udid",
+        "resident_host": "string",
+        "resident_service": "string",
+        "resident_block": "string",
+        "resident_internal_ports": [0]
+      },
+      "connections": [
+        {
+          "client_id": "udid",
+          "connection_id": "udid",
+          "connect_time": "string",
+          "disconnect_time": "string",
+          "connection_host": "string",
+          "connection_service": "string",
+          "connection_block": "string"
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `clients` | `array` | List of clients associated with the network. |
+| `clients[].client_id` | `string` | Unique identifier (UDID) for the client. |
+| `clients[].source_client_id` | `string` | Source client identifier if this is a derived or ancillary client. |
+| `clients[].device_id` | `string` | Unique identifier for the hardware device. |
+| `clients[].network_id` | `string` | The ID of the network this client belongs to. |
+| `clients[].description` | `string` | A description or name for the client. |
+| `clients[].device_name` | `string` | Human-readable name of the device. |
+| `clients[].device_spec` | `string` | Hardware or software specification string. |
+| `clients[].provide_mode` | `integer` | [Provide Mode](#provide-mode) enum value. |
+| `clients[].proxy_client` | `object` | Proxy configuration relay details, including WireGuard (WG) config if applicable. |
+| `clients[].resident` | `object` | Details if the client is running a resident service. |
+| `clients[].connections` | `array` | Recent or active connection history. |
+
+### Enums
+
+#### Provide Mode
+
+| Value | Title | Description |
+| :--- | :--- | :--- |
+| `0` | Default | Default provision mode. |
+| `1` | None | Client does not provide bandwidth. |
+| `2` | Network | Provides to own network. |
+| `3` | Friends & Family | Provides to specific contacts. |
+| `4` | Public | Provides to the public network. |
+| `5` | Stream | Streaming optimized mode. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /network/clients HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "clients": [
+    {
+      "client_id": "550e8400-e29b-41d4-a716-446655440000",
+      "device_name": "My Laptop",
+      "provide_mode": 2,
+      "auth_time": "2025-01-20T12:00:00Z",
+      "connections": []
+    }
+  ]
+}
+```

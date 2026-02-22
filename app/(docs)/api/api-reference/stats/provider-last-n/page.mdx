@@ -1,0 +1,130 @@
+title: Provider Last N
+short_name: Provider Last N
+description: Get statistics for a specific provider over the last N hours.
+---
+
+# Provider Last N
+
+This endpoint retrieves detailed statistics for a specific provider device (identified by `client_id`) over a specified lookback period (N hours).
+
+---
+
+## `POST /stats/provider-last-n`
+
+Get statistics for a specific provider over the last N hours.
+
+### Request
+
+`POST /stats/provider-last-n`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "client_id": "string",
+  "last_n": 24
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | `string` | **Required.** The unique UDID of the provider device. |
+| `last_n` | `number` | **Required.** The number of hours to look back (e.g., 24). |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "lookback": 24,
+  "created_time": "2025-01-20T12:00:00Z",
+  "uptime": {
+    "2025-01-20-12": 60
+  },
+  "transfer_data": {
+    "2025-01-20": 1.5
+  },
+  "payout": {
+    "2025-01-20": 0.5
+  },
+  "search_interest": {
+    "2025-01-20": 100
+  },
+  "contracts": {
+    "2025-01-20": 5
+  },
+  "clients": {
+    "2025-01-20": 3
+  },
+  "client_details": [
+    {
+      "client_id": "string",
+      "transfer_data": {
+        "2025-01-20": 0.5
+      }
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `lookback` | `number` | The lookback period in hours as confirmed by the server. |
+| `created_time` | `string` | ISO 8601 timestamp of when this report was generated. |
+| `uptime` | `object` | Total online minutes indexed by hour (`yyyy-mm-dd-hh`). |
+| `transfer_data` | `object` | Total data provided in GiB indexed by date (`yyyy-mm-dd`). |
+| `payout` | `object` | Estimated earnings in USDC indexed by date (`yyyy-mm-dd`). |
+| `search_interest`| `object` | Count of matching searches indexed by date (`yyyy-mm-dd`). |
+| `contracts` | `object` | Count of unique contracts indexed by date (`yyyy-mm-dd`). |
+| `clients` | `object` | Count of distinct clients indexed by date (`yyyy-mm-dd`). |
+| `client_details` | `array` | Granular breakdown of transfer data for specific consumers. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /stats/provider-last-n HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "client_id": "c73040c1-0000-0000-0000-000000000000",
+  "last_n": 24
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "lookback": 24,
+  "created_time": "2025-01-20T12:30:00Z",
+  "transfer_data": {
+    "2025-01-20": 1.25
+  },
+  "payout": {
+    "2025-01-20": 0.12
+  }
+}
+```

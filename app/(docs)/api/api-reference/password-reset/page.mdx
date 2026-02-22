@@ -1,17 +1,18 @@
 ---
 title: Password Reset
 short_name: Password Reset
-description: Send a password reset code to a user's email or phone number.
+description: Initiate a password reset flow for a user account.
 ---
+
 # Password Reset
 
-This document describes the `password-reset` endpoint, which is used to send a password reset code to a user's email or phone number.
+This endpoint initiates the password reset process by sending a reset code to the user's primary authentication method (email or phone number).
 
 ---
 
 ## `POST /auth/password-reset`
 
-Send a password reset code to a specified email or phone number.
+Initiate a password reset for a user authority.
 
 ### Request
 
@@ -22,15 +23,11 @@ Send a password reset code to a specified email or phone number.
 ```json
 {
   "Host": "api.bringyour.com",
-  "Content-Type": "application/json",
-  "Accept": "*/*",
-  "Content-Length": "[calculated-length]"
+  "Content-Type": "application/json"
 }
 ```
 
 **Body:**
-
-The request body should be a JSON object containing the user's email or phone number to which the password reset code will be sent.
 
 ```json
 {
@@ -38,9 +35,9 @@ The request body should be a JSON object containing the user's email or phone nu
 }
 ```
 
-| Field       | Type     | Description                      |
-| ----------- | -------- | -------------------------------- |
-| `user_auth` | `string` | Email or phone number of the user. |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | **Required.** The email address or phone number of the user. |
 
 ### Response
 
@@ -50,17 +47,17 @@ The request body should be a JSON object containing the user's email or phone nu
 
 **Content-Type:** `application/json`
 
-A successful response indicates that a password reset code has been successfully sent to the specified `user_auth`.
+A successful request confirms that the reset attempt was initiated.
 
 ```json
 {
-  "user_auth": "text"
+  "user_auth": "string"
 }
 ```
 
-| Field       | Type     | Description                                                     |
-| ----------- | -------- | --------------------------------------------------------------- |
-| `user_auth` | `string` | The email or phone number to which the password reset was sent. |
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user_auth` | `string` | The user authentication detail where the reset code was sent. |
 
 ### Example
 
@@ -70,11 +67,9 @@ A successful response indicates that a password reset code has been successfully
 POST /auth/password-reset HTTP/1.1
 Host: api.bringyour.com
 Content-Type: application/json
-Accept: */*
-Content-Length: 20
 
 {
-  "user_auth": "text"
+  "user_auth": "support@ur.io"
 }
 ```
 
@@ -82,6 +77,6 @@ Content-Length: 20
 
 ```json
 {
-  "user_auth": "text"
+  "user_auth": "support@ur.io"
 }
 ```

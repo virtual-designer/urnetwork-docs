@@ -1,0 +1,98 @@
+---
+title: Account Wallets
+short_name: Wallets
+description: Retrieve a list of all blockchain wallets associated with your account.
+---
+
+# Account Wallets
+
+This endpoint returns a list of all wallets (both Circle-managed and external) that are linked to your URnetwork account for payouts and billing.
+
+---
+
+## `GET /account/wallets`
+
+Retrieve all registered wallets for the authenticated network.
+
+### Request
+
+`GET /account/wallets`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Accept": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "wallets": [
+    {
+      "wallet_id": "string",
+      "circle_wallet_id": "string",
+      "network_id": "string",
+      "wallet_type": "circle",
+      "blockchain": "SOL",
+      "wallet_address": "string",
+      "active": true,
+      "default_token_type": "USDC",
+      "create_time": "string"
+    }
+  ]
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `wallets` | `array` | A list of wallets associated with your network. |
+| `wallets[].wallet_id` | `string` | Unique internal identifier for the wallet. |
+| `wallets[].circle_wallet_id` | `string` | **Optional.** The external identifier if managed by Circle. |
+| `wallets[].wallet_type` | `string` | Either `circle` or `external`. |
+| `wallets[].blockchain` | `string` | The blockchain network: `SOL` or `MATIC`. |
+| `wallets[].wallet_address` | `string` | The public blockchain address. |
+| `wallets[].active` | `boolean` | Whether the wallet is currently eligible for payouts. |
+| `wallets[].default_token_type` | `string` | The preferred token for transfers (e.g., `USDC`). |
+| `wallets[].create_time` | `string` | ISO 8601 timestamp of registration. |
+
+### Example
+
+#### HTTP Request
+
+```http
+GET /account/wallets HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Accept: application/json
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "wallets": [
+    {
+      "wallet_id": "w_98765",
+      "wallet_type": "external",
+      "blockchain": "SOL",
+      "wallet_address": "HN7cABqL36vRRXYZ8Q4sG",
+      "active": true,
+      "default_token_type": "USDC",
+      "create_time": "2024-12-01T10:00:00Z"
+    }
+  ]
+}
+```

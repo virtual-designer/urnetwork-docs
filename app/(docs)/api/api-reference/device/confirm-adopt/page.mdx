@@ -1,0 +1,92 @@
+---
+title: Confirm Device Adoption
+short_name: Confirm Adopt
+description: Finalize the adoption process for a device using an adoption code and secret.
+---
+
+# Confirm Device Adoption
+
+This endpoint is used to finalize the process of adopting a device into your network. It requires the `adopt_code` generated during the initiation phase and the `adopt_secret` that was kept locally. Successful confirmation returns a specific JWT for the newly adopted client.
+
+---
+
+## `POST /device/confirm-adopt`
+
+Finalizes the adoption of a device into the network.
+
+### Request
+
+`POST /device/confirm-adopt`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json"
+}
+```
+
+**Body:**
+
+```json
+{
+  "adopt_code": "string",
+  "adopt_secret": "string",
+  "associated_network_name": "string"
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `adopt_code` | `string` | **Required.** The unique adoption code associated with the device. |
+| `adopt_secret` | `string` | **Required.** The secret key associated with the adoption code. |
+| `associated_network_name` | `string` | **Optional.** The name of the network the device is being adopted from. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "by_client_jwt": "string",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `by_client_jwt` | `string` | The authentication token specifically for the newly adopted client device. |
+| `error` | `object` | An error object if the confirmation failed. |
+| `error.message` | `string` | A descriptive message explaining why the adoption could not be confirmed. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /device/confirm-adopt HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+
+{
+  "adopt_code": "ADOPT-1234-5678",
+  "adopt_secret": "super-secret-key-xyz",
+  "associated_network_name": "HomeNetwork"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "by_client_jwt": "eyJhbGciOiJIUzI1NiI...",
+  "error": null
+}
+```

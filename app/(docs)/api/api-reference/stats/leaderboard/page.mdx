@@ -1,0 +1,96 @@
+---
+title: Leaderboard
+short_name: Leaderboard
+description: View the top bandwidth providers in the network.
+---
+
+# Leaderboard
+
+The `leaderboard` endpoint returns a ranked list of the top bandwidth providers across the URnetwork. Networks can choose whether or not to be publicly visible on this leaderboard.
+
+---
+
+## `POST /stats/leaderboard`
+
+Retrieve the current network leaderboard showing the highest earners and providers.
+
+### Request
+
+`POST /stats/leaderboard`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Authorization": "Bearer YOUR_JWT_TOKEN",
+  "Content-Type": "application/json"
+}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "earners": [
+    {
+      "network_id": "string",
+      "network_name": "string",
+      "net_mib_count": 0,
+      "is_public": true,
+      "contains_profanity": false
+    }
+  ],
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `earners` | `array` | A list of top-performing networks. |
+| `earners[].network_id` | `string` | Unique identifier for the network. |
+| `earners[].network_name` | `string` | The display name of the network (or masked if private). |
+| `earners[].net_mib_count` | `number` | Total MiB provided by this network. |
+| `earners[].is_public` | `boolean` | Whether the network has opted in to public display. |
+| `earners[].contains_profanity` | `boolean` | Safety flag for the network name. |
+| `error` | `object` | Optional error details. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /stats/leaderboard HTTP/1.1
+Host: api.bringyour.com
+Authorization: Bearer YOUR_JWT_TOKEN
+Content-Type: application/json
+
+{}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "earners": [
+    {
+      "network_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "network_name": "TopProvider1",
+      "net_mib_count": 1048576,
+      "is_public": true,
+      "contains_profanity": false
+    }
+  ],
+  "error": null
+}
+```

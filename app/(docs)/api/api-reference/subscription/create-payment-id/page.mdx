@@ -1,0 +1,84 @@
+---
+title: Create Subscription Payment ID
+short_name: Create Payment ID
+description: Generate a unique payment identifier for subscription billing.
+---
+
+# Create Subscription Payment ID
+
+This endpoint creates a unique identifier used to process payments for your network's data plan subscriptions. This ID is typically required by external payment handlers or used to track specific transaction intent within the system.
+
+---
+
+## `POST /subscription/create-payment-id`
+
+Generates a new, unique subscription payment intent ID for the authenticated network.
+
+### Request
+
+`POST /subscription/create-payment-id`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+The request body is an empty JSON object.
+
+```json
+{}
+```
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "subscription_payment_id": "udid",
+  "error": {
+    "message": "string"
+  }
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `subscription_payment_id` | `string` | A unique payment identifier (UDID) generated for this subscription intent. |
+| `error` | `object` | Present if the ID generation failed. |
+| `error.message` | `string` | Human-readable explanation of why the payment ID could not be created. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /subscription/create-payment-id HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "subscription_payment_id": "pay_550e8400-e29b-41d4-a716-446655440000",
+  "error": null
+}
+```

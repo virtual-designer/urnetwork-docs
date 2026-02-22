@@ -1,0 +1,92 @@
+---
+title: Create Account Wallet
+short_name: Create Wallet
+description: Link an external blockchain wallet to your account.
+---
+
+# Create Account Wallet
+
+This endpoint allows you to register an external blockchain wallet (e.g., Solana or Polygon) with your URnetwork account. This is required for various billing and reward distribution features.
+
+---
+
+## `POST /account/wallet`
+
+Link a new external blockchain wallet address to your network account.
+
+### Request
+
+`POST /account/wallet`
+
+**Headers:**
+
+```json
+{
+  "Host": "api.bringyour.com",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_JWT_TOKEN"
+}
+```
+
+**Body:**
+
+```json
+{
+  "blockchain": "SOL",
+  "wallet_address": "string",
+  "default_token_type": "USDC"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `blockchain` | `string` | The blockchain network. Supported: `SOL`, `MATIC`. |
+| `wallet_address` | `string` | The public address of your wallet. |
+| `default_token_type` | `string` | The token used for payments. Currently only `USDC` is supported. |
+
+### Response
+
+#### `200 Success`
+
+**Status:** `200 OK`
+
+**Content-Type:** `application/json`
+
+```json
+{
+  "wallet_id": "string"
+}
+```
+
+#### Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `wallet_id` | `string` | Unique identifier (UDID) for the newly registered wallet. |
+
+### Example
+
+#### HTTP Request
+
+```http
+POST /account/wallet HTTP/1.1
+Host: api.bringyour.com
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+  "blockchain": "SOL",
+  "wallet_address": "HN7cABqL36vRRXYZ8Q4sG",
+  "default_token_type": "USDC"
+}
+```
+
+#### Successful HTTP Response
+
+```json
+{
+  "wallet_id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+}
+```
