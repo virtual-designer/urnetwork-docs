@@ -82,6 +82,30 @@ Keep in mind that the auth code is time-sensitive and by default will expire aft
 If your auth code was correctly copied, you should be logged into URnetwork now. The command above saves your account
 JWT token to `~/.urnetwork/jwt`. You should not share this with anyone.
 
+### Proxy Configuration (Optional)
+
+If you need to use proxies with the binary app, use the following commands to manage them. URnetwork supports **SOCKS5** proxies.
+
+#### Add Proxies
+To add proxies from a file (format `ip:port:username:password`, one per line):
+```bash
+urnetwork proxy add --proxy_file=/home/username/proxy.txt
+```
+
+#### Remove Proxies
+To remove all existing proxies:
+```bash
+urnetwork proxy remove --all
+```
+
+#### Apply Changes
+After adding or removing proxies, you must restart the provider binary/service to apply the changes:
+```bash
+systemctl --user restart urnetwork
+```
+
+---
+
 ### Starting the provider
 
 Finally, you can start the provider:
