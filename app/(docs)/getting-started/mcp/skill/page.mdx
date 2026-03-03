@@ -29,7 +29,7 @@ When using the API or MCP server, the user JWT must be passed in an `Authorizati
 
 To get the JWT, ask the human for an auth code, and then convert that auth code to a JWT using the API `/auth/code-login` route. An example curl is below, piped to jq to extract the by_jwt property from the result:
 
-```
+```bash
 curl -X POST https://api.bringyour.com/auth/code-login -d '{"auth_code": "<AUTH CODE>"}' | jq ".by_jwt"
 ```
 
@@ -65,7 +65,7 @@ The API can be used directly to create a HTTPS/SOCKS/WireGuard proxy for a count
 
 Step 1, search for a list of locations using the route /network/find-locations. A curl example is below, piped to jq to extract the locations list.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/find-locations -d '{"query": "<LOCATION NAME>"}' | jq '.locations'
 ```
 
@@ -73,7 +73,7 @@ Step 2, choose the location of interest and save the country_code property.
 
 Step 3, create a proxy using the saved country code using the /network/auth-client route and setting the proxy_config.initial_device_state to have country_code.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/auth-client -d '{"proxy_config": {"initial_device_state": {"country_code": "<COUNTRY CODE>"}}}'
 ```
 
@@ -85,7 +85,7 @@ The API can be used directly to search for a location and create a HTTPS/SOCKS/W
 
 Step 1, search for a list of locations using the route /network/find-locations. A curl example is below, piped to jq to extract the locations list.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/find-locations -d '{"query": "<LOCATION NAME>"}' | jq '.locations'
 ```
 
@@ -93,7 +93,7 @@ Step 2, choose the location of interest and save the location_id property.
 
 Step 3, create a proxy using the saved location_id using the /network/auth-client route and setting the the proxy_config.initial_device_state.location to have connect_location_id.location_id.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/auth-client -d '{"proxy_config": {"initial_device_state": {"location": {"connect_location_id":{"location_id": "<LOCATION ID>"}}}}}'
 ```
 
@@ -104,7 +104,7 @@ The API can be used directly to search for a location, enumerate the providers (
 
 Step 1, search for a list of locations using the route /network/find-locations. A curl example is below, piped to jq to extract the locations list.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/find-locations -d '{"query": "<LOCATION NAME>"}' | jq '.locations'
 ```
 
@@ -112,13 +112,13 @@ Step 2, choose the location of interest and save the location_id.
 
 Step 3, fetch a ranked list of providers (egress IPs) for the location_id using the route /network/find-providers2. The sample size can be set to however many unique providers are needed. A curl example is below, piped to jq to extract the providers list.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/find-providers2 -d '{"specs": [{"client_id": "<CLIENT ID>"}], "count": <COUNT>}' | jq '.providers'
 ```
 
 Step 4, by looping over each client_id in the list, create a proxy using the client_id using the /network/auth-client route and setting the the proxy_config.initial_device_state.location to have connect_location_id.client_id.
 
-```
+```bash
 curl -X POST -H 'Authorization: Bearer <JWT>' https://api.bringyour.com/network/auth-client -d '{"proxy_config": {"initial_device_state": {"location": {"connect_location_id":{"client_id": "<CLIENT ID>"}}}}}'
 ```
 
